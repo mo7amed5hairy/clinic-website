@@ -6,6 +6,7 @@ use Illuminate\Foundation\Configuration\Middleware;
 
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
+use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
 
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -21,6 +22,10 @@ return Application::configure(basePath: dirname(__DIR__))
 
         // (اختياري لكن مُستحسن)
         $middleware->append(PreventAccessFromCentralDomains::class);
+
+          $middleware->alias([
+        'auth:sanctum' => EnsureFrontendRequestsAreStateful::class,
+    ]);
 
     })
     ->withExceptions(function (Exceptions $exceptions): void {
