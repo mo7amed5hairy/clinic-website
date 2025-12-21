@@ -20,11 +20,14 @@ class TenantScope implements Scope
      */
     public function apply(Builder $builder, Model $model): void
     {
-        if (Tenancy::initialized()) {
-            $builder->where(
-                $model->getTable() . '.tenant_id',
-                tenant('id')
-            );
+        // لو مفيش Tenant (مثلاً auth / register / central requests)
+        if (! tenant()) {
+            return;
         }
+
+        $builder->where(
+            $model->getTable() . '.tenant_id',
+            tenant()->getTenantKey()
+        );
     }
 }
