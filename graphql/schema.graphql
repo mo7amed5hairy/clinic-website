@@ -1,0 +1,17 @@
+scalar JSON
+
+"""
+Root Query
+"""
+type Query
+
+"""
+Root Mutation
+"""
+type Mutation
+
+"""
+Scalar for JSON fields
+"""
+
+#import doctor.graphql
