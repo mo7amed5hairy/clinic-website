@@ -1,0 +1,44 @@
+type Clinic {
+    id: ID!
+    name: String!
+    logo: String
+    color: String
+    is_active: Boolean!
+}
+
+extend type Query {
+    # جلب كل العيادات
+    clinics: [Clinic!]!
+        @field(resolver: "App\\Modules\\Clinic\\GraphQL\\ClinicResolver@list")
+
+    # جلب عيادة محددة
+    clinic(id: ID!): Clinic
+        @field(resolver: "App\\Modules\\Clinic\\GraphQL\\ClinicResolver@show")
+}
+
+extend type Mutation {
+    # إنشاء عيادة
+    createClinic(
+        name: String!
+        color: String
+        is_active: Boolean
+        logo: Upload
+    ): Clinic
+        @field(resolver: "App\\Modules\\Clinic\\GraphQL\\ClinicResolver@create")
+
+    # تحديث عيادة
+    updateClinic(
+        id: ID!
+        name: String
+        color: String
+        is_active: Boolean
+        logo: Upload
+    ): Clinic
+        @field(resolver: "App\\Modules\\Clinic\\GraphQL\\ClinicResolver@update")
+
+    # حذف عيادة
+    deleteClinic(
+        id: ID!
+    ): Boolean
+        @field(resolver: "App\\Modules\\Clinic\\GraphQL\\ClinicResolver@destroy")
+}
