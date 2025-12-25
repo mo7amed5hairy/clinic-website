@@ -1,0 +1,38 @@
+type Specification {
+    id: ID!
+    name: String!
+    description: String
+}
+
+type Query {
+    # جلب كل الـ Specifications
+    specifications: [Specification!]!
+        @field(resolver: "App\\Modules\\Specification\\GraphQL\\SpecificationResolver@list")
+
+    # جلب Specification محدد
+    specification(id: ID!): Specification
+        @field(resolver: "App\\Modules\\Specification\\GraphQL\\SpecificationResolver@show")
+}
+
+type Mutation {
+    # إنشاء Specification
+    createSpecification(
+        name: String!
+        description: String
+    ): Specification
+        @field(resolver: "App\\Modules\\Specification\\GraphQL\\SpecificationResolver@create")
+
+    # تحديث Specification
+    updateSpecification(
+        id: ID!
+        name: String
+        description: String
+    ): Specification
+        @field(resolver: "App\\Modules\\Specification\\GraphQL\\SpecificationResolver@update")
+
+    # حذف Specification
+    deleteSpecification(
+        id: ID!
+    ): Boolean
+        @field(resolver: "App\\Modules\\Specification\\GraphQL\\SpecificationResolver@destroy")
+}

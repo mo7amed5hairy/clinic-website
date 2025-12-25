@@ -12,3 +12,4 @@ Root Mutation
 type Mutation
 
 #import doctor.graphql
+#import specification.graphql
