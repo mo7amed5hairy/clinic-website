@@ -5,14 +5,36 @@ type Doctor {
 }
 
 type Query {
+    # جلب كل الدكاترة
     doctors: [Doctor!]!
         @field(resolver: "App\\Modules\\Doctor\\GraphQL\\DoctorResolver@list")
 
+    # جلب دكتور محدد
     doctor(id: ID!): Doctor
         @field(resolver: "App\\Modules\\Doctor\\GraphQL\\DoctorResolver@show")
 }
 
 type Mutation {
-    createDoctor(doctor_data: JSON!, is_active: Boolean): Doctor
+    # إنشاء دكتور
+    createDoctor(
+        doctor_data: JSON!
+        is_active: Boolean
+        image: Upload
+    ): Doctor
         @field(resolver: "App\\Modules\\Doctor\\GraphQL\\DoctorResolver@create")
+
+    # تحديث دكتور
+    updateDoctor(
+        id: ID!
+        doctor_data: JSON
+        is_active: Boolean
+        image: Upload
+    ): Doctor
+        @field(resolver: "App\\Modules\\Doctor\\GraphQL\\DoctorResolver@update")
+
+    # حذف دكتور
+    deleteDoctor(
+        id: ID!
+    ): Boolean
+        @field(resolver: "App\\Modules\\Doctor\\GraphQL\\DoctorResolver@destroy")
 }

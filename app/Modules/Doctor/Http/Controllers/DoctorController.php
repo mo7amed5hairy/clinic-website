@@ -29,11 +29,20 @@ class DoctorController extends Controller
             'is_active'   => $request->boolean('is_active', true),
         ]);
 
-        $doctor->uploadImageAsync(
+        // $doctor->uploadImageAsync(
+        //     $request->file('image'),
+        //     'doctors/images',
+        //     'doctor_data->image'
+        // );
+
+        $doctor->uploadImage(
             $request->file('image'),
-            'doctors/images',
-            'doctor_data->image'
+            [
+                'folder' => 'doctors/images',
+                'column' => 'doctor_data->image',
+            ]
         );
+
 
 
         return response()->json($doctor, 201);

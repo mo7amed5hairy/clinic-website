@@ -13,13 +13,16 @@ class DoctorService
 
     public function list(int $perPage = 15)
     {
-        return $repository = $this->repository->paginate($perPage);
+        return $this->repository->paginate($perPage);
     }
 
-    public function show(int $id): Doctor
+    /**
+     * يرجع Doctor أو null
+     * بدون أي Exceptions
+     */
+    public function show(int $id): ?Doctor
     {
-        return $this->repository->find($id)
-            ?? throw new \Exception(__('doctor.not_found'));
+        return $this->repository->find($id);
     }
 
     public function store(array $data): Doctor
