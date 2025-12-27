@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ClinicNews extends Model
 {
+    
     use SoftDeletes, BelongsToTenant, HasMediaUpload;
 
     protected $table = 'clinic_news';

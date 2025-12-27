@@ -14,6 +14,11 @@ return new class extends Migration
         Schema::create('departments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('doctor_id')->constrained()->onDelete('cascade');
+            $table->string('tenant_id');
+            $table->foreign('tenant_id')
+                ->references('id')
+                ->on('tenants')
+                ->onDelete('cascade');
             $table->string('name');
             $table->boolean('is_active')->default(true);
             $table->timestamps();
@@ -29,3 +34,5 @@ return new class extends Migration
         Schema::dropIfExists('departments');
     }
 };
+
+

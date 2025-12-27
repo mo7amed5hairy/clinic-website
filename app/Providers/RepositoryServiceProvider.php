@@ -15,6 +15,12 @@ use App\Modules\ClinicManagementMember\Contracts\ClinicManagementMemberRepositor
 use App\Modules\ClinicManagementMember\Repositories\ClinicManagementMemberRepository;
 use App\Modules\ClinicNews\Contracts\ClinicNewsRepositoryInterface;
 use App\Modules\ClinicNews\Repositories\ClinicNewsRepository;
+use App\Modules\ClinicSchedule\Contracts\ClinicScheduleRepositoryInterface;
+use App\Modules\ClinicSchedule\Repositories\ClinicScheduleRepository;
+use App\Modules\ClinicStatistic\Contracts\ClinicStatisticRepositoryInterface;
+use App\Modules\ClinicStatistic\Repositories\ClinicStatisticRepository;
+use App\Modules\Department\Contracts\DepartmentRepositoryInterface;
+use App\Modules\Department\Repositories\DepartmentRepository;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
@@ -48,6 +54,20 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(
             ClinicNewsRepositoryInterface::class,
             ClinicNewsRepository::class
+        );
+
+        $this->app->bind(
+            ClinicScheduleRepositoryInterface::class,
+            ClinicScheduleRepository::class
+        );
+
+        $this->app->bind(
+            ClinicStatisticRepositoryInterface::class,
+            ClinicStatisticRepository::class
+        );
+        $this->app->bind(
+            DepartmentRepositoryInterface::class,
+            DepartmentRepository::class
         );
     }
 }

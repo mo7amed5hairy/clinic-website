@@ -1,0 +1,40 @@
+type ClinicSchedule {
+    id: ID!
+    date_from: String!
+    date_to: String!
+    time_from: String!
+    time_to: String!
+    is_active: Boolean!
+}
+
+extend type Query {
+    clinicSchedules: [ClinicSchedule!]!
+        @field(resolver: "App\\Modules\\ClinicSchedule\\GraphQL\\ClinicScheduleResolver@list")
+
+    clinicSchedule(id: ID!): ClinicSchedule
+        @field(resolver: "App\\Modules\\ClinicSchedule\\GraphQL\\ClinicScheduleResolver@show")
+}
+
+extend type Mutation {
+    createClinicSchedule(
+        date_from: String!
+        date_to: String!
+        time_from: String!
+        time_to: String!
+        is_active: Boolean
+    ): ClinicSchedule
+        @field(resolver: "App\\Modules\\ClinicSchedule\\GraphQL\\ClinicScheduleResolver@create")
+
+    updateClinicSchedule(
+        id: ID!
+        date_from: String
+        date_to: String
+        time_from: String
+        time_to: String
+        is_active: Boolean
+    ): ClinicSchedule
+        @field(resolver: "App\\Modules\\ClinicSchedule\\GraphQL\\ClinicScheduleResolver@update")
+
+    deleteClinicSchedule(id: ID!): Boolean
+        @field(resolver: "App\\Modules\\ClinicSchedule\\GraphQL\\ClinicScheduleResolver@destroy")
+}

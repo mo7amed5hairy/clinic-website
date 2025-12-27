@@ -1,0 +1,37 @@
+type Department {
+    id: ID!
+    doctor_id: ID!
+    tenant_id: String!
+    name: String!
+    is_active: Boolean!
+}
+
+extend type Query {
+    departments: [Department!]!
+        @field(resolver: "App\\Modules\\Department\\GraphQL\\DepartmentResolver@list")
+
+    department(id: ID!): Department
+        @field(resolver: "App\\Modules\\Department\\GraphQL\\DepartmentResolver@show")
+}
+
+extend type Mutation {
+    createDepartment(
+        doctor_id: ID!
+        name: String!
+        is_active: Boolean
+    ): Department
+        @field(resolver: "App\\Modules\\Department\\GraphQL\\DepartmentResolver@create")
+
+    updateDepartment(
+        id: ID!
+        doctor_id: ID
+        name: String
+        is_active: Boolean
+    ): Department
+        @field(resolver: "App\\Modules\\Department\\GraphQL\\DepartmentResolver@update")
+
+    deleteDepartment(
+        id: ID!
+    ): Boolean
+        @field(resolver: "App\\Modules\\Department\\GraphQL\\DepartmentResolver@destroy")
+}

@@ -1,0 +1,41 @@
+type ClinicStatistic {
+    id: ID!
+    statistics_name: String!
+    statistic_value: String!
+    is_active: Boolean!
+}
+
+extend type Query {
+    # جلب كل الإحصائيات
+    clinicStatistics: [ClinicStatistic!]!
+        @field(resolver: "App\\Modules\\ClinicStatistic\\GraphQL\\ClinicStatisticResolver@list")
+
+    # جلب إحصائية محددة
+    clinicStatistic(id: ID!): ClinicStatistic
+        @field(resolver: "App\\Modules\\ClinicStatistic\\GraphQL\\ClinicStatisticResolver@show")
+}
+
+extend type Mutation {
+    # إنشاء إحصائية
+    createClinicStatistic(
+        statistics_name: String!
+        statistic_value: String!
+        is_active: Boolean
+    ): ClinicStatistic
+        @field(resolver: "App\\Modules\\ClinicStatistic\\GraphQL\\ClinicStatisticResolver@create")
+
+    # تحديث إحصائية
+    updateClinicStatistic(
+        id: ID!
+        statistics_name: String
+        statistic_value: String
+        is_active: Boolean
+    ): ClinicStatistic
+        @field(resolver: "App\\Modules\\ClinicStatistic\\GraphQL\\ClinicStatisticResolver@update")
+
+    # حذف إحصائية
+    deleteClinicStatistic(
+        id: ID!
+    ): Boolean
+        @field(resolver: "App\\Modules\\ClinicStatistic\\GraphQL\\ClinicStatisticResolver@destroy")
+}
