@@ -14,3 +14,5 @@ type Mutation
 #import doctor.graphql
 #import specification.graphql
 #import clinic.graphql
+#import clinic_management_members.graphql
+#import clinic_news.graphql

@@ -4,7 +4,7 @@ type Specification {
     description: String
 }
 
-type Query {
+extend type Query {
     # جلب كل الـ Specifications
     specifications: [Specification!]!
         @field(resolver: "App\\Modules\\Specification\\GraphQL\\SpecificationResolver@list")
@@ -14,7 +14,7 @@ type Query {
         @field(resolver: "App\\Modules\\Specification\\GraphQL\\SpecificationResolver@show")
 }
 
-type Mutation {
+extend type Mutation {
     # إنشاء Specification
     createSpecification(
         name: String!

@@ -1,0 +1,47 @@
+type ClinicManagementMember {
+    id: ID!
+    name: String!
+    position: String
+    bio: String
+    photo: String
+    is_active: Boolean!
+}
+
+extend type Query {
+    # جلب كل الأعضاء
+    clinicManagementMembers: [ClinicManagementMember!]!
+        @field(resolver: "App\\Modules\\ClinicManagementMember\\GraphQL\\ClinicManagementMemberResolver@list")
+
+    # جلب عضو محدد
+    clinicManagementMember(id: ID!): ClinicManagementMember
+        @field(resolver: "App\\Modules\\ClinicManagementMember\\GraphQL\\ClinicManagementMemberResolver@show")
+}
+
+extend type Mutation {
+    # إنشاء عضو
+    createClinicManagementMember(
+        name: String!
+        position: String
+        bio: String
+        is_active: Boolean
+        photo: Upload
+    ): ClinicManagementMember
+        @field(resolver: "App\\Modules\\ClinicManagementMember\\GraphQL\\ClinicManagementMemberResolver@create")
+
+    # تحديث عضو
+    updateClinicManagementMember(
+        id: ID!
+        name: String
+        position: String
+        bio: String
+        is_active: Boolean
+        photo: Upload
+    ): ClinicManagementMember
+        @field(resolver: "App\\Modules\\ClinicManagementMember\\GraphQL\\ClinicManagementMemberResolver@update")
+
+    # حذف عضو
+    deleteClinicManagementMember(
+        id: ID!
+    ): Boolean
+        @field(resolver: "App\\Modules\\ClinicManagementMember\\GraphQL\\ClinicManagementMemberResolver@destroy")
+}

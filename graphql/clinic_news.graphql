@@ -1,0 +1,47 @@
+type ClinicNews {
+    id: ID!
+    title: JSON!
+    description: JSON
+    content: JSON
+    image: String
+    is_active: Boolean!
+}
+
+extend type Query {
+    # جلب كل الأخبار
+    clinicNews: [ClinicNews!]!
+        @field(resolver: "App\\Modules\\ClinicNews\\GraphQL\\ClinicNewsResolver@list")
+
+    # جلب خبر محدد
+    clinicNew(id: ID!): ClinicNews
+        @field(resolver: "App\\Modules\\ClinicNews\\GraphQL\\ClinicNewsResolver@show")
+}
+
+extend type Mutation {
+    # إنشاء خبر
+    createClinicNews(
+        title: JSON!
+        description: JSON
+        content: JSON
+        is_active: Boolean
+        image: Upload
+    ): ClinicNews
+        @field(resolver: "App\\Modules\\ClinicNews\\GraphQL\\ClinicNewsResolver@create")
+
+    # تحديث خبر
+    updateClinicNews(
+        id: ID!
+        title: JSON
+        description: JSON
+        content: JSON
+        is_active: Boolean
+        image: Upload
+    ): ClinicNews
+        @field(resolver: "App\\Modules\\ClinicNews\\GraphQL\\ClinicNewsResolver@update")
+
+    # حذف خبر
+    deleteClinicNews(
+        id: ID!
+    ): Boolean
+        @field(resolver: "App\\Modules\\ClinicNews\\GraphQL\\ClinicNewsResolver@destroy")
+}
