@@ -27,6 +27,8 @@ use App\Modules\Department\Contracts\DepartmentRepositoryInterface;
 use App\Modules\Department\Repositories\DepartmentRepository;
 use App\Modules\InsuranceCompany\Contracts\InsuranceCompanyRepositoryInterface;
 use App\Modules\InsuranceCompany\Repositories\InsuranceCompanyRepository;
+use App\Modules\Unit\Contracts\UnitRepositoryInterface;
+use App\Modules\Unit\Repositories\UnitRepository;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
@@ -86,6 +88,10 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(
             ContactMessageRepositoryInterface::class,
             ContactMessageRepository::class
+        );
+        $this->app->bind(
+            UnitRepositoryInterface::class,
+            UnitRepository::class
         );
     }
 }
