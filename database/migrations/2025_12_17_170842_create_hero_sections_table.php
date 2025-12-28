@@ -13,19 +13,32 @@ return new class extends Migration
     {
         Schema::create('hero_sections', function (Blueprint $table) {
             $table->id();
-     $table->string('tenant_id');
+
+            // tenant_id as string and index (foreign key)
+            $table->string('tenant_id');
             $table->foreign('tenant_id')
                 ->references('id')
                 ->on('tenants')
                 ->onDelete('cascade');
-            $table->json('title');
-            $table->json('description')->nullable();
-            $table->json('content')->nullable();
+
+            $table->string('title');
+
+            $table->string('sub_title')->nullable();
+
+            $table->longText('content')->nullable();
+
+            $table->string('image', 200)->nullable();
+
             $table->boolean('is_active')->default(true);
             $table->timestamps();
             $table->softDeletes();
         });
     }
+
+
+
+   
+
 
     /**
      * Reverse the migrations.

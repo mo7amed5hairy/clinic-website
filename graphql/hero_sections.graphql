@@ -1,0 +1,36 @@
+type HeroSection {
+    id: ID!
+    title: String!
+    sub_title: String
+    content: String
+    image: String
+    is_active: Boolean!
+}
+
+extend type Query {
+    heroSections: [HeroSection!]! @field(resolver: "App\\Modules\\HeroSection\\GraphQL\\HeroSectionResolver@list")
+    heroSection(id: ID!): HeroSection @field(resolver: "App\\Modules\\HeroSection\\GraphQL\\HeroSectionResolver@show")
+}
+
+extend type Mutation {
+    createHeroSection(
+        title: String!
+        sub_title: String
+        content: String
+        image: Upload
+        is_active: Boolean
+    ): HeroSection @field(resolver: "App\\Modules\\HeroSection\\GraphQL\\HeroSectionResolver@create")
+
+    updateHeroSection(
+        id: ID!
+        title: String
+        sub_title: String
+        content: String
+        image: Upload
+        is_active: Boolean
+    ): HeroSection @field(resolver: "App\\Modules\\HeroSection\\GraphQL\\HeroSectionResolver@update")
+
+    deleteHeroSection(
+        id: ID!
+    ): Boolean @field(resolver: "App\\Modules\\HeroSection\\GraphQL\\HeroSectionResolver@destroy")
+}
