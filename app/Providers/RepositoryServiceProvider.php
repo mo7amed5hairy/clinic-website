@@ -21,6 +21,8 @@ use App\Modules\ClinicStatistic\Contracts\ClinicStatisticRepositoryInterface;
 use App\Modules\ClinicStatistic\Repositories\ClinicStatisticRepository;
 use App\Modules\Department\Contracts\DepartmentRepositoryInterface;
 use App\Modules\Department\Repositories\DepartmentRepository;
+use App\Modules\InsuranceCompany\Contracts\InsuranceCompanyRepositoryInterface;
+use App\Modules\InsuranceCompany\Repositories\InsuranceCompanyRepository;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
@@ -68,6 +70,10 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(
             DepartmentRepositoryInterface::class,
             DepartmentRepository::class
+        );
+        $this->app->bind(
+            InsuranceCompanyRepositoryInterface::class,
+            InsuranceCompanyRepository::class
         );
     }
 }

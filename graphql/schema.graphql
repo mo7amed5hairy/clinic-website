@@ -19,3 +19,4 @@ type Mutation
 #import clinic_schedule.graphql
 #import clinic_statistics.graphql
 #import department.graphql
+#import insurance_company.graphql
