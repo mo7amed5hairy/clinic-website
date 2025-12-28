@@ -21,6 +21,8 @@ use App\Modules\ClinicStatistic\Contracts\ClinicStatisticRepositoryInterface;
 use App\Modules\ClinicStatistic\Repositories\ClinicStatisticRepository;
 use App\Modules\CompanyPaymentPlan\Contracts\CompanyPaymentPlanRepositoryInterface;
 use App\Modules\CompanyPaymentPlan\Repositories\CompanyPaymentPlanRepository;
+use App\Modules\ContactMessage\Contracts\ContactMessageRepositoryInterface;
+use App\Modules\ContactMessage\Repositories\ContactMessageRepository;
 use App\Modules\Department\Contracts\DepartmentRepositoryInterface;
 use App\Modules\Department\Repositories\DepartmentRepository;
 use App\Modules\InsuranceCompany\Contracts\InsuranceCompanyRepositoryInterface;
@@ -80,6 +82,10 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(
             CompanyPaymentPlanRepositoryInterface::class,
             CompanyPaymentPlanRepository::class
+        );
+        $this->app->bind(
+            ContactMessageRepositoryInterface::class,
+            ContactMessageRepository::class
         );
     }
 }

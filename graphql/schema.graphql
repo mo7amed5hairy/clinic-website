@@ -21,3 +21,4 @@ type Mutation
 #import department.graphql
 #import insurance_company.graphql
 #import company_payment_plans.graphql
+#import contact_message.graphql
