@@ -1,0 +1,42 @@
+type MediaCenter {
+    id: ID!
+    tenant_id: String!
+    type: String!       # "image" أو "video"
+    path: JSON!         # مسارات الملفات
+    is_active: Boolean!
+}
+
+extend type Query {
+    # جلب كل الوسائط
+    mediaCenters: [MediaCenter!]!
+        @field(resolver: "App\\Modules\\MediaCenter\\GraphQL\\MediaCenterResolver@list")
+
+    # جلب وسائط واحدة
+    mediaCenter(id: ID!): MediaCenter
+        @field(resolver: "App\\Modules\\MediaCenter\\GraphQL\\MediaCenterResolver@show")
+}
+
+extend type Mutation {
+    # إنشاء وسائط
+    createMediaCenter(
+        type: String!
+        files: [Upload!]!
+        is_active: Boolean
+    ): MediaCenter
+        @field(resolver: "App\\Modules\\MediaCenter\\GraphQL\\MediaCenterResolver@create")
+
+    # تحديث وسائط
+    updateMediaCenter(
+        id: ID!
+        type: String
+        files: [Upload!]
+        is_active: Boolean
+    ): MediaCenter
+        @field(resolver: "App\\Modules\\MediaCenter\\GraphQL\\MediaCenterResolver@update")
+
+    # حذف وسائط
+    deleteMediaCenter(
+        id: ID!
+    ): Boolean
+        @field(resolver: "App\\Modules\\MediaCenter\\GraphQL\\MediaCenterResolver@destroy")
+}

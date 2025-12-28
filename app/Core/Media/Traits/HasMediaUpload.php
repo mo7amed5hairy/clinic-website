@@ -101,3 +101,10 @@ trait HasMediaUpload
         return $this->{$column};
     }
 }
+
+
+
+
+
+
+

@@ -29,6 +29,8 @@ use App\Modules\HeroSection\Contracts\HeroSectionRepositoryInterface;
 use App\Modules\HeroSection\Repositories\HeroSectionRepository;
 use App\Modules\InsuranceCompany\Contracts\InsuranceCompanyRepositoryInterface;
 use App\Modules\InsuranceCompany\Repositories\InsuranceCompanyRepository;
+use App\Modules\MediaCenter\Contracts\MediaCenterRepositoryInterface;
+use App\Modules\MediaCenter\Repositories\MediaCenterRepository;
 use App\Modules\Unit\Contracts\UnitRepositoryInterface;
 use App\Modules\Unit\Repositories\UnitRepository;
 
@@ -98,6 +100,10 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(
             HeroSectionRepositoryInterface::class,
             HeroSectionRepository::class
+        );
+        $this->app->bind(
+            MediaCenterRepositoryInterface::class,
+            MediaCenterRepository::class
         );
     }
 }

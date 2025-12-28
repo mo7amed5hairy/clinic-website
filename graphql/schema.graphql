@@ -24,3 +24,4 @@ type Mutation
 #import contact_message.graphql
 #import unit.graphql
 #import hero_sections.graphql
+#import mediacenter.graphql
