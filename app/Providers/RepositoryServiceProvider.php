@@ -17,6 +17,8 @@ use App\Modules\ClinicNews\Contracts\ClinicNewsRepositoryInterface;
 use App\Modules\ClinicNews\Repositories\ClinicNewsRepository;
 use App\Modules\ClinicSchedule\Contracts\ClinicScheduleRepositoryInterface;
 use App\Modules\ClinicSchedule\Repositories\ClinicScheduleRepository;
+use App\Modules\ClinicSection\Contracts\ClinicSectionRepositoryInterface;
+use App\Modules\ClinicSection\Repositories\ClinicSectionRepository;
 use App\Modules\ClinicStatistic\Contracts\ClinicStatisticRepositoryInterface;
 use App\Modules\ClinicStatistic\Repositories\ClinicStatisticRepository;
 use App\Modules\CompanyPaymentPlan\Contracts\CompanyPaymentPlanRepositoryInterface;
@@ -104,6 +106,10 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(
             MediaCenterRepositoryInterface::class,
             MediaCenterRepository::class
+        );
+        $this->app->bind(
+            ClinicSectionRepositoryInterface::class,
+            ClinicSectionRepository::class
         );
     }
 }

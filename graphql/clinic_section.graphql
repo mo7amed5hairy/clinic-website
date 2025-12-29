@@ -1,0 +1,47 @@
+type ClinicSectionItem {
+  id: ID!
+  title: JSON
+  description: JSON
+  value: String
+  order: Int
+  is_active: Boolean
+}
+
+type ClinicSection {
+  id: ID!
+  key: String!
+  title: JSON
+  is_active: Boolean
+  items: [ClinicSectionItem!]
+}
+
+extend type Query {
+  clinicSections: [ClinicSection!]!
+  showClinicSection(id: ID!): ClinicSection
+}
+
+extend type Mutation {
+  createClinicSection(
+    key: String!
+    title: JSON
+    is_active: Boolean
+    items: [ClinicSectionItemInput!]
+  ): ClinicSection
+
+  updateClinicSection(
+    id: ID!
+    title: JSON
+    is_active: Boolean
+    items: [ClinicSectionItemInput!]
+  ): ClinicSection
+
+  deleteClinicSection(id: ID!): Boolean
+}
+
+input ClinicSectionItemInput {
+  title: JSON
+  description: JSON
+  value: String
+  order: Int
+  is_active: Boolean
+}

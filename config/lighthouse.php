@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 
@@ -31,9 +33,9 @@ return [
          */
         'middleware' => [
 
-        'auth:sanctum',
-        InitializeTenancyByDomain::class, // أو middleware بتاعك
-        'set-locale',
+            'auth:sanctum',
+            InitializeTenancyByDomain::class, // أو middleware بتاعك
+            'set-locale',
             // Ensures the request is not vulnerable to cross-site request forgery.
             // Nuwave\Lighthouse\Http\Middleware\EnsureXHR::class,
 
@@ -46,6 +48,9 @@ return [
 
             // Logs every incoming GraphQL query.
             // Nuwave\Lighthouse\Http\Middleware\LogGraphQLQueries::class,
+        ],
+        'ui' => [
+            'enabled' => true,
         ],
 
         /*

@@ -25,3 +25,5 @@ type Mutation
 #import unit.graphql
 #import hero_sections.graphql
 #import mediacenter.graphql
+#import clinic_section.graphql
+#import appointment.graphql
