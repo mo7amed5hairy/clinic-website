@@ -1,4 +1,4 @@
-scalar JSON
+scalar JSON @scalar(class: "App\\GraphQL\\Scalars\\Json")
 scalar Upload
     @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Upload")
 
