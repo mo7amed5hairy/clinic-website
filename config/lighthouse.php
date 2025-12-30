@@ -211,18 +211,42 @@ return [
     |
     */
 
+    // 'namespaces' => [
+    //     'models' => ['App', 'App\\Models'],
+    //     'queries' => 'App\\GraphQL\\Queries',
+    //     'mutations' => 'App\\GraphQL\\Mutations',
+    //     'subscriptions' => 'App\\GraphQL\\Subscriptions',
+    //     'types' => 'App\\GraphQL\\Types',
+    //     'interfaces' => 'App\\GraphQL\\Interfaces',
+    //     'unions' => 'App\\GraphQL\\Unions',
+    //     'scalars' => 'App\\GraphQL\\Scalars',
+    //     'directives' => 'App\\GraphQL\\Directives',
+    //     'validators' => 'App\\GraphQL\\Validators',
+    // ],
+
+
     'namespaces' => [
         'models' => ['App', 'App\\Models'],
-        'queries' => 'App\\GraphQL\\Queries',
-        'mutations' => 'App\\GraphQL\\Mutations',
+
+        'queries' => [
+            'App\\GraphQL\\Queries',
+            'App\\Modules',
+        ],
+
+        'mutations' => [
+            'App\\GraphQL\\Mutations',
+            'App\\Modules',
+        ],
+
         'subscriptions' => 'App\\GraphQL\\Subscriptions',
-        'types' => 'App\\GraphQL\\Types',
-        'interfaces' => 'App\\GraphQL\\Interfaces',
-        'unions' => 'App\\GraphQL\\Unions',
-        'scalars' => 'App\\GraphQL\\Scalars',
-        'directives' => 'App\\GraphQL\\Directives',
-        'validators' => 'App\\GraphQL\\Validators',
+        'types'         => 'App\\GraphQL\\Types',
+        'interfaces'    => 'App\\GraphQL\\Interfaces',
+        'unions'        => 'App\\GraphQL\\Unions',
+        'scalars'       => 'App\\GraphQL\\Scalars',
+        'directives'    => 'App\\GraphQL\\Directives',
+        'validators'    => 'App\\GraphQL\\Validators',
     ],
+
 
     /*
     |--------------------------------------------------------------------------
