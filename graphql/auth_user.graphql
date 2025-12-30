@@ -13,7 +13,7 @@ input RegisterInput {
     password: String!
     password_confirmation: String!
 }
-
+  
 input LoginInput {
     email: String!
     password: String!
