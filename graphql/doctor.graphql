@@ -1,3 +1,4 @@
+@guard("auth:sanctum")
 type Doctor {
     id: ID!
     doctor_data: JSON!
@@ -13,7 +14,11 @@ extend type Query {
 }
 
 extend type Mutation {
-    createDoctor(doctor_data: JSON!, is_active: Boolean, image: Upload): Doctor
+    createDoctor(
+        doctor_data: JSON!
+        is_active: Boolean
+        image: Upload
+    ): Doctor
         @field(resolver: "App\\Modules\\Doctor\\GraphQL\\DoctorResolver@create")
 
     updateDoctor(
@@ -25,7 +30,5 @@ extend type Mutation {
         @field(resolver: "App\\Modules\\Doctor\\GraphQL\\DoctorResolver@update")
 
     deleteDoctor(id: ID!): Boolean
-        @field(
-            resolver: "App\\Modules\\Doctor\\GraphQL\\DoctorResolver@destroy"
-        )
+        @field(resolver: "App\\Modules\\Doctor\\GraphQL\\DoctorResolver@destroy")
 }
