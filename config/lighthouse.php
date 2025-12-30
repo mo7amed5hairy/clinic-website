@@ -33,7 +33,7 @@ return [
          */
         'middleware' => [
 
-            'auth:sanctum',
+            // 'auth:sanctum',
             InitializeTenancyByDomain::class, // أو middleware بتاعك
             'set-locale',
             // Ensures the request is not vulnerable to cross-site request forgery.

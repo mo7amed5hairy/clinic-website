@@ -1,0 +1,46 @@
+type User {
+    id: ID!
+    tenant_id: String! # لو حابب ترجع الـ tenant
+    name: String!
+    email: String!
+    phone: String
+    profile_image: String
+}
+
+input RegisterInput {
+    name: String!
+    email: String!
+    password: String!
+    password_confirmation: String!
+}
+
+input LoginInput {
+    email: String!
+    password: String!
+}
+
+type AuthPayload {
+    status: Boolean!
+    message: String!
+    user: User
+    token: String
+}
+
+type LogoutPayload {
+    status: Boolean!
+    message: String!
+}
+
+extend type Mutation {
+    register(input: RegisterInput!): AuthPayload
+        @field(resolver: "App\\Modules\\User\\GraphQL\\AuthResolver@register")
+    login(input: LoginInput!): AuthPayload
+        @field(resolver: "App\\Modules\\User\\GraphQL\\AuthResolver@login")
+    logout: LogoutPayload
+        @field(resolver: "App\\Modules\\User\\GraphQL\\AuthResolver@logout")
+}
+
+extend type Query {
+    me: AuthPayload
+        @field(resolver: "App\\Modules\\User\\GraphQL\\AuthResolver@me")
+}

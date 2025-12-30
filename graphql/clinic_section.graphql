@@ -1,47 +1,63 @@
 type ClinicSectionItem {
-  id: ID!
-  title: JSON
-  description: JSON
-  value: String
-  order: Int
-  is_active: Boolean
+    id: ID!
+    title: String
+    description: String
+    value: String
+    order: Int
+    is_active: Boolean
 }
 
 type ClinicSection {
-  id: ID!
-  key: String!
-  title: JSON
-  is_active: Boolean
-  items: [ClinicSectionItem!]
+    id: ID!
+    key: String!
+    title: String
+    is_active: Boolean
+    items: ClinicSectionItem
 }
 
 extend type Query {
-  clinicSections: [ClinicSection!]!
-  showClinicSection(id: ID!): ClinicSection
+    clinicSections: [ClinicSection!]!
+        @field(
+            resolver: "App\\Modules\\ClinicSection\\GraphQL\\ClinicSectionResolver@list"
+        )
+    showClinicSection(id: ID!): ClinicSection
+        @field(
+            resolver: "App\\Modules\\ClinicSection\\GraphQL\\ClinicSectionResolver@show"
+        )
 }
 
 extend type Mutation {
-  createClinicSection(
-    key: String!
-    title: JSON
-    is_active: Boolean
-    items: [ClinicSectionItemInput!]
-  ): ClinicSection
+    createClinicSection(
+        key: String!
+        title: String
+        is_active: Boolean
+        items: ClinicSectionItemInput
+    ): ClinicSection
+        @field(
+            resolver: "App\\Modules\\ClinicSection\\GraphQL\\ClinicSectionResolver@create"
+        )
 
-  updateClinicSection(
-    id: ID!
-    title: JSON
-    is_active: Boolean
-    items: [ClinicSectionItemInput!]
-  ): ClinicSection
+    updateClinicSection(
+        id: ID!
+        key: String
+        title: String
+        is_active: Boolean
+        items: ClinicSectionItemInput
+    ): ClinicSection
+        @field(
+            resolver: "App\\Modules\\ClinicSection\\GraphQL\\ClinicSectionResolver@update"
+        )
 
-  deleteClinicSection(id: ID!): Boolean
+    deleteClinicSection(id: ID!): Boolean
+        @field(
+            resolver: "App\\Modules\\ClinicSection\\GraphQL\\ClinicSectionResolver@delete"
+        )
 }
 
 input ClinicSectionItemInput {
-  title: JSON
-  description: JSON
-  value: String
-  order: Int
-  is_active: Boolean
+    title: String
+    description: String
+    value: String
+    order: Int
+    is_active: Boolean
 }

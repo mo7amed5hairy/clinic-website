@@ -35,6 +35,8 @@ use App\Modules\MediaCenter\Contracts\MediaCenterRepositoryInterface;
 use App\Modules\MediaCenter\Repositories\MediaCenterRepository;
 use App\Modules\Unit\Contracts\UnitRepositoryInterface;
 use App\Modules\Unit\Repositories\UnitRepository;
+use App\Modules\Appointment\Contracts\AppointmentRepositoryInterface;
+use App\Modules\Appointment\Repositories\AppointmentRepository;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
@@ -110,6 +112,10 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(
             ClinicSectionRepositoryInterface::class,
             ClinicSectionRepository::class
+        );
+        $this->app->bind(
+            AppointmentRepositoryInterface::class,
+            AppointmentRepository::class
         );
     }
 }

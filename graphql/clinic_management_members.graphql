@@ -10,11 +10,17 @@ type ClinicManagementMember {
 extend type Query {
     # جلب كل الأعضاء
     clinicManagementMembers: [ClinicManagementMember!]!
-        @field(resolver: "App\\Modules\\ClinicManagementMember\\GraphQL\\ClinicManagementMemberResolver@list")
+        @field(
+            resolver: "App\\Modules\\ClinicManagementMember\\GraphQL\\ClinicManagementMemberResolver@list"
+        )
+        @guard(with: ["sanctum"])
 
     # جلب عضو محدد
     clinicManagementMember(id: ID!): ClinicManagementMember
-        @field(resolver: "App\\Modules\\ClinicManagementMember\\GraphQL\\ClinicManagementMemberResolver@show")
+        @field(
+            resolver: "App\\Modules\\ClinicManagementMember\\GraphQL\\ClinicManagementMemberResolver@show"
+        )
+        @guard(with: ["sanctum"])
 }
 
 extend type Mutation {
@@ -26,7 +32,10 @@ extend type Mutation {
         is_active: Boolean
         photo: Upload
     ): ClinicManagementMember
-        @field(resolver: "App\\Modules\\ClinicManagementMember\\GraphQL\\ClinicManagementMemberResolver@create")
+        @field(
+            resolver: "App\\Modules\\ClinicManagementMember\\GraphQL\\ClinicManagementMemberResolver@create"
+        )
+        @guard(with: ["sanctum"])
 
     # تحديث عضو
     updateClinicManagementMember(
@@ -37,11 +46,15 @@ extend type Mutation {
         is_active: Boolean
         photo: Upload
     ): ClinicManagementMember
-        @field(resolver: "App\\Modules\\ClinicManagementMember\\GraphQL\\ClinicManagementMemberResolver@update")
+        @field(
+            resolver: "App\\Modules\\ClinicManagementMember\\GraphQL\\ClinicManagementMemberResolver@update"
+        )
+        @guard(with: ["sanctum"])
 
     # حذف عضو
-    deleteClinicManagementMember(
-        id: ID!
-    ): Boolean
-        @field(resolver: "App\\Modules\\ClinicManagementMember\\GraphQL\\ClinicManagementMemberResolver@destroy")
+    deleteClinicManagementMember(id: ID!): Boolean
+        @field(
+            resolver: "App\\Modules\\ClinicManagementMember\\GraphQL\\ClinicManagementMemberResolver@destroy"
+        )
+        @guard(with: ["sanctum"])
 }

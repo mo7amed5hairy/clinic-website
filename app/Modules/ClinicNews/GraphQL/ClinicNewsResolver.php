@@ -12,12 +12,14 @@ class ClinicNewsResolver
     public function __construct(protected ClinicNewsService $service) {}
 
     // جلب كل الأخبار
-    public function list($_, array $args) {
+    public function list($_, array $args)
+    {
         return $this->service->list();
     }
 
     // جلب خبر محدد
-    public function show($_, array $args) {
+    public function show($_, array $args)
+    {
         $news = $this->service->show($args['id']);
 
         if (!$news) {
@@ -30,8 +32,10 @@ class ClinicNewsResolver
     }
 
     // إنشاء خبر جديد
-    public function create($_, array $args) {
-        $validator = Validator::make($args, [
+    public function create($_, array $args)
+    {
+        \Illuminate\Support\Facades\Log::info('ClinicNews Create Args:', $args);
+        $validator = Validator::make($args['input'], [
             'title'       => ['required', 'array'],
             'description' => ['nullable', 'array'],
             'content'     => ['nullable', 'array'],
@@ -46,8 +50,8 @@ class ClinicNewsResolver
         $data = $validator->validated();
         $news = $this->service->store(array_merge($data, ['tenant_id' => tenant('id')]));
 
-        if (!empty($args['image'])) {
-            $news->uploadImage($args['image'], [
+        if (!empty($args['input']['image'])) {
+            $news->uploadImage($args['input']['image'], [
                 'folder' => 'clinic_news/images',
                 'column' => 'image',
             ]);
@@ -57,7 +61,8 @@ class ClinicNewsResolver
     }
 
     // تحديث خبر
-    public function update($_, array $args) {
+    public function update($_, array $args)
+    {
         $news = $this->service->show($args['id']);
 
         if (!$news) {
@@ -66,7 +71,7 @@ class ClinicNewsResolver
             ]);
         }
 
-        $validator = Validator::make($args, [
+        $validator = Validator::make($args['input'], [
             'title'       => ['sometimes', 'required', 'array'],
             'description' => ['sometimes', 'nullable', 'array'],
             'content'     => ['sometimes', 'nullable', 'array'],
@@ -91,8 +96,8 @@ class ClinicNewsResolver
             $this->service->update($news, $updateData);
         }
 
-        if (!empty($args['image'])) {
-            $news->replaceImage($args['image'], [
+        if (!empty($args['input']['image'])) {
+            $news->replaceImage($args['input']['image'], [
                 'folder' => 'clinic_news/images',
                 'column' => 'image',
             ]);
@@ -102,7 +107,8 @@ class ClinicNewsResolver
     }
 
     // حذف خبر
-    public function destroy($_, array $args) {
+    public function destroy($_, array $args)
+    {
         $news = $this->service->show($args['id']);
 
         if (!$news) {

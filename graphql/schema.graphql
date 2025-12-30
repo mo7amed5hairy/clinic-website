@@ -1,5 +1,6 @@
 scalar JSON
-scalar Upload @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Upload")
+scalar Upload
+    @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Upload")
 
 """
 Root Query
@@ -11,6 +12,12 @@ Root Mutation
 """
 type Mutation
 
+input LocalizedStringInput {
+    ar: String!
+    en: String!
+}
+
+#import auth_user.graphql
 #import doctor.graphql
 #import specification.graphql
 #import clinic.graphql

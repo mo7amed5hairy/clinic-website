@@ -7,8 +7,10 @@ type Unit {
 }
 
 extend type Query {
-    units: [Unit!]! @field(resolver: "App\\Modules\\Unit\\GraphQL\\UnitResolver@list")
-    unit(id: ID!): Unit @field(resolver: "App\\Modules\\Unit\\GraphQL\\UnitResolver@show")
+    units: [Unit!]!
+        @field(resolver: "App\\Modules\\Unit\\GraphQL\\UnitResolver@list")
+    unit(id: ID!): Unit
+        @field(resolver: "App\\Modules\\Unit\\GraphQL\\UnitResolver@show")
 }
 
 extend type Mutation {
@@ -27,5 +29,6 @@ extend type Mutation {
         is_active: Boolean
     ): Unit @field(resolver: "App\\Modules\\Unit\\GraphQL\\UnitResolver@update")
 
-    deleteUnit(id: ID!): Boolean @field(resolver: "App\\Modules\\Unit\\GraphQL\\UnitResolver@destroy")
+    deleteUnit(id: ID!): Boolean
+        @field(resolver: "App\\Modules\\Unit\\GraphQL\\UnitResolver@destroy")
 }

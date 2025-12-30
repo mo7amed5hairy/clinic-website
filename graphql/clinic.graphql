@@ -37,8 +37,8 @@ extend type Mutation {
         @field(resolver: "App\\Modules\\Clinic\\GraphQL\\ClinicResolver@update")
 
     # حذف عيادة
-    deleteClinic(
-        id: ID!
-    ): Boolean
-        @field(resolver: "App\\Modules\\Clinic\\GraphQL\\ClinicResolver@destroy")
+    deleteClinic(id: ID!): Boolean
+        @field(
+            resolver: "App\\Modules\\Clinic\\GraphQL\\ClinicResolver@destroy"
+        )
 }

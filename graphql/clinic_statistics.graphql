@@ -8,11 +8,15 @@ type ClinicStatistic {
 extend type Query {
     # جلب كل الإحصائيات
     clinicStatistics: [ClinicStatistic!]!
-        @field(resolver: "App\\Modules\\ClinicStatistic\\GraphQL\\ClinicStatisticResolver@list")
+        @field(
+            resolver: "App\\Modules\\ClinicStatistic\\GraphQL\\ClinicStatisticResolver@list"
+        )
 
     # جلب إحصائية محددة
     clinicStatistic(id: ID!): ClinicStatistic
-        @field(resolver: "App\\Modules\\ClinicStatistic\\GraphQL\\ClinicStatisticResolver@show")
+        @field(
+            resolver: "App\\Modules\\ClinicStatistic\\GraphQL\\ClinicStatisticResolver@show"
+        )
 }
 
 extend type Mutation {
@@ -22,7 +26,9 @@ extend type Mutation {
         statistic_value: String!
         is_active: Boolean
     ): ClinicStatistic
-        @field(resolver: "App\\Modules\\ClinicStatistic\\GraphQL\\ClinicStatisticResolver@create")
+        @field(
+            resolver: "App\\Modules\\ClinicStatistic\\GraphQL\\ClinicStatisticResolver@create"
+        )
 
     # تحديث إحصائية
     updateClinicStatistic(
@@ -31,11 +37,13 @@ extend type Mutation {
         statistic_value: String
         is_active: Boolean
     ): ClinicStatistic
-        @field(resolver: "App\\Modules\\ClinicStatistic\\GraphQL\\ClinicStatisticResolver@update")
+        @field(
+            resolver: "App\\Modules\\ClinicStatistic\\GraphQL\\ClinicStatisticResolver@update"
+        )
 
     # حذف إحصائية
-    deleteClinicStatistic(
-        id: ID!
-    ): Boolean
-        @field(resolver: "App\\Modules\\ClinicStatistic\\GraphQL\\ClinicStatisticResolver@destroy")
+    deleteClinicStatistic(id: ID!): Boolean
+        @field(
+            resolver: "App\\Modules\\ClinicStatistic\\GraphQL\\ClinicStatisticResolver@destroy"
+        )
 }

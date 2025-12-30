@@ -9,11 +9,15 @@ type InsuranceCompany {
 extend type Query {
     # جلب كل شركات التأمين
     insuranceCompanies: [InsuranceCompany!]!
-        @field(resolver: "App\\Modules\\InsuranceCompany\\GraphQL\\InsuranceCompanyResolver@list")
+        @field(
+            resolver: "App\\Modules\\InsuranceCompany\\GraphQL\\InsuranceCompanyResolver@list"
+        )
 
     # جلب شركة تأمين محددة
     insuranceCompany(id: ID!): InsuranceCompany
-        @field(resolver: "App\\Modules\\InsuranceCompany\\GraphQL\\InsuranceCompanyResolver@show")
+        @field(
+            resolver: "App\\Modules\\InsuranceCompany\\GraphQL\\InsuranceCompanyResolver@show"
+        )
 }
 
 extend type Mutation {
@@ -24,7 +28,9 @@ extend type Mutation {
         is_active: Boolean
         image: Upload
     ): InsuranceCompany
-        @field(resolver: "App\\Modules\\InsuranceCompany\\GraphQL\\InsuranceCompanyResolver@create")
+        @field(
+            resolver: "App\\Modules\\InsuranceCompany\\GraphQL\\InsuranceCompanyResolver@create"
+        )
 
     # تحديث شركة تأمين
     updateInsuranceCompany(
@@ -34,11 +40,13 @@ extend type Mutation {
         is_active: Boolean
         image: Upload
     ): InsuranceCompany
-        @field(resolver: "App\\Modules\\InsuranceCompany\\GraphQL\\InsuranceCompanyResolver@update")
+        @field(
+            resolver: "App\\Modules\\InsuranceCompany\\GraphQL\\InsuranceCompanyResolver@update"
+        )
 
     # حذف شركة تأمين
-    deleteInsuranceCompany(
-        id: ID!
-    ): Boolean
-        @field(resolver: "App\\Modules\\InsuranceCompany\\GraphQL\\InsuranceCompanyResolver@destroy")
+    deleteInsuranceCompany(id: ID!): Boolean
+        @field(
+            resolver: "App\\Modules\\InsuranceCompany\\GraphQL\\InsuranceCompanyResolver@destroy"
+        )
 }

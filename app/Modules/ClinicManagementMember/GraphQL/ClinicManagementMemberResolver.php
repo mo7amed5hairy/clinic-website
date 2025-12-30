@@ -37,6 +37,44 @@ class ClinicManagementMemberResolver
         return $member;
     }
 
+
+    public function create($_, array $args)
+    {
+        $validator = Validator::make(
+            $args,
+            [
+                'name'      => ['required', 'string', 'min:2', 'max:255'],
+                'position'  => ['nullable', 'string', 'max:255'],
+                'bio'       => ['nullable', 'string'],
+                'is_active' => ['boolean'],
+                'photo'     => ['nullable'],
+            ]
+        );
+
+        if ($validator->fails()) {
+            throw new UserError(collect($validator->errors()->all())->join("\n"));
+        }
+
+        $data = $validator->validated();
+
+        // ✅ إضافة tenant_id تلقائي
+        $data['tenant_id'] = tenant('id'); // tenant() دالة Stancl Tenancy بترجع التينانت الحالي
+
+        $member = $this->service->store($data);
+
+        if (!empty($args['photo'])) {
+            $member->replaceImage($args['photo'], [
+                'folder' => 'clinic_members/photos',
+                'column' => 'photo',
+            ]);
+        }
+
+        return $member;
+    }
+
+
+
+
     public function update($_, array $args)
     {
         $member = $this->service->show($args['id']);

@@ -8,8 +8,14 @@ type HeroSection {
 }
 
 extend type Query {
-    heroSections: [HeroSection!]! @field(resolver: "App\\Modules\\HeroSection\\GraphQL\\HeroSectionResolver@list")
-    heroSection(id: ID!): HeroSection @field(resolver: "App\\Modules\\HeroSection\\GraphQL\\HeroSectionResolver@show")
+    heroSections: [HeroSection!]!
+        @field(
+            resolver: "App\\Modules\\HeroSection\\GraphQL\\HeroSectionResolver@list"
+        )
+    heroSection(id: ID!): HeroSection
+        @field(
+            resolver: "App\\Modules\\HeroSection\\GraphQL\\HeroSectionResolver@show"
+        )
 }
 
 extend type Mutation {
@@ -19,7 +25,10 @@ extend type Mutation {
         content: String
         image: Upload
         is_active: Boolean
-    ): HeroSection @field(resolver: "App\\Modules\\HeroSection\\GraphQL\\HeroSectionResolver@create")
+    ): HeroSection
+        @field(
+            resolver: "App\\Modules\\HeroSection\\GraphQL\\HeroSectionResolver@create"
+        )
 
     updateHeroSection(
         id: ID!
@@ -28,9 +37,13 @@ extend type Mutation {
         content: String
         image: Upload
         is_active: Boolean
-    ): HeroSection @field(resolver: "App\\Modules\\HeroSection\\GraphQL\\HeroSectionResolver@update")
+    ): HeroSection
+        @field(
+            resolver: "App\\Modules\\HeroSection\\GraphQL\\HeroSectionResolver@update"
+        )
 
-    deleteHeroSection(
-        id: ID!
-    ): Boolean @field(resolver: "App\\Modules\\HeroSection\\GraphQL\\HeroSectionResolver@destroy")
+    deleteHeroSection(id: ID!): Boolean
+        @field(
+            resolver: "App\\Modules\\HeroSection\\GraphQL\\HeroSectionResolver@destroy"
+        )
 }
