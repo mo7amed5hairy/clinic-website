@@ -11,12 +11,12 @@ use GraphQL\Type\Definition\ResolveInfo;
 
 class AuthResolver
 {
-    protected AuthService $authService;
 
-    public function __construct(AuthService $authService)
-    {
-        $this->authService = $authService;
-    }
+
+    public function __construct(
+        protected AuthService $authService,
+        protected \App\Modules\User\Services\User\ResetPasswordService $resetPasswordService
+    ) {}
 
     /**
      * تسجيل مستخدم جديد
@@ -75,6 +75,9 @@ class AuthResolver
     /**
      * جلب بيانات المستخدم الحالي
      */
+    /**
+     * جلب بيانات المستخدم الحالي
+     */
     public function me($root, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         $user = Auth::user();
@@ -83,5 +86,22 @@ class AuthResolver
             'status' => true,
             'user' => new UserResource($user),
         ];
+    }
+
+    /**
+     * Forgot Password
+     */
+    public function forgotPassword($root, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
+    {
+        return $this->resetPasswordService->sendCode($args['email']);
+    }
+
+    /**
+     * Reset Password
+     */
+    public function resetPassword($root, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
+    {
+        $input = $args['input'];
+        return $this->resetPasswordService->reset($input['email'], $input['code'], $input['password']);
     }
 }

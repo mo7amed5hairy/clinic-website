@@ -9,7 +9,7 @@ type User {
 
 input RegisterInput {
     name: String!
-    email: String!
+    email: String! @rules(apply: ["email"])
     phone: String
     password: String!
     password_confirmation: String!
@@ -18,6 +18,13 @@ input RegisterInput {
 input LoginInput {
     email: String!
     password: String!
+}
+
+input ResetPasswordInput {
+    email: String! @rules(apply: ["email"])
+    code: String!
+    password: String! @rules(apply: ["confirmed", "min:6"])
+    password_confirmation: String!
 }
 
 type AuthPayload {
@@ -39,6 +46,16 @@ extend type Mutation {
         @field(resolver: "App\\Modules\\User\\GraphQL\\AuthResolver@login")
     logout: LogoutPayload
         @field(resolver: "App\\Modules\\User\\GraphQL\\AuthResolver@logout")
+
+    forgotPassword(email: String! @rules(apply: ["email"])): AuthPayload
+        @field(
+            resolver: "App\\Modules\\User\\GraphQL\\AuthResolver@forgotPassword"
+        )
+
+    resetPassword(input: ResetPasswordInput!): AuthPayload
+        @field(
+            resolver: "App\\Modules\\User\\GraphQL\\AuthResolver@resetPassword"
+        )
 }
 
 extend type Query {

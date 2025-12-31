@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use App\Modules\User\Repositories\User\Contracts\UserRepositoryInterface;
+use App\Modules\Clinic\Models\Clinic;
 
 class AuthService
 {
@@ -25,13 +26,20 @@ class AuthService
             ]);
         }
 
-        // 2️⃣ Create user
+        // 2️⃣ Create Clinic
+        $clinic = Clinic::create([
+            'tenant_id' => tenant('id'),
+            'name'      => $data['name'] . "'s Clinic",
+        ]);
+
+        // 3️⃣ Create user
         $user = $this->userRepository->create([
             'tenant_id'     => tenant('id'),
             'name'          => $data['name'],
             'email'         => $data['email'],
             'phone'         => $data['phone'] ?? null,
             'password'      => Hash::make($data['password']),
+            'clinic_id'     => $clinic->id,
         ]);
 
         // 3️⃣ Create Sanctum token
