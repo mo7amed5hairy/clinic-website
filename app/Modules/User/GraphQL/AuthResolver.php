@@ -55,7 +55,14 @@ class AuthResolver
      */
     public function logout($root, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        $user = Auth::user();
+        $user = Auth::guard('sanctum')->user(); // أو guard اللي انت عامل فيه login
+        if (!$user) {
+            return [
+                'status' => false,
+                'message' => __('auth.not_logged_in'),
+            ];
+        }
+
         $this->authService->logout($user);
 
         return [
@@ -63,6 +70,7 @@ class AuthResolver
             'message' => __('auth.logout_success'),
         ];
     }
+
 
     /**
      * جلب بيانات المستخدم الحالي
