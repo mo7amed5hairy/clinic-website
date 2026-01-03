@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\ClinicNews\GraphQL;
+namespace App\GraphQL\Resolvers;
 
 use GraphQL\Error\UserError;
 use App\Modules\ClinicNews\Services\ClinicNewsService;
@@ -121,3 +121,4 @@ class ClinicNewsResolver
         return true;
     }
 }
+

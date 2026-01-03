@@ -27,11 +27,11 @@ input AppointmentInput {
 extend type Query {
     appointments: [Appointment!]!
         @field(
-            resolver: "App\\Modules\\Appointment\\GraphQL\\AppointmentResolver@list"
+            resolver: "App\\GraphQL\\Resolvers\\AppointmentResolver@list"
         )
     appointment(id: ID!): Appointment
         @field(
-            resolver: "App\\Modules\\Appointment\\GraphQL\\AppointmentResolver@show"
+            resolver: "App\\GraphQL\\Resolvers\\AppointmentResolver@show"
         )
 }
 
@@ -39,16 +39,18 @@ extend type Query {
 extend type Mutation {
     createAppointment(input: AppointmentInput!): Appointment
         @field(
-            resolver: "App\\Modules\\Appointment\\GraphQL\\AppointmentResolver@create"
+            resolver: "App\\GraphQL\\Resolvers\\AppointmentResolver@create"
         )
 
     updateAppointment(id: ID!, input: AppointmentInput!): Appointment
         @field(
-            resolver: "App\\Modules\\Appointment\\GraphQL\\AppointmentResolver@update"
+            resolver: "App\\GraphQL\\Resolvers\\AppointmentResolver@update"
         )
 
     deleteAppointment(id: ID!): Boolean
         @field(
-            resolver: "App\\Modules\\Appointment\\GraphQL\\AppointmentResolver@delete"
+            resolver: "App\\GraphQL\\Resolvers\\AppointmentResolver@delete"
         )
 }
+
+

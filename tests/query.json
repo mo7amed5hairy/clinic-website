@@ -1,0 +1,3 @@
+{
+    "query": "mutation { forgotPassword(input: { identifier: \"admin@clinic.com\" }) { status message } }"
+}

@@ -32,16 +32,49 @@ type LogoutPayload {
     message: String!
 }
 
+input ForgotPasswordInput {
+    email: String! # بدل identifier
+}
+
+input VerifyOtpInput {
+    email: String! # بدل identifier
+    code: String!
+}
+
+input ResetPasswordInput {
+    token: String!
+    password: String!
+    password_confirmation: String!
+}
+
+input ResendOtpInput {
+    email: String! # بدل identifier
+}
+
+type VerificationPayload {
+    status: Boolean!
+    message: String!
+    token: String # Token for resetting password
+}
+
 extend type Mutation {
     register(input: RegisterInput!): AuthPayload
-        @field(resolver: "App\\Modules\\User\\GraphQL\\AuthResolver@register")
+        @field(resolver: "App\\GraphQL\\Resolvers\\AuthResolver@register")
     login(input: LoginInput!): AuthPayload
-        @field(resolver: "App\\Modules\\User\\GraphQL\\AuthResolver@login")
+        @field(resolver: "App\\GraphQL\\Resolvers\\AuthResolver@login")
     logout: LogoutPayload
-        @field(resolver: "App\\Modules\\User\\GraphQL\\AuthResolver@logout")
+        @field(resolver: "App\\GraphQL\\Resolvers\\AuthResolver@logout")
+
+    forgotPassword(input: ForgotPasswordInput!): VerificationPayload
+        @field(resolver: "App\\GraphQL\\Resolvers\\AuthResolver@forgotPassword")
+    verifyOtp(input: VerifyOtpInput!): VerificationPayload
+        @field(resolver: "App\\GraphQL\\Resolvers\\AuthResolver@verifyOtp")
+    resetPassword(input: ResetPasswordInput!): VerificationPayload
+        @field(resolver: "App\\GraphQL\\Resolvers\\AuthResolver@resetPassword")
+    resendOtp(input: ResendOtpInput!): VerificationPayload
+        @field(resolver: "App\\GraphQL\\Resolvers\\AuthResolver@resendOtp")
 }
 
 extend type Query {
-    me: AuthPayload
-        @field(resolver: "App\\Modules\\User\\GraphQL\\AuthResolver@me")
+    me: AuthPayload @field(resolver: "App\\GraphQL\\Resolvers\\AuthResolver@me")
 }

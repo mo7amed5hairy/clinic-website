@@ -74,4 +74,154 @@ class AuthService
     {
         $user->tokens()->delete();
     }
+
+    /**
+     * Forgot Password: Send OTP
+     */
+public function forgotPassword(string $email): array
+{
+    $user = $this->userRepository->findByEmail($email);
+
+    if (!$user) {
+        throw ValidationException::withMessages([
+            'email' => __('auth.user_not_found'),
+        ]);
+    }
+
+    // Generate 4-digit code
+    $code = str_pad(random_int(0, 9999), 4, '0', STR_PAD_LEFT);
+
+    \App\Models\VerificationCode::updateOrCreate(
+        ['email' => $email],
+        [
+            'code' => $code,
+            'expires_at' => now()->addMinutes(10),
+            'created_at' => now(),
+        ]
+    );
+
+    // إرسال الإيميل بالـ OTP أو تسجيله في اللوج
+    // \Log::info("OTP for {$email}: {$code}");
+
+    // 🎯 إرجاع رسالة للواجهة
+    return [
+        'status' => true,
+        'message' => [
+            'ar' => 'تم إرسال كود إلى بريدك الإلكتروني',
+            'en' => 'OTP sent to your email',
+        ],
+    ];
+}
+
+public function verifyOtp(string $email, string $code): array
+{
+    $record = \App\Models\VerificationCode::where('email', $email)->first();
+
+    if (!$record || !hash_equals($record->code, $code)) {
+        // بدل ValidationException، نرجع response عادي
+        return [
+            'status' => false,
+            'message' => [
+                'ar' => 'الكود غير صحيح أو منتهي الصلاحية',
+                'en' => 'Invalid or expired code.',
+            ],
+            'token' => null,
+        ];
+    }
+
+    if ($record->expires_at->isPast()) {
+        return [
+            'status' => false,
+            'message' => [
+                'ar' => 'الكود منتهي الصلاحية',
+                'en' => 'OTP has expired.',
+            ],
+            'token' => null,
+        ];
+    }
+
+    $user = $this->userRepository->findByEmail($email);
+
+    if (!$user) {
+        return [
+            'status' => false,
+            'message' => [
+                'ar' => 'المستخدم غير موجود',
+                'en' => 'User not found.',
+            ],
+            'token' => null,
+        ];
+    }
+
+    $token = $user->createToken('password-reset', ['access:password-reset'])->plainTextToken;
+
+    return [
+        'status' => true,
+        'message' => [
+            'ar' => 'تم التحقق من الكود بنجاح',
+            'en' => 'OTP verified successfully',
+        ],
+        'token' => $token,
+    ];
+}
+
+
+ public function resetPassword(array $input)
+    {
+        // 🔹 Validation
+        $validator = Validator::make($input, [
+            'password' => 'required|string|min:8|confirmed',
+            'token' => 'required|string',
+        ]);
+
+        if ($validator->fails()) {
+            throw ValidationException::create($validator->errors()->toArray());
+        }
+
+        // 🔹 البحث عن المستخدم بالـ token
+        $user = User::where('remember_token', $input['token'])->first();
+
+        if (!$user) {
+            return [
+                'status' => false,
+                'message' => 'Invalid or expired token',
+                'token' => null
+            ];
+        }
+
+        // 🔹 تحديث الباسورد
+        $user->password = Hash::make($input['password']);
+        $user->save();
+
+        // 🔹 حذف التوكن بعد نجاح إعادة التعيين
+        $user->tokens()->delete();
+
+        return [
+            'status' => true,
+            'message' => 'Password reset successfully',
+            'token' => null
+        ];
+    }
+
+
+
+
+
+
+    /**
+     * Resend OTP
+     */
+    public function resendOtp(string $email): void
+    {
+        // Logic similar to forgotPassword, but check time limit.
+        $record = \App\Models\VerificationCode::where('email', $email)->first();
+
+        if ($record && $record->created_at->diffInSeconds(now()) < 30) {
+             throw ValidationException::withMessages([
+                'code' => __('auth.throttle', ['seconds' => 30 - $record->created_at->diffInSeconds(now())]),
+            ]);
+        }
+
+        $this->forgotPassword($email);
+    }
 }

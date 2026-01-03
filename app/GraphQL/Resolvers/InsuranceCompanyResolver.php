@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\InsuranceCompany\GraphQL;
+namespace App\GraphQL\Resolvers;
 
 use GraphQL\Error\UserError;
 use App\Modules\InsuranceCompany\Services\InsuranceCompanyService;
@@ -154,3 +154,4 @@ class InsuranceCompanyResolver
         return true;
     }
 }
+

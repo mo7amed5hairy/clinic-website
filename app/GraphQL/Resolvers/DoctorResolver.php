@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\Doctor\GraphQL;
+namespace App\GraphQL\Resolvers;
 
 use GraphQL\Error\UserError;
 use Illuminate\Http\UploadedFile;
@@ -202,3 +202,4 @@ class DoctorResolver
         return true;
     }
 }
+

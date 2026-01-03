@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\ClinicSchedule\GraphQL;
+namespace App\GraphQL\Resolvers;
 
 use App\Modules\ClinicSchedule\Services\ClinicScheduleService;
 use GraphQL\Error\UserError;
@@ -87,3 +87,4 @@ class ClinicScheduleResolver
         return true;
     }
 }
+

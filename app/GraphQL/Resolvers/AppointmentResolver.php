@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\Appointment\GraphQL;
+namespace App\GraphQL\Resolvers;
 
 use GraphQL\Error\UserError;
 use App\Core\Helpers\GraphQLValidator;
@@ -57,3 +57,4 @@ class AppointmentResolver
         return $this->service->delete($args['id']);
     }
 }
+

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\Unit\GraphQL;
+namespace App\GraphQL\Resolvers;
 
 use App\Modules\Unit\Services\UnitService;
 use GraphQL\Error\UserError;
@@ -102,3 +102,4 @@ class UnitResolver
         return true;
     }
 }
+

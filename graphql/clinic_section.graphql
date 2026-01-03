@@ -18,11 +18,11 @@ type ClinicSection {
 extend type Query {
     clinicSections: [ClinicSection!]!
         @field(
-            resolver: "App\\Modules\\ClinicSection\\GraphQL\\ClinicSectionResolver@list"
+            resolver: "App\\GraphQL\\Resolvers\\ClinicSectionResolver@list"
         )
     showClinicSection(id: ID!): ClinicSection
         @field(
-            resolver: "App\\Modules\\ClinicSection\\GraphQL\\ClinicSectionResolver@show"
+            resolver: "App\\GraphQL\\Resolvers\\ClinicSectionResolver@show"
         )
 }
 
@@ -34,7 +34,7 @@ extend type Mutation {
         items: ClinicSectionItemInput
     ): ClinicSection
         @field(
-            resolver: "App\\Modules\\ClinicSection\\GraphQL\\ClinicSectionResolver@create"
+            resolver: "App\\GraphQL\\Resolvers\\ClinicSectionResolver@create"
         )
 
     updateClinicSection(
@@ -45,12 +45,12 @@ extend type Mutation {
         items: ClinicSectionItemInput
     ): ClinicSection
         @field(
-            resolver: "App\\Modules\\ClinicSection\\GraphQL\\ClinicSectionResolver@update"
+            resolver: "App\\GraphQL\\Resolvers\\ClinicSectionResolver@update"
         )
 
     deleteClinicSection(id: ID!): Boolean
         @field(
-            resolver: "App\\Modules\\ClinicSection\\GraphQL\\ClinicSectionResolver@delete"
+            resolver: "App\\GraphQL\\Resolvers\\ClinicSectionResolver@delete"
         )
 }
 
@@ -61,3 +61,5 @@ input ClinicSectionItemInput {
     order: Int
     is_active: Boolean
 }
+
+

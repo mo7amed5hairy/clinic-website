@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\HeroSection\GraphQL;
+namespace App\GraphQL\Resolvers;
 
 use GraphQL\Error\UserError;
 use App\Modules\HeroSection\Services\HeroSectionService;
@@ -110,3 +110,4 @@ class HeroSectionResolver
         return true;
     }
 }
+

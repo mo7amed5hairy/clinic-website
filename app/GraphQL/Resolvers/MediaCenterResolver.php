@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\MediaCenter\GraphQL;
+namespace App\GraphQL\Resolvers;
 
 use GraphQL\Error\UserError;
 use App\Modules\MediaCenter\Services\MediaCenterService;
@@ -79,3 +79,4 @@ class MediaCenterResolver
         return true;
     }
 }
+

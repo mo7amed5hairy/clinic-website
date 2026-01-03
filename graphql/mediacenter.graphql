@@ -10,13 +10,13 @@ extend type Query {
     # جلب كل الوسائط
     mediaCenters: [MediaCenter!]!
         @field(
-            resolver: "App\\Modules\\MediaCenter\\GraphQL\\MediaCenterResolver@list"
+            resolver: "App\\GraphQL\\Resolvers\\MediaCenterResolver@list"
         )
 
     # جلب وسائط واحدة
     mediaCenter(id: ID!): MediaCenter
         @field(
-            resolver: "App\\Modules\\MediaCenter\\GraphQL\\MediaCenterResolver@show"
+            resolver: "App\\GraphQL\\Resolvers\\MediaCenterResolver@show"
         )
 }
 
@@ -28,7 +28,7 @@ extend type Mutation {
         is_active: Boolean
     ): MediaCenter
         @field(
-            resolver: "App\\Modules\\MediaCenter\\GraphQL\\MediaCenterResolver@create"
+            resolver: "App\\GraphQL\\Resolvers\\MediaCenterResolver@create"
         )
 
     # تحديث وسائط
@@ -39,12 +39,14 @@ extend type Mutation {
         is_active: Boolean
     ): MediaCenter
         @field(
-            resolver: "App\\Modules\\MediaCenter\\GraphQL\\MediaCenterResolver@update"
+            resolver: "App\\GraphQL\\Resolvers\\MediaCenterResolver@update"
         )
 
     # حذف وسائط
     deleteMediaCenter(id: ID!): Boolean
         @field(
-            resolver: "App\\Modules\\MediaCenter\\GraphQL\\MediaCenterResolver@destroy"
+            resolver: "App\\GraphQL\\Resolvers\\MediaCenterResolver@destroy"
         )
 }
+
+

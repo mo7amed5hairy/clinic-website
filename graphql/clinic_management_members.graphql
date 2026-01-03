@@ -11,14 +11,14 @@ extend type Query {
     # جلب كل الأعضاء
     clinicManagementMembers: [ClinicManagementMember!]!
         @field(
-            resolver: "App\\Modules\\ClinicManagementMember\\GraphQL\\ClinicManagementMemberResolver@list"
+            resolver: "App\\GraphQL\\Resolvers\\ClinicManagementMemberResolver@list"
         )
         @guard(with: ["sanctum"])
 
     # جلب عضو محدد
     clinicManagementMember(id: ID!): ClinicManagementMember
         @field(
-            resolver: "App\\Modules\\ClinicManagementMember\\GraphQL\\ClinicManagementMemberResolver@show"
+            resolver: "App\\GraphQL\\Resolvers\\ClinicManagementMemberResolver@show"
         )
         @guard(with: ["sanctum"])
 }
@@ -33,7 +33,7 @@ extend type Mutation {
         photo: Upload
     ): ClinicManagementMember
         @field(
-            resolver: "App\\Modules\\ClinicManagementMember\\GraphQL\\ClinicManagementMemberResolver@create"
+            resolver: "App\\GraphQL\\Resolvers\\ClinicManagementMemberResolver@create"
         )
         @guard(with: ["sanctum"])
 
@@ -47,14 +47,16 @@ extend type Mutation {
         photo: Upload
     ): ClinicManagementMember
         @field(
-            resolver: "App\\Modules\\ClinicManagementMember\\GraphQL\\ClinicManagementMemberResolver@update"
+            resolver: "App\\GraphQL\\Resolvers\\ClinicManagementMemberResolver@update"
         )
         @guard(with: ["sanctum"])
 
     # حذف عضو
     deleteClinicManagementMember(id: ID!): Boolean
         @field(
-            resolver: "App\\Modules\\ClinicManagementMember\\GraphQL\\ClinicManagementMemberResolver@destroy"
+            resolver: "App\\GraphQL\\Resolvers\\ClinicManagementMemberResolver@destroy"
         )
         @guard(with: ["sanctum"])
 }
+
+

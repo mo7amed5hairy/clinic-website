@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\Clinic\GraphQL;
+namespace App\GraphQL\Resolvers;
 
 use GraphQL\Error\UserError;
 use App\Modules\Clinic\Services\ClinicService;
@@ -192,3 +192,4 @@ class ClinicResolver
         return true;
     }
 }
+

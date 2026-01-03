@@ -10,13 +10,13 @@ extend type Query {
     # جلب كل شركات التأمين
     insuranceCompanies: [InsuranceCompany!]!
         @field(
-            resolver: "App\\Modules\\InsuranceCompany\\GraphQL\\InsuranceCompanyResolver@list"
+            resolver: "App\\GraphQL\\Resolvers\\InsuranceCompanyResolver@list"
         )
 
     # جلب شركة تأمين محددة
     insuranceCompany(id: ID!): InsuranceCompany
         @field(
-            resolver: "App\\Modules\\InsuranceCompany\\GraphQL\\InsuranceCompanyResolver@show"
+            resolver: "App\\GraphQL\\Resolvers\\InsuranceCompanyResolver@show"
         )
 }
 
@@ -29,7 +29,7 @@ extend type Mutation {
         image: Upload
     ): InsuranceCompany
         @field(
-            resolver: "App\\Modules\\InsuranceCompany\\GraphQL\\InsuranceCompanyResolver@create"
+            resolver: "App\\GraphQL\\Resolvers\\InsuranceCompanyResolver@create"
         )
 
     # تحديث شركة تأمين
@@ -41,12 +41,14 @@ extend type Mutation {
         image: Upload
     ): InsuranceCompany
         @field(
-            resolver: "App\\Modules\\InsuranceCompany\\GraphQL\\InsuranceCompanyResolver@update"
+            resolver: "App\\GraphQL\\Resolvers\\InsuranceCompanyResolver@update"
         )
 
     # حذف شركة تأمين
     deleteInsuranceCompany(id: ID!): Boolean
         @field(
-            resolver: "App\\Modules\\InsuranceCompany\\GraphQL\\InsuranceCompanyResolver@destroy"
+            resolver: "App\\GraphQL\\Resolvers\\InsuranceCompanyResolver@destroy"
         )
 }
+
+

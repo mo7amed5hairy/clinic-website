@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\ClinicSection\GraphQL;
+namespace App\GraphQL\Resolvers;
 
 use GraphQL\Error\UserError;
 use App\Modules\ClinicSection\Services\ClinicSectionService;
@@ -63,3 +63,4 @@ class ClinicSectionResolver
         return $this->service->delete($id);
     }
 }
+

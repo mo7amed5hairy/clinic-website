@@ -34,3 +34,5 @@ input LocalizedStringInput {
 #import mediacenter.graphql
 #import clinic_section.graphql
 #import appointment.graphql
+
+

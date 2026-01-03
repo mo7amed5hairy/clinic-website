@@ -19,13 +19,13 @@ extend type Query {
     # جلب كل الأخبار
     clinicNews: [ClinicNews!]!
         @field(
-            resolver: "App\\Modules\\ClinicNews\\GraphQL\\ClinicNewsResolver@list"
+            resolver: "App\\GraphQL\\Resolvers\\ClinicNewsResolver@list"
         )
 
     # جلب خبر محدد
     clinicNew(id: ID!): ClinicNews
         @field(
-            resolver: "App\\Modules\\ClinicNews\\GraphQL\\ClinicNewsResolver@show"
+            resolver: "App\\GraphQL\\Resolvers\\ClinicNewsResolver@show"
         )
 }
 
@@ -33,18 +33,20 @@ extend type Mutation {
     # إنشاء خبر
     createClinicNews(input: ClinicNewsInput!): ClinicNews
         @field(
-            resolver: "App\\Modules\\ClinicNews\\GraphQL\\ClinicNewsResolver@create"
+            resolver: "App\\GraphQL\\Resolvers\\ClinicNewsResolver@create"
         )
 
     # تحديث خبر
     updateClinicNews(id: ID!, input: ClinicNewsInput!): ClinicNews
         @field(
-            resolver: "App\\Modules\\ClinicNews\\GraphQL\\ClinicNewsResolver@update"
+            resolver: "App\\GraphQL\\Resolvers\\ClinicNewsResolver@update"
         )
 
     # حذف خبر
     deleteClinicNews(id: ID!): Boolean
         @field(
-            resolver: "App\\Modules\\ClinicNews\\GraphQL\\ClinicNewsResolver@destroy"
+            resolver: "App\\GraphQL\\Resolvers\\ClinicNewsResolver@destroy"
         )
 }
+
+

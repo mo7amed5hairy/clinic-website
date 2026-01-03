@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\CompanyPaymentPlan\GraphQL;
+namespace App\GraphQL\Resolvers;
 
 use GraphQL\Error\UserError;
 use Illuminate\Support\Facades\Validator;
@@ -87,3 +87,4 @@ class CompanyPaymentPlanResolver
         return true;
     }
 }
+

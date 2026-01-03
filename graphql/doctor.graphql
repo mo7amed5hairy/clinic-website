@@ -6,15 +6,15 @@ type Doctor {
 
 extend type Query {
     doctors: [Doctor!]!
-        @field(resolver: "App\\Modules\\Doctor\\GraphQL\\DoctorResolver@list")
+        @field(resolver: "App\\GraphQL\\Resolvers\\DoctorResolver@list")
 
     doctor(id: ID!): Doctor
-        @field(resolver: "App\\Modules\\Doctor\\GraphQL\\DoctorResolver@show")
+        @field(resolver: "App\\GraphQL\\Resolvers\\DoctorResolver@show")
 }
 
 extend type Mutation {
     createDoctor(doctor_data: JSON!, is_active: Boolean, image: Upload): Doctor
-        @field(resolver: "App\\Modules\\Doctor\\GraphQL\\DoctorResolver@create")
+        @field(resolver: "App\\GraphQL\\Resolvers\\DoctorResolver@create")
 
     updateDoctor(
         id: ID!
@@ -22,10 +22,12 @@ extend type Mutation {
         is_active: Boolean
         image: Upload
     ): Doctor
-        @field(resolver: "App\\Modules\\Doctor\\GraphQL\\DoctorResolver@update")
+        @field(resolver: "App\\GraphQL\\Resolvers\\DoctorResolver@update")
 
     deleteDoctor(id: ID!): Boolean
         @field(
-            resolver: "App\\Modules\\Doctor\\GraphQL\\DoctorResolver@destroy"
+            resolver: "App\\GraphQL\\Resolvers\\DoctorResolver@destroy"
         )
 }
+
+

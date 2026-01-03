@@ -8,13 +8,13 @@ extend type Query {
     # جلب كل الـ Specifications
     specifications: [Specification!]!
         @field(
-            resolver: "App\\Modules\\Specification\\GraphQL\\SpecificationResolver@list"
+            resolver: "App\\GraphQL\\Resolvers\\SpecificationResolver@list"
         )
 
     # جلب Specification محدد
     specification(id: ID!): Specification
         @field(
-            resolver: "App\\Modules\\Specification\\GraphQL\\SpecificationResolver@show"
+            resolver: "App\\GraphQL\\Resolvers\\SpecificationResolver@show"
         )
 }
 
@@ -22,7 +22,7 @@ extend type Mutation {
     # إنشاء Specification
     createSpecification(name: String!, description: String): Specification
         @field(
-            resolver: "App\\Modules\\Specification\\GraphQL\\SpecificationResolver@create"
+            resolver: "App\\GraphQL\\Resolvers\\SpecificationResolver@create"
         )
 
     # تحديث Specification
@@ -32,12 +32,14 @@ extend type Mutation {
         description: String
     ): Specification
         @field(
-            resolver: "App\\Modules\\Specification\\GraphQL\\SpecificationResolver@update"
+            resolver: "App\\GraphQL\\Resolvers\\SpecificationResolver@update"
         )
 
     # حذف Specification
     deleteSpecification(id: ID!): Boolean
         @field(
-            resolver: "App\\Modules\\Specification\\GraphQL\\SpecificationResolver@destroy"
+            resolver: "App\\GraphQL\\Resolvers\\SpecificationResolver@destroy"
         )
 }
+
+

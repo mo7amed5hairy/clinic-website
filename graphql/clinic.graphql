@@ -9,11 +9,11 @@ type Clinic {
 extend type Query {
     # جلب كل العيادات
     clinics: [Clinic!]!
-        @field(resolver: "App\\Modules\\Clinic\\GraphQL\\ClinicResolver@list")
+        @field(resolver: "App\\GraphQL\\Resolvers\\ClinicResolver@list")
 
     # جلب عيادة محددة
     clinic(id: ID!): Clinic
-        @field(resolver: "App\\Modules\\Clinic\\GraphQL\\ClinicResolver@show")
+        @field(resolver: "App\\GraphQL\\Resolvers\\ClinicResolver@show")
 }
 
 extend type Mutation {
@@ -24,7 +24,7 @@ extend type Mutation {
         is_active: Boolean
         logo: Upload
     ): Clinic
-        @field(resolver: "App\\Modules\\Clinic\\GraphQL\\ClinicResolver@create")
+        @field(resolver: "App\\GraphQL\\Resolvers\\ClinicResolver@create")
 
     # تحديث عيادة
     updateClinic(
@@ -34,11 +34,13 @@ extend type Mutation {
         is_active: Boolean
         logo: Upload
     ): Clinic
-        @field(resolver: "App\\Modules\\Clinic\\GraphQL\\ClinicResolver@update")
+        @field(resolver: "App\\GraphQL\\Resolvers\\ClinicResolver@update")
 
     # حذف عيادة
     deleteClinic(id: ID!): Boolean
         @field(
-            resolver: "App\\Modules\\Clinic\\GraphQL\\ClinicResolver@destroy"
+            resolver: "App\\GraphQL\\Resolvers\\ClinicResolver@destroy"
         )
 }
+
+

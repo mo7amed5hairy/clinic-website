@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\Department\GraphQL;
+namespace App\GraphQL\Resolvers;
 
 use GraphQL\Error\UserError;
 use App\Modules\Department\Services\DepartmentService;
@@ -107,3 +107,4 @@ class DepartmentResolver
         return $this->service->destroy($department);
     }
 }
+

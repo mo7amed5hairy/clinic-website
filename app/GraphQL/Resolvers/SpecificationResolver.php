@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\Specification\GraphQL;
+namespace App\GraphQL\Resolvers;
 
 use GraphQL\Error\UserError;
 use App\Modules\Specification\Models\Specification;
@@ -150,3 +150,4 @@ class SpecificationResolver
         return true;
     }
 }
+

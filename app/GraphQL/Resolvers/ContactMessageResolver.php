@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\ContactMessage\GraphQL;
+namespace App\GraphQL\Resolvers;
 
 use GraphQL\Error\UserError;
 use App\Modules\ContactMessage\Services\ContactMessageService;
@@ -87,3 +87,4 @@ class ContactMessageResolver
         return $this->service->destroy($message);
     }
 }
+

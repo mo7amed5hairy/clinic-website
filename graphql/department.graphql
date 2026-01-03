@@ -9,12 +9,12 @@ type Department {
 extend type Query {
     departments: [Department!]!
         @field(
-            resolver: "App\\Modules\\Department\\GraphQL\\DepartmentResolver@list"
+            resolver: "App\\GraphQL\\Resolvers\\DepartmentResolver@list"
         )
 
     department(id: ID!): Department
         @field(
-            resolver: "App\\Modules\\Department\\GraphQL\\DepartmentResolver@show"
+            resolver: "App\\GraphQL\\Resolvers\\DepartmentResolver@show"
         )
 }
 
@@ -25,7 +25,7 @@ extend type Mutation {
         is_active: Boolean
     ): Department
         @field(
-            resolver: "App\\Modules\\Department\\GraphQL\\DepartmentResolver@create"
+            resolver: "App\\GraphQL\\Resolvers\\DepartmentResolver@create"
         )
 
     updateDepartment(
@@ -35,11 +35,13 @@ extend type Mutation {
         is_active: Boolean
     ): Department
         @field(
-            resolver: "App\\Modules\\Department\\GraphQL\\DepartmentResolver@update"
+            resolver: "App\\GraphQL\\Resolvers\\DepartmentResolver@update"
         )
 
     deleteDepartment(id: ID!): Boolean
         @field(
-            resolver: "App\\Modules\\Department\\GraphQL\\DepartmentResolver@destroy"
+            resolver: "App\\GraphQL\\Resolvers\\DepartmentResolver@destroy"
         )
 }
+
+

@@ -7,12 +7,12 @@ type CompanyPaymentPlan {
 extend type Query {
     companyPaymentPlans: [CompanyPaymentPlan!]!
         @field(
-            resolver: "App\\Modules\\CompanyPaymentPlan\\GraphQL\\CompanyPaymentPlanResolver@list"
+            resolver: "App\\GraphQL\\Resolvers\\CompanyPaymentPlanResolver@list"
         )
 
     companyPaymentPlan(id: ID!): CompanyPaymentPlan
         @field(
-            resolver: "App\\Modules\\CompanyPaymentPlan\\GraphQL\\CompanyPaymentPlanResolver@show"
+            resolver: "App\\GraphQL\\Resolvers\\CompanyPaymentPlanResolver@show"
         )
 }
 
@@ -22,7 +22,7 @@ extend type Mutation {
         is_active: Boolean
     ): CompanyPaymentPlan
         @field(
-            resolver: "App\\Modules\\CompanyPaymentPlan\\GraphQL\\CompanyPaymentPlanResolver@create"
+            resolver: "App\\GraphQL\\Resolvers\\CompanyPaymentPlanResolver@create"
         )
 
     updateCompanyPaymentPlan(
@@ -31,11 +31,13 @@ extend type Mutation {
         is_active: Boolean
     ): CompanyPaymentPlan
         @field(
-            resolver: "App\\Modules\\CompanyPaymentPlan\\GraphQL\\CompanyPaymentPlanResolver@update"
+            resolver: "App\\GraphQL\\Resolvers\\CompanyPaymentPlanResolver@update"
         )
 
     deleteCompanyPaymentPlan(id: ID!): Boolean
         @field(
-            resolver: "App\\Modules\\CompanyPaymentPlan\\GraphQL\\CompanyPaymentPlanResolver@destroy"
+            resolver: "App\\GraphQL\\Resolvers\\CompanyPaymentPlanResolver@destroy"
         )
 }
+
+

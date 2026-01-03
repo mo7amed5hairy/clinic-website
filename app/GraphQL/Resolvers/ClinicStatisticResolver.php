@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\ClinicStatistic\GraphQL;
+namespace App\GraphQL\Resolvers;
 
 use GraphQL\Error\UserError;
 use App\Modules\ClinicStatistic\Services\ClinicStatisticService;
@@ -84,5 +84,6 @@ class ClinicStatisticResolver
         return true;
     }
 }
+
 
 
