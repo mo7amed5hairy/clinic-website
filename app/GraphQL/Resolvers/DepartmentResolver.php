@@ -39,7 +39,6 @@ class DepartmentResolver
             [
                 'doctor_id' => ['required', 'exists:doctors,id'],
                 'name'      => ['required', 'string', 'max:255'],
-                'is_active' => ['nullable', 'boolean'],
             ],
             [
                 'doctor_id.required' => __('department.validation.doctor_id_required'),
@@ -76,7 +75,6 @@ class DepartmentResolver
             [
                 'doctor_id' => ['sometimes', 'required', 'exists:doctors,id'],
                 'name'      => ['sometimes', 'required', 'string', 'max:255'],
-                'is_active' => ['sometimes', 'boolean'],
             ],
             [
                 'doctor_id.required' => __('department.validation.doctor_id_required'),

@@ -11,7 +11,6 @@ class UpdateMediaCenterRequest extends FormRequest
         return [
             'type'      => 'sometimes|in:image,video',
             'files'     => 'sometimes|array',
-            'is_active' => 'sometimes|boolean',
         ];
     }
 

@@ -1,0 +1,121 @@
+# Modules: WhyUs, AboutUs, Mission, Vision, SocialMedia, ContactInfo
+
+type WhyUs {
+    id: ID!
+    clinic_id: ID!
+    items: JSON
+}
+
+type AboutUs {
+    id: ID!
+    clinic_id: ID!
+    title: String
+    description: String
+}
+
+type Mission {
+    id: ID!
+    clinic_id: ID!
+    mission: String
+    image: String
+}
+
+type Vision {
+    id: ID!
+    clinic_id: ID!
+    vision: String
+}
+
+type SocialMedia {
+    id: ID!
+    clinic_id: ID!
+    facebook: String
+    instagram: String
+    twitter: String
+    youtube: String
+    linkedin: String
+    whatsapp: String
+}
+
+type ContactInfo {
+    id: ID!
+    clinic_id: ID!
+    address: String
+    email: String
+    phone: String
+    phone2: String
+    phone3: String
+    phone4: String
+}
+
+extend type Query {
+    whyUs: WhyUs @field(resolver: "App\\GraphQL\\Resolvers\\WhyUsResolver@show")
+    aboutUs: AboutUs
+        @field(resolver: "App\\GraphQL\\Resolvers\\AboutUsResolver@show")
+    mission: Mission
+        @field(resolver: "App\\GraphQL\\Resolvers\\MissionResolver@show")
+    vision: Vision
+        @field(resolver: "App\\GraphQL\\Resolvers\\VisionResolver@show")
+    socialMedia: SocialMedia
+        @field(resolver: "App\\GraphQL\\Resolvers\\SocialMediaResolver@show")
+    contactInfo: ContactInfo
+        @field(resolver: "App\\GraphQL\\Resolvers\\ContactInfoResolver@show")
+}
+
+extend type Mutation {
+    createOrUpdateWhyUs(items: JSON!): WhyUs
+        @field(
+            resolver: "App\\GraphQL\\Resolvers\\WhyUsResolver@createOrUpdate"
+        )
+    deleteWhyUs: Boolean
+        @field(resolver: "App\\GraphQL\\Resolvers\\WhyUsResolver@destroy")
+
+    createOrUpdateAboutUs(title: String!, description: String!): AboutUs
+        @field(
+            resolver: "App\\GraphQL\\Resolvers\\AboutUsResolver@createOrUpdate"
+        )
+    deleteAboutUs: Boolean
+        @field(resolver: "App\\GraphQL\\Resolvers\\AboutUsResolver@destroy")
+
+    createOrUpdateMission(mission: String!, image: Upload): Mission
+        @field(
+            resolver: "App\\GraphQL\\Resolvers\\MissionResolver@createOrUpdate"
+        )
+    deleteMission: Boolean
+        @field(resolver: "App\\GraphQL\\Resolvers\\MissionResolver@destroy")
+
+    createOrUpdateVision(vision: String!): Vision
+        @field(
+            resolver: "App\\GraphQL\\Resolvers\\VisionResolver@createOrUpdate"
+        )
+    deleteVision: Boolean
+        @field(resolver: "App\\GraphQL\\Resolvers\\VisionResolver@destroy")
+
+    createOrUpdateSocialMedia(
+        facebook: String
+        instagram: String
+        twitter: String
+        youtube: String
+        linkedin: String
+        whatsapp: String
+    ): SocialMedia
+        @field(
+            resolver: "App\\GraphQL\\Resolvers\\SocialMediaResolver@createOrUpdate"
+        )
+    deleteSocialMedia: Boolean
+        @field(resolver: "App\\GraphQL\\Resolvers\\SocialMediaResolver@destroy")
+
+    createOrUpdateContactInfo(
+        address: String
+        email: String
+        phone: String
+        phone2: String
+        phone3: String
+        phone4: String
+    ): ContactInfo
+        @field(
+            resolver: "App\\GraphQL\\Resolvers\\ContactInfoResolver@createOrUpdate"
+        )
+    deleteContactInfo: Boolean
+        @field(resolver: "App\\GraphQL\\Resolvers\\ContactInfoResolver@destroy")
+}

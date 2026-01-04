@@ -15,7 +15,6 @@ class UpdateDoctorRequest extends FormRequest
     {
         return [
             'doctor_data' => ['sometimes', 'array'],
-            'is_active' => ['sometimes', 'boolean'],
         ];
     }
 }

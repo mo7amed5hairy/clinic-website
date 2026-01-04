@@ -18,7 +18,6 @@ class StoreDoctorRequest extends FormRequest
             'doctor_data.name' => ['required', 'array'],
             'doctor_data.name.ar' => ['required', 'string'],
             'doctor_data.name.en' => ['required', 'string'],
-            'is_active' => ['sometimes', 'boolean'],
         ];
     }
 }

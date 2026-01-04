@@ -35,7 +35,6 @@ class CompanyPaymentPlanResolver
     {
         $validator = Validator::make($args, [
             'insurance_company_id' => ['required', 'exists:insurance_companies,id'],
-            'is_active'            => ['nullable', 'boolean'],
         ], [
             'insurance_company_id.required' => __('company_payment_plan.validation.insurance_company_required'),
             'insurance_company_id.exists'   => __('company_payment_plan.validation.insurance_company_exists'),
@@ -63,7 +62,6 @@ class CompanyPaymentPlanResolver
 
         $validator = Validator::make($args, [
             'insurance_company_id' => ['sometimes', 'required', 'exists:insurance_companies,id'],
-            'is_active'            => ['sometimes', 'boolean'],
         ]);
 
         if ($validator->fails()) {

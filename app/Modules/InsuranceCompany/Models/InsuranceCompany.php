@@ -18,10 +18,8 @@ class InsuranceCompany extends Model
         'name',
         'link',
         'image',
-        'is_active',
     ];
 
     protected $casts = [
-        'is_active' => 'boolean',
     ];
 }

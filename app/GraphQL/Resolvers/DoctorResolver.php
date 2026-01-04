@@ -18,157 +18,54 @@ class DoctorResolver
     /**
      * جلب كل الدكاترة
      */
-    public function list($_, array $args)
-    {
-        return $this->service->list();
-    }
-
-    /**
-     * جلب دكتور محدد
-     */
     public function show($_, array $args)
     {
-        $doctor = $this->service->show($args['id']);
-
-        if (!$doctor) {
-            $validator = Validator::make([], []);
-            $validator->errors()->add(
-                'id',
-                __('doctor.messages.not_found')
-            );
-
-            throw new ValidationException($validator);
+        $user = auth()->guard('sanctum')->user();
+        if (!$user || !$user->clinic_id) {
+             throw new UserError(__('doctor.messages.no_clinic'));
         }
-
-        return $doctor;
+        return $this->service->getByClinicId($user->clinic_id);
     }
 
 
     /**
      * إنشاء دكتور
      */
-    public function create($_, array $args)
+    public function createOrUpdate($_, array $args)
     {
-        $validator = Validator::make(
-            $args,
-            [
-                'doctor_data.name'           => ['required', 'string', 'min:2'],
-                'doctor_data.specialization' => ['required', 'string'],
-                'doctor_data.experience'     => ['required', 'string'],
-                'image'                      => ['nullable', 'image', 'max:10240'],
-            ],
-            [
-                'doctor_data.name.required' =>
-                __('doctor.validation.name_required', [
-                    'attribute' => __('doctor.fields.name'),
-                ]),
-
-                'doctor_data.specialization.required' =>
-                __('doctor.validation.specialization_required', [
-                    'attribute' => __('doctor.fields.specialization'),
-                ]),
-
-                'doctor_data.experience.required' =>
-                __('doctor.validation.experience_required', [
-                    'attribute' => __('doctor.fields.experience'),
-                ]),
-            ]
-        );
-
-
-
-        if ($validator->fails()) {
-            throw new UserError(
-                collect($validator->errors()->all())->join("\n")
-            );
+        $user = auth()->guard('sanctum')->user();
+        if (!$user || !$user->clinic_id) {
+             throw new UserError(__('doctor.messages.no_clinic'));
         }
 
-        $data = $validator->validated();
-
-        $doctor = $this->service->store([
-            'tenant_id'   => tenant('id'),
-            'doctor_data' => $data['doctor_data'],
-            'is_active'   => $data['is_active'] ?? true,
+        $validator = Validator::make($args, [
+            'name'           => ['required', 'string', 'min:2'],
+            'specialization' => ['required', 'string'],
+            'experience'     => ['required', 'string'],
+            'image'          => ['nullable'],
+            'departments'    => ['nullable', 'array'],
+            'departments.*.name' => ['required', 'string'],
+            'departments.*.content' => ['nullable', 'string'],
         ]);
 
-        if (!empty($data['image']) && $data['image'] instanceof UploadedFile) {
-            $doctor->replaceImage($data['image'], [
-                'folder' => 'doctors/images',
-                'column' => 'doctor_data->image',
-            ]);
-            $doctor->refresh();
-        }
-
-        return $doctor;
-    }
-
-    /**
-     * تحديث دكتور
-     */
-    public function update($_, array $args)
-    {
-        /** @var Doctor $doctor */
-        $doctor = $this->service->show($args['id']);
-
-
-        $validator = Validator::make(
-            $args,
-            [
-                'doctor_data' => ['nullable', 'array'],
-
-                'doctor_data.name'           => ['sometimes', 'required', 'string', 'min:2'],
-                'doctor_data.specialization' => ['sometimes', 'required', 'string', 'min:2'],
-                'doctor_data.experience'     => ['sometimes', 'required', 'string', 'min:1'],
-
-                'is_active' => ['nullable', 'boolean'],
-                'image'     => ['nullable', 'file', 'image', 'max:10240'],
-            ],
-            [
-                'doctor_data.name.required' =>
-                __('doctor.validation.name_required', [
-                    'attribute' => __('doctor.fields.name'),
-                ]),
-
-                'doctor_data.specialization.required' =>
-                __('doctor.validation.specialization_required', [
-                    'attribute' => __('doctor.fields.specialization'),
-                ]),
-
-                'doctor_data.experience.required' =>
-                __('doctor.validation.experience_required', [
-                    'attribute' => __('doctor.fields.experience'),
-                ]),
-            ]
-        );
-
-
-
         if ($validator->fails()) {
-            throw new UserError(
-                collect($validator->errors()->all())->join("\n")
-            );
+            throw new UserError(collect($validator->errors()->all())->join("\n"));
         }
 
         $data = $validator->validated();
-
-        $updateData = [];
-
-        if (array_key_exists('doctor_data', $data)) {
-            $updateData['doctor_data'] = $data['doctor_data'];
+        $data['tenant_id'] = tenant('id');
+        
+        // Pass ID if exists in args (for update)
+        if (isset($args['id'])) {
+            $data['id'] = $args['id'];
         }
 
-        if (array_key_exists('is_active', $data)) {
-            $updateData['is_active'] = $data['is_active'];
-        }
+        $doctor = $this->service->createOrUpdate($user->clinic_id, $data);
 
-        if (!empty($updateData)) {
-            $this->service->update($doctor, $updateData);
-        }
-
-        if (!empty($data['image']) && $data['image'] instanceof UploadedFile) {
-            $doctor->replaceImage($data['image'], [
+        if (!empty($args['image'])) {
+            $doctor->replaceImage($args['image'], [
                 'folder' => 'doctors/images',
-                'column' => 'doctor_data->image',
+                'column' => 'image',
             ]);
             $doctor->refresh();
         }
@@ -183,22 +80,18 @@ class DoctorResolver
 
     public function destroy($_, array $args)
     {
-        $doctor = $this->service->show($args['id']);
+        $user = auth()->guard('sanctum')->user();
+        if (!$user || !$user->clinic_id) {
+             throw new UserError(__('doctor.messages.no_clinic'));
+        }
 
-        if (!$doctor) {
-            $validator = Validator::make(
-                ['id' => $args['id']],
-                ['id' => ['required']],
-                [
-                    'id.required' => __('doctor.messages.not_found'),
-                ]
-            );
+        $doctor = $this->service->show($args['id']); 
 
-            throw new ValidationException($validator);
+        if (!$doctor || $doctor->clinic_id != $user->clinic_id) {
+            throw new UserError(__('doctor.messages.not_found'));
         }
 
         $this->service->destroy($doctor);
-
         return true;
     }
 }

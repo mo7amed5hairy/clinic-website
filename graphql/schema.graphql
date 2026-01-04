@@ -27,12 +27,16 @@ input LocalizedStringInput {
 #import clinic_statistics.graphql
 #import department.graphql
 #import insurance_company.graphql
-#import company_payment_plans.graphql
 #import contact_message.graphql
 #import unit.graphql
 #import hero_sections.graphql
 #import mediacenter.graphql
-#import clinic_section.graphql
 #import appointment.graphql
-
-
+#import why_us.graphql
+#import about_us.graphql
+#import mission.graphql
+#import vision.graphql
+#import social_media.graphql
+#import contact_info.graphql
+#import clinic_articles.graphql
+#import installment_methods.graphql

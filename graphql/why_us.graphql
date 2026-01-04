@@ -1,0 +1,18 @@
+type WhyUs {
+    id: ID!
+    clinic_id: ID!
+    items: JSON
+}
+
+extend type Query {
+    whyUs: WhyUs @field(resolver: "App\\GraphQL\\Resolvers\\WhyUsResolver@show")
+}
+
+extend type Mutation {
+    createOrUpdateWhyUs(items: JSON!): WhyUs
+        @field(
+            resolver: "App\\GraphQL\\Resolvers\\WhyUsResolver@createOrUpdate"
+        )
+    deleteWhyUs: Boolean
+        @field(resolver: "App\\GraphQL\\Resolvers\\WhyUsResolver@destroy")
+}

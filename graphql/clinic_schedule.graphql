@@ -1,46 +1,27 @@
 type ClinicSchedule {
     id: ID!
-    date_from: String!
-    date_to: String!
-    time_from: String!
-    time_to: String!
-    is_active: Boolean!
+    clinic_id: ID!
+    date_from: String
+    date_to: String
+    time_from: String
+    time_to: String
 }
 
 extend type Query {
     clinicSchedules: [ClinicSchedule!]!
-        @field(
-            resolver: "App\\GraphQL\\Resolvers\\ClinicScheduleResolver@list"
-        )
-
-    clinicSchedule(id: ID!): ClinicSchedule
-        @field(
-            resolver: "App\\GraphQL\\Resolvers\\ClinicScheduleResolver@show"
-        )
+        @field(resolver: "App\\GraphQL\\Resolvers\\ClinicScheduleResolver@show")
 }
 
 extend type Mutation {
-    createClinicSchedule(
-        date_from: String!
-        date_to: String!
-        time_from: String!
-        time_to: String!
-        is_active: Boolean
-    ): ClinicSchedule
-        @field(
-            resolver: "App\\GraphQL\\Resolvers\\ClinicScheduleResolver@create"
-        )
-
-    updateClinicSchedule(
-        id: ID!
+    createOrUpdateClinicSchedule(
+        id: ID
         date_from: String
         date_to: String
         time_from: String
         time_to: String
-        is_active: Boolean
     ): ClinicSchedule
         @field(
-            resolver: "App\\GraphQL\\Resolvers\\ClinicScheduleResolver@update"
+            resolver: "App\\GraphQL\\Resolvers\\ClinicScheduleResolver@createOrUpdate"
         )
 
     deleteClinicSchedule(id: ID!): Boolean
@@ -48,5 +29,3 @@ extend type Mutation {
             resolver: "App\\GraphQL\\Resolvers\\ClinicScheduleResolver@destroy"
         )
 }
-
-

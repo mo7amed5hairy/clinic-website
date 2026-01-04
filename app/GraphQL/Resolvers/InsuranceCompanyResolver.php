@@ -47,7 +47,6 @@ class InsuranceCompanyResolver
             [
                 'name'      => ['required', 'string', 'max:255'],
                 'link'      => ['nullable', 'url'],
-                'is_active' => ['nullable', 'boolean'],
                 'image'     => ['nullable'],
             ],
             [
@@ -98,7 +97,6 @@ class InsuranceCompanyResolver
             [
                 'name'      => ['sometimes', 'required', 'string', 'max:255'],
                 'link'      => ['sometimes', 'nullable', 'url'],
-                'is_active' => ['sometimes', 'boolean'],
                 'image'     => ['sometimes', 'nullable'],
             ],
             [
@@ -116,7 +114,7 @@ class InsuranceCompanyResolver
         $data = $validator->validated();
         $updateData = [];
 
-        foreach (['name', 'link', 'is_active'] as $field) {
+        foreach (['name', 'link'] as $field) {
             if (array_key_exists($field, $data)) {
                 $updateData[$field] = $data[$field];
             }

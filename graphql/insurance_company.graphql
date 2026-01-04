@@ -3,7 +3,6 @@ type InsuranceCompany {
     name: String!
     link: String
     image: String
-    is_active: Boolean!
 }
 
 extend type Query {
@@ -25,7 +24,6 @@ extend type Mutation {
     createInsuranceCompany(
         name: String!
         link: String
-        is_active: Boolean
         image: Upload
     ): InsuranceCompany
         @field(
@@ -37,7 +35,6 @@ extend type Mutation {
         id: ID!
         name: String
         link: String
-        is_active: Boolean
         image: Upload
     ): InsuranceCompany
         @field(
@@ -50,5 +47,3 @@ extend type Mutation {
             resolver: "App\\GraphQL\\Resolvers\\InsuranceCompanyResolver@destroy"
         )
 }
-
-

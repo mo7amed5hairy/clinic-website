@@ -17,8 +17,6 @@ use App\Modules\ClinicNews\Contracts\ClinicNewsRepositoryInterface;
 use App\Modules\ClinicNews\Repositories\ClinicNewsRepository;
 use App\Modules\ClinicSchedule\Contracts\ClinicScheduleRepositoryInterface;
 use App\Modules\ClinicSchedule\Repositories\ClinicScheduleRepository;
-use App\Modules\ClinicSection\Contracts\ClinicSectionRepositoryInterface;
-use App\Modules\ClinicSection\Repositories\ClinicSectionRepository;
 use App\Modules\ClinicStatistic\Contracts\ClinicStatisticRepositoryInterface;
 use App\Modules\ClinicStatistic\Repositories\ClinicStatisticRepository;
 use App\Modules\CompanyPaymentPlan\Contracts\CompanyPaymentPlanRepositoryInterface;
@@ -37,6 +35,22 @@ use App\Modules\Unit\Contracts\UnitRepositoryInterface;
 use App\Modules\Unit\Repositories\UnitRepository;
 use App\Modules\Appointment\Contracts\AppointmentRepositoryInterface;
 use App\Modules\Appointment\Repositories\AppointmentRepository;
+use App\Modules\AboutUs\Contracts\AboutUsRepositoryInterface;
+use App\Modules\AboutUs\Repositories\AboutUsRepository;
+use App\Modules\ClinicArticle\Contracts\ClinicArticleRepositoryInterface;
+use App\Modules\ClinicArticle\Repositories\ClinicArticleRepository;
+use App\Modules\ContactInfo\Contracts\ContactInfoRepositoryInterface;
+use App\Modules\ContactInfo\Repositories\ContactInfoRepository;
+use App\Modules\InstallmentMethod\Contracts\InstallmentMethodRepositoryInterface;
+use App\Modules\InstallmentMethod\Repositories\InstallmentMethodRepository;
+use App\Modules\Mission\Contracts\MissionRepositoryInterface;
+use App\Modules\Mission\Repositories\MissionRepository;
+use App\Modules\SocialMedia\Contracts\SocialMediaRepositoryInterface;
+use App\Modules\SocialMedia\Repositories\SocialMediaRepository;
+use App\Modules\Vision\Contracts\VisionRepositoryInterface;
+use App\Modules\Vision\Repositories\VisionRepository;
+use App\Modules\WhyUs\Contracts\WhyUsRepositoryInterface;
+use App\Modules\WhyUs\Repositories\WhyUsRepository;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
@@ -110,12 +124,40 @@ class RepositoryServiceProvider extends ServiceProvider
             MediaCenterRepository::class
         );
         $this->app->bind(
-            ClinicSectionRepositoryInterface::class,
-            ClinicSectionRepository::class
-        );
-        $this->app->bind(
             AppointmentRepositoryInterface::class,
             AppointmentRepository::class
+        );
+        $this->app->bind(
+            AboutUsRepositoryInterface::class,
+            AboutUsRepository::class
+        );
+        $this->app->bind(
+            ClinicArticleRepositoryInterface::class,
+            ClinicArticleRepository::class
+        );
+        $this->app->bind(
+            ContactInfoRepositoryInterface::class,
+            ContactInfoRepository::class
+        );
+        $this->app->bind(
+            InstallmentMethodRepositoryInterface::class,
+            InstallmentMethodRepository::class
+        );
+        $this->app->bind(
+            MissionRepositoryInterface::class,
+            MissionRepository::class
+        );
+        $this->app->bind(
+            SocialMediaRepositoryInterface::class,
+            SocialMediaRepository::class
+        );
+        $this->app->bind(
+            VisionRepositoryInterface::class,
+            VisionRepository::class
+        );
+        $this->app->bind(
+            WhyUsRepositoryInterface::class,
+            WhyUsRepository::class
         );
     }
 }

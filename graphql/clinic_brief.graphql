@@ -1,0 +1,20 @@
+type ClinicBrief {
+    id: ID!
+    clinic_id: ID!
+    brief: String!
+    image: String
+}
+
+extend type Query {
+    clinicBrief: ClinicBrief
+        @field(resolver: "App\\GraphQL\\Resolvers\\ClinicBriefResolver@show")
+}
+
+extend type Mutation {
+    createOrUpdateClinicBrief(brief: String!, image: Upload): ClinicBrief
+        @field(
+            resolver: "App\\GraphQL\\Resolvers\\ClinicBriefResolver@createOrUpdate"
+        )
+    deleteClinicBrief: Boolean
+        @field(resolver: "App\\GraphQL\\Resolvers\\ClinicBriefResolver@destroy")
+}

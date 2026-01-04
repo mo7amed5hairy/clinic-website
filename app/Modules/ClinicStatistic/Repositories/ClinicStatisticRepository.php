@@ -7,12 +7,12 @@ use App\Modules\ClinicStatistic\Models\ClinicStatistic;
 
 class ClinicStatisticRepository implements ClinicStatisticRepositoryInterface
 {
-    public function all()
+    public function findByClinicId(int $clinicId): ?ClinicStatistic
     {
-        return ClinicStatistic::all();
+        return ClinicStatistic::where('clinic_id', $clinicId)->first();
     }
 
-    public function find($id): ?ClinicStatistic
+    public function find(int $id): ?ClinicStatistic
     {
         return ClinicStatistic::find($id);
     }
@@ -22,14 +22,14 @@ class ClinicStatisticRepository implements ClinicStatisticRepositoryInterface
         return ClinicStatistic::create($data);
     }
 
-    public function update(ClinicStatistic $statistic, array $data): ClinicStatistic
+    public function update(ClinicStatistic $stat, array $data): ClinicStatistic
     {
-        $statistic->update($data);
-        return $statistic;
+        $stat->update($data);
+        return $stat;
     }
 
-    public function delete(ClinicStatistic $statistic): bool
+    public function delete(ClinicStatistic $stat): bool
     {
-        return $statistic->delete();
+        return $stat->delete();
     }
 }

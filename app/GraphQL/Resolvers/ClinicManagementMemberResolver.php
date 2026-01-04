@@ -46,7 +46,6 @@ class ClinicManagementMemberResolver
                 'name'      => ['required', 'string', 'min:2', 'max:255'],
                 'position'  => ['nullable', 'string', 'max:255'],
                 'bio'       => ['nullable', 'string'],
-                'is_active' => ['boolean'],
                 'photo'     => ['nullable'],
             ]
         );
@@ -91,7 +90,6 @@ class ClinicManagementMemberResolver
                 'name'      => ['sometimes', 'required', 'string', 'min:2', 'max:255'],
                 'position'  => ['sometimes', 'nullable', 'string', 'max:255'],
                 'bio'       => ['sometimes', 'nullable', 'string'],
-                'is_active' => ['sometimes', 'boolean'],
                 'photo'     => ['sometimes', 'nullable'],
             ],
             [
@@ -109,7 +107,7 @@ class ClinicManagementMemberResolver
         $data = $validator->validated();
         $updateData = [];
 
-        foreach (['name', 'position', 'bio', 'is_active'] as $field) {
+        foreach (['name', 'position', 'bio'] as $field) {
             if (array_key_exists($field, $data)) {
                 $updateData[$field] = $data[$field];
             }

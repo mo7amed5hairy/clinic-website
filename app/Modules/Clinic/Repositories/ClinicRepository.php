@@ -8,9 +8,11 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class ClinicRepository implements ClinicRepositoryInterface
 {
-    public function paginate(int $perPage = 15): LengthAwarePaginator
+
+
+    public function create(array $data): Clinic
     {
-        return Clinic::query()->paginate($perPage);
+        return Clinic::create($data);
     }
 
     public function find(int $id): ?Clinic
@@ -18,10 +20,7 @@ class ClinicRepository implements ClinicRepositoryInterface
         return Clinic::find($id);
     }
 
-    public function create(array $data): Clinic
-    {
-        return Clinic::create($data);
-    }
+
 
     public function update(Clinic $clinic, array $data): Clinic
     {

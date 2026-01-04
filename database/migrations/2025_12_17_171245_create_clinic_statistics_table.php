@@ -20,7 +20,6 @@ return new class extends Migration
                 ->onDelete('cascade');
             $table->string('statistics_name');
             $table->string('statistic_value');
-            $table->boolean('is_active')->default(true);
             $table->timestamps();
             $table->softDeletes();
         });

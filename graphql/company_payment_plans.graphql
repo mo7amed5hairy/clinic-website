@@ -1,7 +1,6 @@
 type CompanyPaymentPlan {
     id: ID!
     insurance_company_id: ID!
-    is_active: Boolean!
 }
 
 extend type Query {
@@ -17,10 +16,7 @@ extend type Query {
 }
 
 extend type Mutation {
-    createCompanyPaymentPlan(
-        insurance_company_id: ID!
-        is_active: Boolean
-    ): CompanyPaymentPlan
+    createCompanyPaymentPlan(insurance_company_id: ID!): CompanyPaymentPlan
         @field(
             resolver: "App\\GraphQL\\Resolvers\\CompanyPaymentPlanResolver@create"
         )
@@ -28,7 +24,6 @@ extend type Mutation {
     updateCompanyPaymentPlan(
         id: ID!
         insurance_company_id: ID
-        is_active: Boolean
     ): CompanyPaymentPlan
         @field(
             resolver: "App\\GraphQL\\Resolvers\\CompanyPaymentPlanResolver@update"
@@ -39,5 +34,3 @@ extend type Mutation {
             resolver: "App\\GraphQL\\Resolvers\\CompanyPaymentPlanResolver@destroy"
         )
 }
-
-

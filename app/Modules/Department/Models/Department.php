@@ -14,7 +14,6 @@ class Department extends Model
         'doctor_id',
         'tenant_id',
         'name',
-        'is_active',
     ];
 
        // العلاقة مع الدكتور

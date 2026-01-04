@@ -11,20 +11,14 @@ class ClinicService
         protected ClinicRepositoryInterface $repository
     ) {}
 
-    public function list(int $perPage = 15)
-    {
-        return $this->repository->paginate($perPage);
-    }
+
 
     public function show(int $id): ?Clinic
     {
         return $this->repository->find($id);
     }
 
-    public function store(array $data): Clinic
-    {
-        return $this->repository->create($data);
-    }
+
 
     public function update(Clinic $clinic, array $data): Clinic
     {

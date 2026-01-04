@@ -18,8 +18,11 @@ return new class extends Migration
                 ->references('id')
                 ->on('tenants')
                 ->onDelete('cascade');
-            $table->json('doctor_data'); // name, specialization, experience, profile_image
-            $table->boolean('is_active')->default(true);
+            $table->foreignId('clinic_id')->constrained('clinics')->cascadeOnDelete();
+            $table->string('name');
+            $table->string('specialization');
+            $table->text('experience');
+            $table->string('image')->nullable();
             $table->timestamps();
             $table->softDeletes();
 

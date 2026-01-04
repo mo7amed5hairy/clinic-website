@@ -17,7 +17,6 @@ class UpdateClinicStatisticRequest extends FormRequest
         return [
             'statistics_name' => ['sometimes', 'required', 'string', 'max:255'],
             'statistic_value' => ['sometimes', 'required', 'string', 'max:255'],
-            'is_active'       => ['sometimes', 'boolean'],
         ];
     }
 }

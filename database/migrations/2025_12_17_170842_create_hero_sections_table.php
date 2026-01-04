@@ -29,7 +29,7 @@ return new class extends Migration
 
             $table->string('image', 200)->nullable();
 
-            $table->boolean('is_active')->default(true);
+
             $table->timestamps();
             $table->softDeletes();
         });

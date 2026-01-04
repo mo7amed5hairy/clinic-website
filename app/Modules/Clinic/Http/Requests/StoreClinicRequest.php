@@ -17,7 +17,6 @@ class StoreClinicRequest extends FormRequest
             'name'      => ['required', 'string', 'max:255'],
             'color'     => ['nullable', 'string', 'max:255'],
             'logo'      => ['nullable', 'image', 'mimes:png,jpg,jpeg,webp', 'max:2048'],
-            'is_active' => ['nullable', 'boolean'],
         ];
     }
 }

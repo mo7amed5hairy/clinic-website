@@ -2,89 +2,66 @@
 
 namespace App\GraphQL\Resolvers;
 
-use App\Modules\ClinicSchedule\Services\ClinicScheduleService;
 use GraphQL\Error\UserError;
+use App\Modules\ClinicSchedule\Services\ClinicScheduleService;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\ValidationException;
 
 class ClinicScheduleResolver
 {
     public function __construct(protected ClinicScheduleService $service) {}
 
-    // جلب كل الاسكديولز
-    public function list($_, array $args) {
-        return $this->service->list();
-    }
-
-    // جلب اسكديول واحد
-    public function show($_, array $args) {
-        $schedule = $this->service->show($args['id']);
-        if (!$schedule) {
-            throw ValidationException::withMessages([
-                'id' => [__('clinic_schedule.messages.not_found')]
-            ]);
+    public function show($_, array $args)
+    {
+        $user = auth()->guard('sanctum')->user();
+        if (!$user || !$user->clinic_id) {
+             throw new UserError(__('ClinicSchedule.messages.no_clinic'));
         }
-        return $schedule;
+        return $this->service->getByClinicId($user->clinic_id);
     }
 
-    // إنشاء اسكديول جديد
-    public function create($_, array $args) {
-        $validator = Validator::make($args, [
-            'date_from' => ['required', 'date'],
-            'date_to'   => ['required', 'date'],
-            'time_from' => ['required', 'date_format:H:i'],
-            'time_to'   => ['required', 'date_format:H:i'],
-            'is_active' => ['nullable', 'boolean'],
-        ]);
-
-        if ($validator->fails()) {
-            throw new UserError(collect($validator->errors()->all())->join("\n"));
-        }
-
-        $data = $validator->validated();
-        $schedule = $this->service->store(array_merge($data, ['tenant_id' => tenant('id')]));
-
-        return $schedule->refresh();
-    }
-
-    // تحديث اسكديول موجود
-    public function update($_, array $args) {
-        $schedule = $this->service->show($args['id']);
-        if (!$schedule) {
-            throw ValidationException::withMessages([
-                'id' => [__('clinic_schedule.messages.not_found')]
-            ]);
+    public function createOrUpdate($_, array $args)
+    {
+        $user = auth()->guard('sanctum')->user();
+        if (!$user || !$user->clinic_id) {
+             throw new UserError(__('ClinicSchedule.messages.no_clinic'));
         }
 
         $validator = Validator::make($args, [
-            'date_from' => ['sometimes', 'required', 'date'],
-            'date_to'   => ['sometimes', 'required', 'date'],
-            'time_from' => ['sometimes', 'required', 'date_format:H:i'],
-            'time_to'   => ['sometimes', 'required', 'date_format:H:i'],
-            'is_active' => ['sometimes', 'boolean'],
+            'date_from' => ['nullable', 'date'],
+            'date_to'   => ['nullable', 'date'],
+            'time_from' => ['nullable'],
+            'time_to'   => ['nullable'],
         ]);
 
         if ($validator->fails()) {
-            throw new UserError(collect($validator->errors()->all())->join("\n"));
+             throw new UserError(collect($validator->errors()->all())->join("\n"));
         }
 
         $data = $validator->validated();
-        $this->service->update($schedule, $data);
+        $data['tenant_id'] = tenant('id');
+        
+        if (isset($args['id'])) {
+            $data['id'] = $args['id'];
+        }
 
-        return $schedule->refresh();
+        return $this->service->createOrUpdate($user->clinic_id, $data);
     }
 
-    // حذف اسكديول
-    public function destroy($_, array $args) {
+    public function destroy($_, array $args)
+    {
+        $user = auth()->guard('sanctum')->user();
+        if (!$user || !$user->clinic_id) {
+             throw new UserError(__('ClinicSchedule.messages.no_clinic'));
+        }
+
         $schedule = $this->service->show($args['id']);
-        if (!$schedule) {
-            throw ValidationException::withMessages([
-                'id' => [__('clinic_schedule.messages.not_found')]
-            ]);
+        
+        if (!$schedule || $schedule->clinic_id != $user->clinic_id) {
+            throw new UserError('Not Found');
         }
 
         $this->service->destroy($schedule);
+
         return true;
     }
 }
-

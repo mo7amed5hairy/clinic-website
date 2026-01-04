@@ -10,7 +10,7 @@ type User {
 input RegisterInput {
     name: String!
     email: String!
-    phone: String
+    phone: String!
     password: String!
     password_confirmation: String!
 }

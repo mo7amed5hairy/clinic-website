@@ -15,10 +15,10 @@ class HeroSection extends Model
 
     protected $fillable = [
         'tenant_id',
+        'clinic_id',
         'title',
         'sub_title',
         'content',
         'image',
-        'is_active',
     ];
 }

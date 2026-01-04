@@ -7,16 +7,13 @@ use App\Modules\ClinicSchedule\Models\ClinicSchedule;
 
 class ClinicScheduleService
 {
-    protected $repository;
+    public function __construct(
+        protected ClinicScheduleRepositoryInterface $repository
+    ) {}
 
-    public function __construct(ClinicScheduleRepositoryInterface $repository)
+    public function getByClinicId(int $clinicId)
     {
-        $this->repository = $repository;
-    }
-
-    public function list()
-    {
-        return $this->repository->all();
+        return $this->repository->getByClinicId($clinicId);
     }
 
     public function show(int $id): ?ClinicSchedule
@@ -24,14 +21,17 @@ class ClinicScheduleService
         return $this->repository->find($id);
     }
 
-    public function store(array $data): ClinicSchedule
+    public function createOrUpdate(int $clinicId, array $data): ClinicSchedule
     {
-        return $this->repository->create($data);
-    }
+        if (isset($data['id'])) {
+            $schedule = $this->repository->find($data['id']);
+            if (!$schedule || $schedule->clinic_id != $clinicId) {
+                throw new \Exception("Schedule not found or unauthorized");
+            }
+            return $this->repository->update($schedule, $data);
+        }
 
-    public function update(ClinicSchedule $schedule, array $data): ClinicSchedule
-    {
-        return $this->repository->update($schedule, $data);
+        return $this->repository->create(array_merge($data, ['clinic_id' => $clinicId]));
     }
 
     public function destroy(ClinicSchedule $schedule): bool

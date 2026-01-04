@@ -17,7 +17,6 @@ class UpdateClinicRequest extends FormRequest
             'name'      => ['sometimes', 'string', 'max:255'],
             'color'     => ['sometimes', 'nullable', 'string', 'max:255'],
             'logo'      => ['sometimes', 'nullable', 'image', 'mimes:png,jpg,jpeg,webp', 'max:2048'],
-            'is_active' => ['sometimes', 'boolean'],
         ];
     }
 }

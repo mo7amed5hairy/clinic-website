@@ -10,9 +10,9 @@ class HeroSectionService
         protected HeroSectionRepositoryInterface $repository
     ) {}
 
-    public function list()
+    public function getByClinicId(int $clinicId): ?HeroSection
     {
-        return $this->repository->all();
+        return $this->repository->findByClinicId($clinicId);
     }
 
     public function show(int $id): ?HeroSection
@@ -28,6 +28,15 @@ class HeroSectionService
     public function update(HeroSection $heroSection, array $data): HeroSection
     {
         return $this->repository->update($heroSection, $data);
+    }
+
+    public function createOrUpdate(int $clinicId, array $data): HeroSection
+    {
+        $hero = $this->repository->findByClinicId($clinicId);
+        if ($hero) {
+             return $this->update($hero, $data);
+        }
+        return $this->store(array_merge($data, ['clinic_id' => $clinicId]));
     }
 
     public function destroy(HeroSection $heroSection): bool

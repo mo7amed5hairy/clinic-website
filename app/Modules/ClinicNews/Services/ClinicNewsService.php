@@ -7,38 +7,33 @@ use App\Modules\ClinicNews\Models\ClinicNews;
 
 class ClinicNewsService
 {
-    protected ClinicNewsRepositoryInterface $repository;
+    public function __construct(
+        protected ClinicNewsRepositoryInterface $repository
+    ) {}
 
-    public function __construct(ClinicNewsRepositoryInterface $repository)
+    public function getByClinicId(int $clinicId)
     {
-        $this->repository = $repository;
+        return $this->repository->getByClinicId($clinicId);
     }
 
-    // بدل all()
-    public function list()
-    {
-        return $this->repository->all();
-    }
-
-    // بدل find()
     public function show(int $id): ?ClinicNews
     {
         return $this->repository->find($id);
     }
 
-    // بدل create()
-    public function store(array $data): ClinicNews
+    public function createOrUpdate(int $clinicId, array $data): ClinicNews
     {
-        return $this->repository->create($data);
+        if (isset($data['id'])) {
+            $news = $this->repository->find($data['id']);
+            if (!$news || $news->clinic_id != $clinicId) {
+                throw new \Exception("News item not found or unauthorized");
+            }
+            return $this->repository->update($news, $data);
+        }
+
+        return $this->repository->create(array_merge($data, ['clinic_id' => $clinicId]));
     }
 
-    // بدل update($id, $data)
-    public function update(ClinicNews $news, array $data): ClinicNews
-    {
-        return $this->repository->update($news, $data);
-    }
-
-    // بدل delete($id)
     public function destroy(ClinicNews $news): bool
     {
         return $this->repository->delete($news);

@@ -22,7 +22,6 @@ return new class extends Migration
             $table->string('position')->nullable();
             $table->text('bio')->nullable();
             $table->string('photo')->nullable();
-            $table->boolean('is_active')->default(true);
             $table->timestamps();
             $table->softDeletes();
         });

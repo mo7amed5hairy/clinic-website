@@ -7,30 +7,28 @@ use App\Modules\ClinicStatistic\Models\ClinicStatistic;
 
 class ClinicStatisticService
 {
-    public function __construct(protected ClinicStatisticRepositoryInterface $repo) {}
+    public function __construct(
+        protected ClinicStatisticRepositoryInterface $repository
+    ) {}
 
-    public function list()
+    public function getByClinicId(int $clinicId): ?ClinicStatistic
     {
-        return $this->repo->all();
+        return $this->repository->findByClinicId($clinicId);
     }
 
-    public function show($id): ?ClinicStatistic
+    public function createOrUpdate(int $clinicId, array $data): ClinicStatistic
     {
-        return $this->repo->find($id);
+        $stat = $this->repository->findByClinicId($clinicId);
+
+        if ($stat) {
+            return $this->repository->update($stat, $data);
+        }
+
+        return $this->repository->create(array_merge($data, ['clinic_id' => $clinicId]));
     }
 
-    public function store(array $data): ClinicStatistic
+    public function destroy(ClinicStatistic $stat): bool
     {
-        return $this->repo->create($data);
-    }
-
-    public function update(ClinicStatistic $statistic, array $data): ClinicStatistic
-    {
-        return $this->repo->update($statistic, $data);
-    }
-
-    public function destroy(ClinicStatistic $statistic): bool
-    {
-        return $this->repo->delete($statistic);
+        return $this->repository->delete($stat);
     }
 }

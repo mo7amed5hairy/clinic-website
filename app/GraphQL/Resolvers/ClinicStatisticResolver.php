@@ -5,85 +5,63 @@ namespace App\GraphQL\Resolvers;
 use GraphQL\Error\UserError;
 use App\Modules\ClinicStatistic\Services\ClinicStatisticService;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\ValidationException;
 
 class ClinicStatisticResolver
 {
     public function __construct(protected ClinicStatisticService $service) {}
 
-    public function list($_, array $args)
-    {
-        return $this->service->list();
-    }
-
+    // عرض الإحصائيات
     public function show($_, array $args)
     {
-        $stat = $this->service->show($args['id']);
-
-        if (!$stat) {
-            throw ValidationException::withMessages([
-                'id' => [__('clinic_statistic.messages.not_found')]
-            ]);
+        $user = auth()->guard('sanctum')->user();
+        if (!$user || !$user->clinic_id) {
+            throw new UserError(__('ClinicStatistic.messages.no_clinic'));
         }
-
-        return $stat;
+        return $this->service->getByClinicId($user->clinic_id);
     }
 
-    public function create($_, array $args)
+    // إنشاء أو تحديث الإحصائيات
+    public function createOrUpdate($_, array $args)
     {
+        $user = auth()->guard('sanctum')->user();
+        if (!$user || !$user->clinic_id) {
+            throw new UserError(__('ClinicStatistic.messages.no_clinic'));
+        }
+
+        // ✅ Validation متوافق مع الحقول اللي انت بتبعتها
         $validator = Validator::make($args, [
-            'statistics_name' => ['required', 'string', 'max:255'],
-            'statistic_value' => ['required', 'string', 'max:255'],
-            'is_active'       => ['nullable', 'boolean'],
+            'items' => ['required', 'array', 'max:4'],
+            'items.*.statisitics_name' => ['required', 'string'],
+            'items.*.statisitics_no' => ['required', 'string'],
         ]);
+
 
         if ($validator->fails()) {
             throw new UserError(collect($validator->errors()->all())->join("\n"));
         }
 
-        $data = $validator->validated();
-        $data['tenant_id'] = tenant('id');
+        $data = [
+            'tenant_id' => tenant('id'),
+            'items' => $args['items'],
+        ];
 
-        return $this->service->store($data)->refresh();
+        return $this->service->createOrUpdate($user->clinic_id, $data);
     }
 
-    public function update($_, array $args)
-    {
-        $stat = $this->service->show($args['id']);
-        if (!$stat) {
-            throw ValidationException::withMessages([
-                'id' => [__('clinic_statistic.messages.not_found')]
-            ]);
-        }
-
-        $validator = Validator::make($args, [
-            'statistics_name' => ['sometimes', 'required', 'string', 'max:255'],
-            'statistic_value' => ['sometimes', 'required', 'string', 'max:255'],
-            'is_active'       => ['sometimes', 'boolean'],
-        ]);
-
-        if ($validator->fails()) {
-            throw new UserError(collect($validator->errors()->all())->join("\n"));
-        }
-
-        $data = $validator->validated();
-
-        return $this->service->update($stat, $data)->refresh();
-    }
-
+    // حذف الإحصائيات
     public function destroy($_, array $args)
     {
-        $stat = $this->service->show($args['id']);
-        if (!$stat) {
-            throw ValidationException::withMessages([
-                'id' => [__('clinic_statistic.messages.not_found')]
-            ]);
+        $user = auth()->guard('sanctum')->user();
+        if (!$user || !$user->clinic_id) {
+            throw new UserError(__('ClinicStatistic.messages.no_clinic'));
         }
 
-        $this->service->destroy($stat);
+        $stat = $this->service->getByClinicId($user->clinic_id);
+
+        if ($stat) {
+            $this->service->destroy($stat);
+        }
+
         return true;
     }
 }
-
-
-

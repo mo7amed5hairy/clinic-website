@@ -18,7 +18,6 @@ class UpdateClinicNewsRequest extends FormRequest
             'description' => ['sometimes', 'nullable', 'array'],
             'content'     => ['sometimes', 'nullable', 'array'],
             'image'       => ['sometimes', 'nullable', 'file', 'image', 'max:2048'],
-            'is_active'   => ['sometimes', 'boolean'],
         ];
     }
 

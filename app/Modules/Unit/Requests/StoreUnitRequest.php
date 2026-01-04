@@ -12,7 +12,6 @@ class StoreUnitRequest extends FormRequest
             'name'        => 'required|string|max:255',
             'description' => 'nullable|string',
             'image'       => 'nullable|image',
-            'is_active'   => 'nullable|boolean'
         ];
     }
 

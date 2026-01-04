@@ -20,7 +20,6 @@ return new class extends Migration
                 ->onDelete('cascade');
             $table->enum('type', ['image', 'video']);
             $table->string('path');
-            $table->boolean('is_active')->default(true);
             $table->timestamps();
             $table->softDeletes();
         });

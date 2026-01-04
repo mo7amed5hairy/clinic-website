@@ -1,0 +1,30 @@
+type InstallmentMethod {
+    id: ID!
+    name: String!
+    link: String
+    image: String
+}
+
+extend type Query {
+    installmentMethods: [InstallmentMethod!]!
+        @field(
+            resolver: "App\\GraphQL\\Resolvers\\InstallmentMethodResolver@show"
+        )
+}
+
+extend type Mutation {
+    createOrUpdateInstallmentMethod(
+        id: ID
+        name: String!
+        link: String
+        image: String
+    ): InstallmentMethod
+        @field(
+            resolver: "App\\GraphQL\\Resolvers\\InstallmentMethodResolver@createOrUpdate"
+        )
+
+    deleteInstallmentMethod(id: ID!): Boolean
+        @field(
+            resolver: "App\\GraphQL\\Resolvers\\InstallmentMethodResolver@destroy"
+        )
+}

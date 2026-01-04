@@ -25,7 +25,6 @@ return new class extends Migration
             $table->time('time_from')->nullable();
             $table->time('time_to')->nullable();
 
-            $table->boolean('is_active')->default(true);
             $table->timestamps();
             $table->softDeletes();
         });

@@ -1,51 +1,28 @@
 type HeroSection {
     id: ID!
-    title: String!
+    clinic_id: ID!
+    title: String
     sub_title: String
     content: String
     image: String
-    is_active: Boolean!
 }
 
 extend type Query {
-    heroSections: [HeroSection!]!
-        @field(
-            resolver: "App\\GraphQL\\Resolvers\\HeroSectionResolver@list"
-        )
-    heroSection(id: ID!): HeroSection
-        @field(
-            resolver: "App\\GraphQL\\Resolvers\\HeroSectionResolver@show"
-        )
+    heroSection: HeroSection
+        @field(resolver: "App\\GraphQL\\Resolvers\\HeroSectionResolver@show")
 }
 
 extend type Mutation {
-    createHeroSection(
-        title: String!
-        sub_title: String
-        content: String
-        image: Upload
-        is_active: Boolean
-    ): HeroSection
-        @field(
-            resolver: "App\\GraphQL\\Resolvers\\HeroSectionResolver@create"
-        )
-
-    updateHeroSection(
-        id: ID!
+    createOrUpdateHeroSection(
         title: String
         sub_title: String
         content: String
         image: Upload
-        is_active: Boolean
     ): HeroSection
         @field(
-            resolver: "App\\GraphQL\\Resolvers\\HeroSectionResolver@update"
+            resolver: "App\\GraphQL\\Resolvers\\HeroSectionResolver@createOrUpdate"
         )
 
-    deleteHeroSection(id: ID!): Boolean
-        @field(
-            resolver: "App\\GraphQL\\Resolvers\\HeroSectionResolver@destroy"
-        )
+    deleteHeroSection: Boolean
+        @field(resolver: "App\\GraphQL\\Resolvers\\HeroSectionResolver@destroy")
 }
-
-

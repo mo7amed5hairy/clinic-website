@@ -29,8 +29,7 @@ class UnitResolver
         $validator = Validator::make($args, [
             'name'        => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
-            'image'       => ['nullable'],
-            'is_active'   => ['nullable', 'boolean']
+            'image'       => ['nullable']
         ]);
 
         if ($validator->fails()) {
@@ -64,8 +63,7 @@ class UnitResolver
         $validator = Validator::make($args, [
             'name'        => ['sometimes','required','string','max:255'],
             'description' => ['nullable','string'],
-            'image'       => ['nullable'],
-            'is_active'   => ['sometimes','boolean']
+            'image'       => ['nullable']
         ]);
 
         if ($validator->fails()) {
@@ -73,7 +71,7 @@ class UnitResolver
         }
 
         $data = $validator->validated();
-        $updateData = array_intersect_key($data, array_flip(['name','description','is_active']));
+        $updateData = array_intersect_key($data, array_flip(['name','description']));
 
         if (!empty($updateData)) {
             $this->service->update($unit, $updateData);

@@ -30,7 +30,6 @@ class MediaCenterResolver
         $validator = Validator::make($args, [
             'type'      => ['required', 'in:image,video'],
             'files'     => ['required', 'array'],
-            'is_active' => ['nullable', 'boolean'],
         ]);
 
         if ($validator->fails()) {
@@ -55,7 +54,6 @@ class MediaCenterResolver
         $validator = Validator::make($args, [
             'type'      => ['sometimes', 'in:image,video'],
             'files'     => ['sometimes', 'array'],
-            'is_active' => ['sometimes', 'boolean'],
         ]);
 
         if ($validator->fails()) {

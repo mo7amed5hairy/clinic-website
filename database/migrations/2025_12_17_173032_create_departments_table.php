@@ -20,7 +20,6 @@ return new class extends Migration
                 ->on('tenants')
                 ->onDelete('cascade');
             $table->string('name');
-            $table->boolean('is_active')->default(true);
             $table->timestamps();
             $table->softDeletes();
         });

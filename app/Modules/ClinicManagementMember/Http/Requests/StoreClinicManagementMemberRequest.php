@@ -17,7 +17,6 @@ class StoreClinicManagementMemberRequest extends FormRequest
             'name'      => ['required', 'string', 'min:2', 'max:255'],
             'position'  => ['nullable', 'string', 'max:255'],
             'bio'       => ['nullable', 'string'],
-            'is_active' => ['boolean'],
         ];
     }
 }

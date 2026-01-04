@@ -1,0 +1,29 @@
+type ClinicArticle {
+    id: ID!
+    clinic_id: ID!
+    title: String!
+    content: JSON
+    image: String
+}
+
+extend type Query {
+    clinicArticles: [ClinicArticle!]!
+        @field(resolver: "App\\GraphQL\\Resolvers\\ClinicArticleResolver@show")
+}
+
+extend type Mutation {
+    createOrUpdateClinicArticle(
+        id: ID
+        title: String!
+        content: JSON
+        image: Upload
+    ): ClinicArticle
+        @field(
+            resolver: "App\\GraphQL\\Resolvers\\ClinicArticleResolver@createOrUpdate"
+        )
+
+    deleteClinicArticle(id: ID!): Boolean
+        @field(
+            resolver: "App\\GraphQL\\Resolvers\\ClinicArticleResolver@destroy"
+        )
+}

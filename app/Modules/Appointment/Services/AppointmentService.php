@@ -3,37 +3,31 @@
 namespace App\Modules\Appointment\Services;
 
 use App\Modules\Appointment\Contracts\AppointmentRepositoryInterface;
+use App\Modules\Appointment\Models\Appointment;
 
 class AppointmentService
 {
     public function __construct(
-        protected AppointmentRepositoryInterface $repo
+        protected AppointmentRepositoryInterface $repository
     ) {}
 
-    public function list(string $tenantId)
+    public function all()
     {
-        return $this->repo->allByTenant($tenantId);
+        return $this->repository->all();
     }
 
-    public function show(int $id)
+    public function show(int $id): ?Appointment
     {
-        return $this->repo->find($id);
+        return $this->repository->find($id);
     }
 
-    public function store(array $data)
+    public function create(array $data): Appointment
     {
-        return $this->repo->create($data);
+        return $this->repository->create($data);
     }
 
-    public function update(int $id, array $data)
+    public function destroy(Appointment $appointment): bool
     {
-        $appointment = $this->repo->find($id);
-        return $this->repo->update($appointment, $data);
-    }
-
-    public function delete(int $id): bool
-    {
-        $appointment = $this->repo->find($id);
-        return $this->repo->delete($appointment);
+        return $this->repository->delete($appointment);
     }
 }

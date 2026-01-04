@@ -3,45 +3,23 @@ type Department {
     doctor_id: ID!
     tenant_id: String!
     name: String!
-    is_active: Boolean!
 }
 
 extend type Query {
     departments: [Department!]!
-        @field(
-            resolver: "App\\GraphQL\\Resolvers\\DepartmentResolver@list"
-        )
+        @field(resolver: "App\\GraphQL\\Resolvers\\DepartmentResolver@list")
 
     department(id: ID!): Department
-        @field(
-            resolver: "App\\GraphQL\\Resolvers\\DepartmentResolver@show"
-        )
+        @field(resolver: "App\\GraphQL\\Resolvers\\DepartmentResolver@show")
 }
 
 extend type Mutation {
-    createDepartment(
-        doctor_id: ID!
-        name: String!
-        is_active: Boolean
-    ): Department
-        @field(
-            resolver: "App\\GraphQL\\Resolvers\\DepartmentResolver@create"
-        )
+    createDepartment(doctor_id: ID!, name: String!): Department
+        @field(resolver: "App\\GraphQL\\Resolvers\\DepartmentResolver@create")
 
-    updateDepartment(
-        id: ID!
-        doctor_id: ID
-        name: String
-        is_active: Boolean
-    ): Department
-        @field(
-            resolver: "App\\GraphQL\\Resolvers\\DepartmentResolver@update"
-        )
+    updateDepartment(id: ID!, doctor_id: ID, name: String): Department
+        @field(resolver: "App\\GraphQL\\Resolvers\\DepartmentResolver@update")
 
     deleteDepartment(id: ID!): Boolean
-        @field(
-            resolver: "App\\GraphQL\\Resolvers\\DepartmentResolver@destroy"
-        )
+        @field(resolver: "App\\GraphQL\\Resolvers\\DepartmentResolver@destroy")
 }
-
-

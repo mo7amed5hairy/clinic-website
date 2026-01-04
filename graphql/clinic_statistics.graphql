@@ -1,51 +1,37 @@
+# نوع البيانات اللي هيتخزن في DB
 type ClinicStatistic {
     id: ID!
-    statistics_name: String!
-    statistic_value: String!
-    is_active: Boolean!
+    clinic_id: ID!
+    items: JSON
 }
 
+# Query عشان تجيب بيانات الإحصائيات
 extend type Query {
-    # جلب كل الإحصائيات
-    clinicStatistics: [ClinicStatistic!]!
-        @field(
-            resolver: "App\\GraphQL\\Resolvers\\ClinicStatisticResolver@list"
-        )
-
-    # جلب إحصائية محددة
-    clinicStatistic(id: ID!): ClinicStatistic
+    clinicStatistics: ClinicStatistic
         @field(
             resolver: "App\\GraphQL\\Resolvers\\ClinicStatisticResolver@show"
         )
 }
 
+# Input Type عشان كل عنصر في Array
+input ClinicStatisticItemInput {
+    statisitics_name: String!
+    statisitics_no: String!
+}
+
+# Mutations لإنشاء/تحديث أو حذف الإحصائيات
 extend type Mutation {
-    # إنشاء إحصائية
-    createClinicStatistic(
-        statistics_name: String!
-        statistic_value: String!
-        is_active: Boolean
+    # إنشاء أو تحديث الإحصائيات
+    createOrUpdateClinicStatistics(
+        items: [ClinicStatisticItemInput!]!
     ): ClinicStatistic
         @field(
-            resolver: "App\\GraphQL\\Resolvers\\ClinicStatisticResolver@create"
+            resolver: "App\\GraphQL\\Resolvers\\ClinicStatisticResolver@createOrUpdate"
         )
 
-    # تحديث إحصائية
-    updateClinicStatistic(
-        id: ID!
-        statistics_name: String
-        statistic_value: String
-        is_active: Boolean
-    ): ClinicStatistic
-        @field(
-            resolver: "App\\GraphQL\\Resolvers\\ClinicStatisticResolver@update"
-        )
-
-    # حذف إحصائية
-    deleteClinicStatistic(id: ID!): Boolean
+    # حذف كل إحصائيات العيادة
+    deleteClinicStatistics: Boolean
         @field(
             resolver: "App\\GraphQL\\Resolvers\\ClinicStatisticResolver@destroy"
         )
 }
-
-

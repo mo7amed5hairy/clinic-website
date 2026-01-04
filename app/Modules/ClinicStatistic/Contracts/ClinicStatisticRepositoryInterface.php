@@ -6,9 +6,9 @@ use App\Modules\ClinicStatistic\Models\ClinicStatistic;
 
 interface ClinicStatisticRepositoryInterface
 {
-    public function all();
-    public function find($id): ?ClinicStatistic;
+    public function findByClinicId(int $clinicId): ?ClinicStatistic;
+    public function find(int $id): ?ClinicStatistic;
     public function create(array $data): ClinicStatistic;
-    public function update(ClinicStatistic $statistic, array $data): ClinicStatistic;
-    public function delete(ClinicStatistic $statistic): bool;
+    public function update(ClinicStatistic $stat, array $data): ClinicStatistic;
+    public function delete(ClinicStatistic $stat): bool;
 }

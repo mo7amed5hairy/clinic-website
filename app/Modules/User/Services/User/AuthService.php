@@ -6,11 +6,18 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use App\Modules\User\Repositories\User\Contracts\UserRepositoryInterface;
+use App\Modules\Clinic\Contracts\ClinicRepositoryInterface;
+use App\Modules\Clinic\Models\Clinic;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
+use Laravel\Sanctum\PersonalAccessToken;
+use App\Models\VerificationCode;
 
 class AuthService
 {
     public function __construct(
-        protected UserRepositoryInterface $userRepository
+        protected UserRepositoryInterface $userRepository,
+        protected ClinicRepositoryInterface $clinicRepository
     ) {}
 
     /**
@@ -18,29 +25,38 @@ class AuthService
      */
     public function register(array $data): array
     {
-        // 1️⃣ Check if email exists
-        if ($this->userRepository->findByEmail($data['email'])) {
-            throw ValidationException::withMessages([
-                'email' => __('auth.email_exists'),
+        return DB::transaction(function () use ($data) {
+            // 1️⃣ Check if email exists
+            if ($this->userRepository->findByEmail($data['email'])) {
+                throw ValidationException::withMessages([
+                    'email' => __('auth.email_exists'),
+                ]);
+            }
+
+            // 2️⃣ Create Clinic automatically
+            $clinic = $this->clinicRepository->create([
+                'tenant_id' => tenant('id'),
+                'name'      => $data['name'] . ' Clinic',
             ]);
-        }
 
-        // 2️⃣ Create user
-        $user = $this->userRepository->create([
-            'tenant_id'     => tenant('id'),
-            'name'          => $data['name'],
-            'email'         => $data['email'],
-            'phone'         => $data['phone'] ?? null,
-            'password'      => Hash::make($data['password']),
-        ]);
+            // 3️⃣ Create user
+            $user = $this->userRepository->create([
+                'tenant_id'     => tenant('id'),
+                'clinic_id'     => $clinic->id,
+                'name'          => $data['name'],
+                'email'         => $data['email'],
+                'phone'         => $data['phone'],
+                'password'      => Hash::make($data['password']),
+            ]);
 
-        // 3️⃣ Create Sanctum token
-        $token = $user->createToken('auth_token')->plainTextToken;
+            // 4️⃣ Create Sanctum token
+            $token = $user->createToken('auth_token')->plainTextToken;
 
-        return [
-            'user'  => $user,
-            'token' => $token,
-        ];
+            return [
+                'user'  => $user,
+                'token' => $token,
+            ];
+        });
     }
 
     /**
@@ -166,26 +182,25 @@ public function verifyOtp(string $email, string $code): array
 }
 
 
- public function resetPassword(array $input)
+    public function resetPassword(array $input)
     {
-        // 🔹 Validation
-        $validator = Validator::make($input, [
-            'password' => 'required|string|min:8|confirmed',
-            'token' => 'required|string',
-        ]);
+        // 🔹 البحث عن التوكن في جدول Sanctum
+        $accessToken = PersonalAccessToken::findToken($input['token']);
 
-        if ($validator->fails()) {
-            throw ValidationException::create($validator->errors()->toArray());
+        if (!$accessToken || ($accessToken->expires_at && $accessToken->expires_at->isPast())) {
+            return [
+                'status' => false,
+                'message' => 'Invalid or expired token',
+            ];
         }
 
-        // 🔹 البحث عن المستخدم بالـ token
-        $user = User::where('remember_token', $input['token'])->first();
+        // 🔹 جلب المستخدم المرتبط بالـ token
+        $user = $accessToken->tokenable;
 
         if (!$user) {
             return [
                 'status' => false,
-                'message' => 'Invalid or expired token',
-                'token' => null
+                'message' => 'User not found',
             ];
         }
 
@@ -193,13 +208,15 @@ public function verifyOtp(string $email, string $code): array
         $user->password = Hash::make($input['password']);
         $user->save();
 
-        // 🔹 حذف التوكن بعد نجاح إعادة التعيين
+        // 🔹 مسح كل توكنات المستخدم بعد تغيير الباسورد
         $user->tokens()->delete();
+
+        // 🔹 مسح كود التحقق من جدول verification_codes بعد نجاح تغيير الباسورد
+        VerificationCode::where('email', $user->email)->delete();
 
         return [
             'status' => true,
             'message' => 'Password reset successfully',
-            'token' => null
         ];
     }
 

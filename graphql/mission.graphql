@@ -1,0 +1,20 @@
+type Mission {
+    id: ID!
+    clinic_id: ID!
+    mission: String
+    image: String
+}
+
+extend type Query {
+    mission: Mission
+        @field(resolver: "App\\GraphQL\\Resolvers\\MissionResolver@show")
+}
+
+extend type Mutation {
+    createOrUpdateMission(mission: String!, image: Upload): Mission
+        @field(
+            resolver: "App\\GraphQL\\Resolvers\\MissionResolver@createOrUpdate"
+        )
+    deleteMission: Boolean
+        @field(resolver: "App\\GraphQL\\Resolvers\\MissionResolver@destroy")
+}

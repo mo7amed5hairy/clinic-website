@@ -18,7 +18,6 @@ class UpdateClinicScheduleRequest extends FormRequest
             'date_to'   => ['sometimes', 'required', 'date'],
             'time_from' => ['sometimes', 'required', 'date_format:H:i'],
             'time_to'   => ['sometimes', 'required', 'date_format:H:i'],
-            'is_active' => ['sometimes', 'boolean'],
         ];
     }
 }

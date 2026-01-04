@@ -4,7 +4,6 @@ type ClinicManagementMember {
     position: String
     bio: String
     photo: String
-    is_active: Boolean!
 }
 
 extend type Query {
@@ -29,7 +28,6 @@ extend type Mutation {
         name: String!
         position: String
         bio: String
-        is_active: Boolean
         photo: Upload
     ): ClinicManagementMember
         @field(
@@ -43,7 +41,6 @@ extend type Mutation {
         name: String
         position: String
         bio: String
-        is_active: Boolean
         photo: Upload
     ): ClinicManagementMember
         @field(
@@ -58,5 +55,3 @@ extend type Mutation {
         )
         @guard(with: ["sanctum"])
 }
-
-

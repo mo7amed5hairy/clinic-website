@@ -9,9 +9,9 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+      public function up(): void
     {
-        Schema::create('appointments', function (Blueprint $table) {
+               Schema::create('appointments', function (Blueprint $table) {
             $table->id();
             $table->string('tenant_id');
             $table->foreign('tenant_id')
@@ -25,15 +25,12 @@ return new class extends Migration
             $table->string('service_name');
             $table->date('appointment_date');
             $table->time('appointment_time');
-            $table->string('status')->default('pending');
+            $table->enum('status', ['pending', 'completed'])->default('pending');
             $table->timestamps();
             $table->softDeletes();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('appointments');

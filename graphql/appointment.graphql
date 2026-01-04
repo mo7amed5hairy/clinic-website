@@ -1,4 +1,8 @@
-# نوع الـ Appointment
+enum AppointmentStatus {
+    PENDING @enum(value: "pending")
+    COMPLETED @enum(value: "completed")
+}
+
 type Appointment {
     id: ID!
     patient_name: String!
@@ -8,49 +12,27 @@ type Appointment {
     service_name: String!
     appointment_date: String!
     appointment_time: String!
-    status: String
+    status: AppointmentStatus!
 }
 
-# Input Object لـ Create / Update
-input AppointmentInput {
-    patient_name: String!
-    patient_phone: String!
-    patient_email: String
-    doctor_name: String
-    service_name: String!
-    appointment_date: String!
-    appointment_time: String!
-    status: String
-}
-
-# Queries
 extend type Query {
     appointments: [Appointment!]!
-        @field(
-            resolver: "App\\GraphQL\\Resolvers\\AppointmentResolver@list"
-        )
-    appointment(id: ID!): Appointment
-        @field(
-            resolver: "App\\GraphQL\\Resolvers\\AppointmentResolver@show"
-        )
+        @field(resolver: "App\\GraphQL\\Resolvers\\AppointmentResolver@show")
 }
 
-# Mutations
 extend type Mutation {
-    createAppointment(input: AppointmentInput!): Appointment
-        @field(
-            resolver: "App\\GraphQL\\Resolvers\\AppointmentResolver@create"
-        )
-
-    updateAppointment(id: ID!, input: AppointmentInput!): Appointment
-        @field(
-            resolver: "App\\GraphQL\\Resolvers\\AppointmentResolver@update"
-        )
+    createAppointment(
+        patient_name: String!
+        patient_phone: String!
+        patient_email: String
+        doctor_name: String
+        service_name: String!
+        appointment_date: String!
+        appointment_time: String!
+        status: AppointmentStatus
+    ): Appointment
+        @field(resolver: "App\\GraphQL\\Resolvers\\AppointmentResolver@create")
 
     deleteAppointment(id: ID!): Boolean
-        @field(
-            resolver: "App\\GraphQL\\Resolvers\\AppointmentResolver@delete"
-        )
+        @field(resolver: "App\\GraphQL\\Resolvers\\AppointmentResolver@destroy")
 }
-
-

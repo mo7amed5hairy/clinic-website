@@ -1,33 +1,42 @@
+type DoctorDepartment {
+    id: ID!
+    name: String!
+    content: String
+}
+
 type Doctor {
     id: ID!
-    doctor_data: JSON!
-    is_active: Boolean!
+    clinic_id: ID!
+    name: String!
+    specialization: String!
+    experience: String!
+    image: String
+    departments: [DoctorDepartment!] @hasMany
+}
+
+input DoctorDepartmentInput {
+    name: String!
+    content: String
 }
 
 extend type Query {
     doctors: [Doctor!]!
-        @field(resolver: "App\\GraphQL\\Resolvers\\DoctorResolver@list")
-
-    doctor(id: ID!): Doctor
         @field(resolver: "App\\GraphQL\\Resolvers\\DoctorResolver@show")
 }
 
 extend type Mutation {
-    createDoctor(doctor_data: JSON!, is_active: Boolean, image: Upload): Doctor
-        @field(resolver: "App\\GraphQL\\Resolvers\\DoctorResolver@create")
-
-    updateDoctor(
-        id: ID!
-        doctor_data: JSON
-        is_active: Boolean
+    createOrUpdateDoctor(
+        id: ID
+        name: String!
+        specialization: String!
+        experience: String!
         image: Upload
+        departments: [DoctorDepartmentInput!]
     ): Doctor
-        @field(resolver: "App\\GraphQL\\Resolvers\\DoctorResolver@update")
+        @field(
+            resolver: "App\\GraphQL\\Resolvers\\DoctorResolver@createOrUpdate"
+        )
 
     deleteDoctor(id: ID!): Boolean
-        @field(
-            resolver: "App\\GraphQL\\Resolvers\\DoctorResolver@destroy"
-        )
+        @field(resolver: "App\\GraphQL\\Resolvers\\DoctorResolver@destroy")
 }
-
-

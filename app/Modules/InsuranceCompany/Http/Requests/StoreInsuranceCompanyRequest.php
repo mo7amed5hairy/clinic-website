@@ -12,7 +12,6 @@ class StoreInsuranceCompanyRequest extends FormRequest
             'name'      => ['required', 'string', 'max:255'],
             'link'      => ['nullable', 'url'],
             'image'     => ['nullable', 'string', 'max:255'],
-            'is_active' => ['nullable', 'boolean'],
         ];
     }
 

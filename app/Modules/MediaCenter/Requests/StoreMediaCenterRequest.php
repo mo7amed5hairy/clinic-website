@@ -11,7 +11,6 @@ class StoreMediaCenterRequest extends FormRequest
         return [
             'type'      => 'required|in:image,video',
             'files'     => 'required|array',
-            'is_active' => 'nullable|boolean',
         ];
     }
 

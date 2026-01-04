@@ -8,9 +8,9 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class DoctorRepository implements DoctorRepositoryInterface
 {
-    public function paginate(int $perPage = 15): LengthAwarePaginator
+    public function getByClinicId(int $clinicId)
     {
-        return Doctor::query()->paginate($perPage);
+        return Doctor::where('clinic_id', $clinicId)->with('departments')->get();
     }
 
     public function find(int $id): ?Doctor

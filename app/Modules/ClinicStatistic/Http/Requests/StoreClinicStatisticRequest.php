@@ -16,7 +16,6 @@ class StoreClinicStatisticRequest extends FormRequest
         return [
             'statistics_name' => ['required', 'string', 'max:255'],
             'statistic_value' => ['required', 'string', 'max:255'],
-            'is_active'       => ['nullable', 'boolean'],
         ];
     }
 }

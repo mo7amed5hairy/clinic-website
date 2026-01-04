@@ -18,7 +18,6 @@ class StoreHeroSectionRequest extends FormRequest
             'sub_title'=> ['nullable', 'string', 'max:255'],
             'content'  => ['nullable', 'string'],
             'image'    => ['nullable', 'file', 'mimes:jpeg,png,jpg,gif'],
-            'is_active'=> ['nullable', 'boolean'],
         ];
     }
 }

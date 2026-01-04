@@ -12,7 +12,6 @@ class UpdateUnitRequest extends FormRequest
             'name'        => 'sometimes|required|string|max:255',
             'description' => 'nullable|string',
             'image'       => 'nullable|image',
-            'is_active'   => 'sometimes|boolean'
         ];
     }
 

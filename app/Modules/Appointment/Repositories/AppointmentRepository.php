@@ -7,9 +7,9 @@ use App\Modules\Appointment\Models\Appointment;
 
 class AppointmentRepository implements AppointmentRepositoryInterface
 {
-    public function allByTenant(string $tenantId)
+    public function all()
     {
-        return Appointment::where('tenant_id', $tenantId)->latest()->get();
+        return Appointment::all();
     }
 
     public function find(int $id): ?Appointment
@@ -20,12 +20,6 @@ class AppointmentRepository implements AppointmentRepositoryInterface
     public function create(array $data): Appointment
     {
         return Appointment::create($data);
-    }
-
-    public function update(Appointment $appointment, array $data): Appointment
-    {
-        $appointment->update($data);
-        return $appointment;
     }
 
     public function delete(Appointment $appointment): bool

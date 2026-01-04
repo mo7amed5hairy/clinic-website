@@ -3,7 +3,6 @@ type Unit {
     name: String!
     description: String
     image: String
-    is_active: Boolean!
 }
 
 extend type Query {
@@ -14,23 +13,12 @@ extend type Query {
 }
 
 extend type Mutation {
-    createUnit(
-        name: String!
-        description: String
-        image: Upload
-        is_active: Boolean
-    ): Unit @field(resolver: "App\\GraphQL\\Resolvers\\UnitResolver@create")
+    createUnit(name: String!, description: String, image: Upload): Unit
+        @field(resolver: "App\\GraphQL\\Resolvers\\UnitResolver@create")
 
-    updateUnit(
-        id: ID!
-        name: String
-        description: String
-        image: Upload
-        is_active: Boolean
-    ): Unit @field(resolver: "App\\GraphQL\\Resolvers\\UnitResolver@update")
+    updateUnit(id: ID!, name: String, description: String, image: Upload): Unit
+        @field(resolver: "App\\GraphQL\\Resolvers\\UnitResolver@update")
 
     deleteUnit(id: ID!): Boolean
         @field(resolver: "App\\GraphQL\\Resolvers\\UnitResolver@destroy")
 }
-
-

@@ -1,52 +1,27 @@
 type ClinicNews {
     id: ID!
-    title: JSON!
-    description: JSON
-    content: JSON
+    clinic_id: ID!
+    title: String!
+    content: String
     image: String
-    is_active: Boolean!
-}
-
-input ClinicNewsInput {
-    title: LocalizedStringInput!
-    description: LocalizedStringInput
-    content: LocalizedStringInput
-    is_active: Boolean
-    image: Upload
 }
 
 extend type Query {
-    # جلب كل الأخبار
     clinicNews: [ClinicNews!]!
-        @field(
-            resolver: "App\\GraphQL\\Resolvers\\ClinicNewsResolver@list"
-        )
-
-    # جلب خبر محدد
-    clinicNew(id: ID!): ClinicNews
-        @field(
-            resolver: "App\\GraphQL\\Resolvers\\ClinicNewsResolver@show"
-        )
+        @field(resolver: "App\\GraphQL\\Resolvers\\ClinicNewsResolver@show")
 }
 
 extend type Mutation {
-    # إنشاء خبر
-    createClinicNews(input: ClinicNewsInput!): ClinicNews
+    createOrUpdateClinicNews(
+        id: ID
+        title: String!
+        content: String!
+        image: Upload
+    ): ClinicNews
         @field(
-            resolver: "App\\GraphQL\\Resolvers\\ClinicNewsResolver@create"
+            resolver: "App\\GraphQL\\Resolvers\\ClinicNewsResolver@createOrUpdate"
         )
 
-    # تحديث خبر
-    updateClinicNews(id: ID!, input: ClinicNewsInput!): ClinicNews
-        @field(
-            resolver: "App\\GraphQL\\Resolvers\\ClinicNewsResolver@update"
-        )
-
-    # حذف خبر
     deleteClinicNews(id: ID!): Boolean
-        @field(
-            resolver: "App\\GraphQL\\Resolvers\\ClinicNewsResolver@destroy"
-        )
+        @field(resolver: "App\\GraphQL\\Resolvers\\ClinicNewsResolver@destroy")
 }
-
-

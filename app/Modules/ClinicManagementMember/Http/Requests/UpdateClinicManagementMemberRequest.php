@@ -17,7 +17,6 @@ class UpdateClinicManagementMemberRequest extends FormRequest
             'name'      => ['sometimes', 'required', 'string', 'min:2', 'max:255'],
             'position'  => ['sometimes', 'nullable', 'string', 'max:255'],
             'bio'       => ['sometimes', 'nullable', 'string'],
-            'is_active' => ['sometimes', 'boolean'],
         ];
     }
 }

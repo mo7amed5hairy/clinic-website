@@ -1,0 +1,19 @@
+type Vision {
+    id: ID!
+    clinic_id: ID!
+    vision: String
+}
+
+extend type Query {
+    vision: Vision
+        @field(resolver: "App\\GraphQL\\Resolvers\\VisionResolver@show")
+}
+
+extend type Mutation {
+    createOrUpdateVision(vision: String!): Vision
+        @field(
+            resolver: "App\\GraphQL\\Resolvers\\VisionResolver@createOrUpdate"
+        )
+    deleteVision: Boolean
+        @field(resolver: "App\\GraphQL\\Resolvers\\VisionResolver@destroy")
+}

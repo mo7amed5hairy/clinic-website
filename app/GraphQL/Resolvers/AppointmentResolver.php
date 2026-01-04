@@ -3,58 +3,50 @@
 namespace App\GraphQL\Resolvers;
 
 use GraphQL\Error\UserError;
-use App\Core\Helpers\GraphQLValidator;
 use App\Modules\Appointment\Services\AppointmentService;
-use App\Modules\Appointment\Http\Requests\StoreAppointmentRequest;
-use App\Modules\Appointment\Http\Requests\UpdateAppointmentRequest;
+use Illuminate\Support\Facades\Validator;
 
 class AppointmentResolver
 {
-    public function __construct(
-        protected AppointmentService $service
-    ) {}
+    public function __construct(protected AppointmentService $service) {}
 
-    // قائمة كل المواعيد
-    public function list()
-    {
-        return $this->service->list(tenant('id'));
-    }
-
-    // عرض موعد محدد
     public function show($_, array $args)
     {
-        $appointment = $this->service->show($args['id']);
-
-        if (!$appointment) {
-            throw new UserError(__('modules.appointment.not_found'));
-        }
-
-        return $appointment;
+        return $this->service->all();
     }
 
-    // إنشاء موعد جديد
     public function create($_, array $args)
     {
-        $data = GraphQLValidator::validate(StoreAppointmentRequest::class, $args['input']);
-
-        return $this->service->store([
-            'tenant_id' => tenant('id'),
-            ...$data,
+        $validator = Validator::make($args, [
+            'patient_name'     => ['required', 'string', 'max:255'],
+            'patient_phone'    => ['required', 'string', 'max:255'],
+            'patient_email'    => ['nullable', 'email', 'max:255'],
+            'doctor_name'      => ['nullable', 'string', 'max:255'],
+            'service_name'     => ['required', 'string', 'max:255'],
+            'appointment_date' => ['required', 'date'],
+            'appointment_time' => ['required'],
+            'status'           => ['nullable', 'in:pending,completed'],
         ]);
+
+        if ($validator->fails()) {
+             throw new UserError(collect($validator->errors()->all())->join("\n"));
+        }
+
+        $data = $validator->validated();
+        
+        return $this->service->create($data);
     }
 
-    // تعديل موعد
-    public function update($_, array $args)
+    public function destroy($_, array $args)
     {
-        $data = GraphQLValidator::validate(UpdateAppointmentRequest::class, $args['input']);
+        $appointment = $this->service->show($args['id']);
+        
+        if (!$appointment) {
+            throw new UserError('Not Found');
+        }
 
-        return $this->service->update($args['id'], $data);
-    }
+        $this->service->destroy($appointment);
 
-    // حذف موعد
-    public function delete($_, array $args)
-    {
-        return $this->service->delete($args['id']);
+        return true;
     }
 }
-

@@ -33,7 +33,6 @@ class ClinicController extends Controller
             'tenant_id' => tenant('id'),
             'name'      => $request->name,
             'color'     => $request->color,
-            'is_active' => $request->boolean('is_active', true),
         ]);
 
         // رفع اللوجو (اختياري)

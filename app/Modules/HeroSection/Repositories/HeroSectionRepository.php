@@ -7,9 +7,9 @@ use App\Modules\HeroSection\Models\HeroSection;
 
 class HeroSectionRepository implements HeroSectionRepositoryInterface
 {
-    public function all()
+    public function findByClinicId(int $clinicId): ?HeroSection
     {
-        return HeroSection::all();
+        return HeroSection::where('clinic_id', $clinicId)->first();
     }
 
     public function find(int $id): ?HeroSection

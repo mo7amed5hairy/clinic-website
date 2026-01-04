@@ -8,16 +8,17 @@ use App\Traits\BelongsToTenant;
 
 class ClinicStatistic extends Model
 {
-
-
     use SoftDeletes, BelongsToTenant;
 
     protected $table = 'clinic_statistics';
 
     protected $fillable = [
         'tenant_id',
-        'statistics_name',
-        'statistic_value',
-        'is_active',
+        'clinic_id',
+        'items',
+    ];
+
+    protected $casts = [
+        'items' => 'array',
     ];
 }

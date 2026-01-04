@@ -26,7 +26,6 @@ class DoctorController extends Controller
         $doctor = $this->service->store([
             'tenant_id'   => tenant('id'),
             'doctor_data' => $request->doctor_data,
-            'is_active'   => $request->boolean('is_active', true),
         ]);
 
         // $doctor->uploadImageAsync(

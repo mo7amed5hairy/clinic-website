@@ -15,11 +15,9 @@ class CompanyPaymentPlan extends Model
     protected $fillable = [
         'tenant_id',
         'insurance_company_id',
-        'is_active',
     ];
 
     protected $casts = [
-        'is_active' => 'boolean',
     ];
 
     public function insuranceCompany()

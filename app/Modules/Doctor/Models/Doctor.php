@@ -16,14 +16,17 @@ class Doctor extends Model
 
     protected $fillable = [
         'tenant_id',
-        'doctor_data',
-        'is_active',
+        'clinic_id',
+        'name',
+        'specialization',
+        'experience',
+        'image',
     ];
 
-    protected $casts = [
-        'doctor_data' => JsonTranslatable::class,
-        'is_active'   => 'boolean',
-    ];
+    public function departments()
+    {
+        return $this->hasMany(DoctorDepartment::class);
+    }
 }
 
 

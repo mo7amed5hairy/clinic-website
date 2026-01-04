@@ -18,7 +18,6 @@ class StoreClinicNewsRequest extends FormRequest
             'description' => ['nullable', 'array'],
             'content'     => ['nullable', 'array'],
             'image'       => ['nullable', 'file', 'image', 'max:2048'],
-            'is_active'   => ['nullable', 'boolean'],
         ];
     }
 

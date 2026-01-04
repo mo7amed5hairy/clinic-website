@@ -30,6 +30,7 @@ class AuthResolver
         $validator = \Illuminate\Support\Facades\Validator::make($validated, [
             'email' => 'required|email:rfc,dns|unique:users,email',
             'name' => 'required|string|max:255',
+            'phone' => 'required|string|max:20',
             'password' => 'required|confirmed|min:8',
         ]);
 
@@ -145,59 +146,27 @@ class AuthResolver
 
 
 
-public function resetPassword($root, array $args)
-{
-    $input = $args['input'] ?? [];
+    public function resetPassword($root, array $args)
+    {
+        $input = $args['input'] ?? [];
 
-    // 🔹 Validation
-    $validator = \Validator::make($input, [
-        'password' => 'required|string|min:8|confirmed',
-        'token' => 'required|string',
-    ]);
+        // 🔹 Validation
+        $validator = \Validator::make($input, [
+            'password' => 'required|string|min:8|confirmed',
+            'token'    => 'required|string',
+        ]);
 
-    if ($validator->fails()) {
-        throw ValidationException::create($validator->errors()->toArray());
-    }
+        if ($validator->fails()) {
+            throw new ValidationException($validator);
+        }
 
-    $token = $input['token'];
+        $result = $this->authService->resetPassword($input);
 
-    // 🔹 البحث عن التوكن في جدول Sanctum
-    $accessToken = PersonalAccessToken::findToken($token);
-
-    if (!$accessToken || ($accessToken->expires_at && $accessToken->expires_at->isPast())) {
         return [
-            'status' => false,
-            'message' => 'Invalid or expired token',
-            'token' => null,
+            'status'  => $result['status'],
+            'message' => $result['message'],
         ];
     }
-
-    // 🔹 جلب المستخدم المرتبط بالـ token
-    $user = $accessToken->tokenable;
-
-    if (!$user) {
-        return [
-            'status' => false,
-            'message' => 'User not found',
-            'token' => null,
-        ];
-    }
-
-    // 🔹 تحديث الباسورد
-    $user->password = Hash::make($input['password']);
-    $user->save();
-
-    // 🔹 مسح كل توكنات المستخدم بعد تغيير الباسورد
-    $user->tokens()->delete();
-
-    // 🔹 مسح كود التحقق من جدول verification_codes بعد نجاح تغيير الباسورد
-    VerificationCode::where('email', $user->email)->delete();
-
-    return [
-        'status' => true,
-        'message' => 'Password reset successfully',
-    ];
-}
 
 
 

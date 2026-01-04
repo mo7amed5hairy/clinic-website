@@ -1,0 +1,42 @@
+type ClinicSection {
+    id: ID!
+    clinic_id: ID!
+    key: String!
+    title: JSON
+    items: [ClinicSectionItem!] @hasMany
+}
+
+type ClinicSectionItem {
+    id: ID!
+    clinic_section_id: ID!
+    title: JSON
+    description: JSON
+    image: String
+    value: String
+    order: Int
+}
+
+extend type Query {
+    clinicSections: [ClinicSection!]!
+        @field(resolver: "App\\GraphQL\\Resolvers\\ClinicSectionResolver@list")
+    clinicSection(id: ID!): ClinicSection
+        @field(resolver: "App\\GraphQL\\Resolvers\\ClinicSectionResolver@show")
+}
+
+extend type Mutation {
+    createClinicSection(key: String!, title: JSON): ClinicSection
+        @field(
+            resolver: "App\\GraphQL\\Resolvers\\ClinicSectionResolver@create"
+        )
+        @guard(with: ["sanctum"])
+
+    updateClinicSection(id: ID!, key: String, title: JSON): ClinicSection
+        @field(
+            resolver: "App\\GraphQL\\Resolvers\\ClinicSectionResolver@update"
+        )
+
+    deleteClinicSection(id: ID!): Boolean
+        @field(
+            resolver: "App\\GraphQL\\Resolvers\\ClinicSectionResolver@delete"
+        )
+}

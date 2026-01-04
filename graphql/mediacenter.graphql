@@ -3,50 +3,28 @@ type MediaCenter {
     tenant_id: String!
     type: String! # "image" أو "video"
     path: JSON! # مسارات الملفات
-    is_active: Boolean!
 }
 
 extend type Query {
     # جلب كل الوسائط
     mediaCenters: [MediaCenter!]!
-        @field(
-            resolver: "App\\GraphQL\\Resolvers\\MediaCenterResolver@list"
-        )
+        @field(resolver: "App\\GraphQL\\Resolvers\\MediaCenterResolver@list")
 
     # جلب وسائط واحدة
     mediaCenter(id: ID!): MediaCenter
-        @field(
-            resolver: "App\\GraphQL\\Resolvers\\MediaCenterResolver@show"
-        )
+        @field(resolver: "App\\GraphQL\\Resolvers\\MediaCenterResolver@show")
 }
 
 extend type Mutation {
     # إنشاء وسائط
-    createMediaCenter(
-        type: String!
-        files: [Upload!]!
-        is_active: Boolean
-    ): MediaCenter
-        @field(
-            resolver: "App\\GraphQL\\Resolvers\\MediaCenterResolver@create"
-        )
+    createMediaCenter(type: String!, files: [Upload!]!): MediaCenter
+        @field(resolver: "App\\GraphQL\\Resolvers\\MediaCenterResolver@create")
 
     # تحديث وسائط
-    updateMediaCenter(
-        id: ID!
-        type: String
-        files: [Upload!]
-        is_active: Boolean
-    ): MediaCenter
-        @field(
-            resolver: "App\\GraphQL\\Resolvers\\MediaCenterResolver@update"
-        )
+    updateMediaCenter(id: ID!, type: String, files: [Upload!]): MediaCenter
+        @field(resolver: "App\\GraphQL\\Resolvers\\MediaCenterResolver@update")
 
     # حذف وسائط
     deleteMediaCenter(id: ID!): Boolean
-        @field(
-            resolver: "App\\GraphQL\\Resolvers\\MediaCenterResolver@destroy"
-        )
+        @field(resolver: "App\\GraphQL\\Resolvers\\MediaCenterResolver@destroy")
 }
-
-

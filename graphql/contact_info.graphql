@@ -1,0 +1,31 @@
+type ContactInfo {
+    id: ID!
+    clinic_id: ID!
+    address: String
+    email: String
+    phone: String
+    phone2: String
+    phone3: String
+    phone4: String
+}
+
+extend type Query {
+    contactInfo: ContactInfo
+        @field(resolver: "App\\GraphQL\\Resolvers\\ContactInfoResolver@show")
+}
+
+extend type Mutation {
+    createOrUpdateContactInfo(
+        address: String
+        email: String
+        phone: String
+        phone2: String
+        phone3: String
+        phone4: String
+    ): ContactInfo
+        @field(
+            resolver: "App\\GraphQL\\Resolvers\\ContactInfoResolver@createOrUpdate"
+        )
+    deleteContactInfo: Boolean
+        @field(resolver: "App\\GraphQL\\Resolvers\\ContactInfoResolver@destroy")
+}

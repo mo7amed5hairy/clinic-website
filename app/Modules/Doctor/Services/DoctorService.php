@@ -11,9 +11,9 @@ class DoctorService
         protected DoctorRepositoryInterface $repository
     ) {}
 
-    public function list(int $perPage = 15)
+    public function getByClinicId(int $clinicId)
     {
-        return $this->repository->paginate($perPage);
+        return $this->repository->getByClinicId($clinicId);
     }
 
     /**
@@ -25,14 +25,34 @@ class DoctorService
         return $this->repository->find($id);
     }
 
-    public function store(array $data): Doctor
+    public function createOrUpdate(int $clinicId, array $data): Doctor
     {
-        return $this->repository->create($data);
-    }
+        $departments = $data['departments'] ?? [];
+        unset($data['departments']); // Remove for model update/create
 
-    public function update(Doctor $doctor, array $data): Doctor
-    {
-        return $this->repository->update($doctor, $data);
+        if (isset($data['id'])) {
+            $doctor = $this->repository->find($data['id']);
+            // Check ownership
+            if(! $doctor || $doctor->clinic_id != $clinicId) {
+                throw new \Exception("Doctor not found or unauthorized");
+            }
+            $doctor = $this->repository->update($doctor, $data);
+        } else {
+            $doctor = $this->repository->create(array_merge($data, ['clinic_id' => $clinicId]));
+        }
+
+        // Sync Departments
+        if (!empty($departments)) {
+            $doctor->departments()->delete();
+            // Prepend clinic_id to each department
+            $deptData = array_map(function($dept) use ($clinicId) {
+                $dept['clinic_id'] = $clinicId;
+                return $dept;
+            }, $departments);
+            $doctor->departments()->createMany($deptData);
+        }
+
+        return $doctor->refresh();
     }
 
     public function destroy(Doctor $doctor): bool

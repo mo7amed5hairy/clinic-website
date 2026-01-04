@@ -17,10 +17,8 @@ class MediaCenter extends Model
         'tenant_id',
         'type',
         'path',
-        'is_active',
     ];
 
     protected $casts = [
-        'is_active' => 'boolean',
     ];
 }

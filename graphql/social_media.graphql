@@ -1,0 +1,31 @@
+type SocialMedia {
+    id: ID!
+    clinic_id: ID!
+    facebook: String
+    instagram: String
+    twitter: String
+    youtube: String
+    linkedin: String
+    whatsapp: String
+}
+
+extend type Query {
+    socialMedia: SocialMedia
+        @field(resolver: "App\\GraphQL\\Resolvers\\SocialMediaResolver@show")
+}
+
+extend type Mutation {
+    createOrUpdateSocialMedia(
+        facebook: String
+        instagram: String
+        twitter: String
+        youtube: String
+        linkedin: String
+        whatsapp: String
+    ): SocialMedia
+        @field(
+            resolver: "App\\GraphQL\\Resolvers\\SocialMediaResolver@createOrUpdate"
+        )
+    deleteSocialMedia: Boolean
+        @field(resolver: "App\\GraphQL\\Resolvers\\SocialMediaResolver@destroy")
+}

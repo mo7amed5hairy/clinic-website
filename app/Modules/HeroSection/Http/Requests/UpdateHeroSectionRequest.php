@@ -18,7 +18,6 @@ class UpdateHeroSectionRequest extends FormRequest
             'sub_title'=> ['sometimes', 'nullable', 'string', 'max:255'],
             'content'  => ['sometimes', 'nullable', 'string'],
             'image'    => ['sometimes', 'nullable', 'file', 'mimes:jpeg,png,jpg,gif'],
-            'is_active'=> ['sometimes', 'boolean'],
         ];
     }
 }

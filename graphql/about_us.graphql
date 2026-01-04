@@ -1,0 +1,24 @@
+type AboutUs {
+    id: ID!
+    clinic_id: ID!
+    title: String
+    description: String
+}
+
+extend type Query {
+    aboutUs: AboutUs
+        @field(resolver: "App\\GraphQL\\Resolvers\\AboutUsResolver@show")
+        @guard(with: ["sanctum"])
+}
+
+extend type Mutation {
+    createOrUpdateAboutUs(title: String!, description: String!): AboutUs
+        @field(
+            resolver: "App\\GraphQL\\Resolvers\\AboutUsResolver@createOrUpdate"
+        )
+        @guard(with: ["sanctum"])
+
+    deleteAboutUs: Boolean
+        @field(resolver: "App\\GraphQL\\Resolvers\\AboutUsResolver@destroy")
+        @guard(with: ["sanctum"])
+}
