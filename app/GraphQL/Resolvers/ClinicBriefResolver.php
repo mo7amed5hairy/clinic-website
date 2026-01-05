@@ -3,6 +3,7 @@
 namespace App\GraphQL\Resolvers;
 
 use GraphQL\Error\UserError;
+use App\Modules\ClinicBrief\Models\ClinicBrief;
 use App\Modules\ClinicBrief\Services\ClinicBriefService;
 use Illuminate\Support\Facades\Validator;
 
@@ -12,18 +13,15 @@ class ClinicBriefResolver
 
     public function show($_, array $args)
     {
-        $user = auth()->guard('sanctum')->user();
-        if (!$user || !$user->clinic_id) {
-             throw new UserError(__('ClinicBrief.messages.no_clinic'));
-        }
-        return $this->service->getByClinicId($user->clinic_id);
+        // Publicly accessible, automatically scoped by tenant trait
+        return ClinicBrief::first();
     }
 
     public function createOrUpdate($_, array $args)
     {
         $user = auth()->guard('sanctum')->user();
         if (!$user || !$user->clinic_id) {
-             throw new UserError(__('ClinicBrief.messages.no_clinic'));
+             throw new UserError(__('ClinicBrief/messages.no_clinic'));
         }
 
         $validator = Validator::make($args, [
@@ -36,9 +34,9 @@ class ClinicBriefResolver
         }
 
         $data = [
-            'tenant_id' => tenant('id'),
             'brief'     => $args['brief'],
         ];
+        // tenant_id is automatic via trait
 
         $brief = $this->service->createOrUpdate($user->clinic_id, $data);
 
@@ -57,7 +55,7 @@ class ClinicBriefResolver
     {
         $user = auth()->guard('sanctum')->user();
         if (!$user || !$user->clinic_id) {
-             throw new UserError(__('ClinicBrief.messages.no_clinic'));
+             throw new UserError(__('ClinicBrief/messages.no_clinic'));
         }
 
         $brief = $this->service->getByClinicId($user->clinic_id);

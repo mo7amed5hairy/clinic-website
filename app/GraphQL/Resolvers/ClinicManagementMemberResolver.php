@@ -3,6 +3,7 @@
 namespace App\GraphQL\Resolvers;
 
 use GraphQL\Error\UserError;
+use App\Modules\ClinicManagementMember\Models\ClinicManagementMember;
 use App\Modules\ClinicManagementMember\Services\ClinicManagementMemberService;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Validator;
@@ -18,19 +19,30 @@ class ClinicManagementMemberResolver
      */
     public function list($_, array $args)
     {
-        return $this->service->list();
+        // Publicly accessible, automatically scoped by tenant trait
+        return ClinicManagementMember::all();
     }
 
     /**
-     * جلب عضو محدد
+     * جلب عضو محدد بناءً على tenant_id من التوكن
      */
     public function show($_, array $args)
     {
-        $member = $this->service->show($args['id']);
+        // الحصول على tenant_id من المستخدم المسجل
+        $userTenantId = auth()->user()->tenant_id ?? null;
+        
+        if ($userTenantId === null) {
+            throw ValidationException::withMessages([
+                'tenant_id' => [__('ClinicManagementMember/messages.unauthorized')]
+            ]);
+        }
+
+        // جلب العضو بناءً على tenant_id
+        $member = ClinicManagementMember::where('tenant_id', $userTenantId)->first();
 
         if (!$member) {
             throw ValidationException::withMessages([
-                'id' => [__('clinic_management_member.messages.not_found')]
+                'tenant_id' => [__('ClinicManagementMember/messages.not_found')]
             ]);
         }
 
@@ -55,9 +67,7 @@ class ClinicManagementMemberResolver
         }
 
         $data = $validator->validated();
-
-        // ✅ إضافة tenant_id تلقائي
-        $data['tenant_id'] = tenant('id'); // tenant() دالة Stancl Tenancy بترجع التينانت الحالي
+        // tenant_id is automatic via trait
 
         $member = $this->service->store($data);
 
@@ -76,11 +86,12 @@ class ClinicManagementMemberResolver
 
     public function update($_, array $args)
     {
-        $member = $this->service->show($args['id']);
+        $id = isset($args['id']) ? (int) $args['id'] : 0;
+        $member = $this->service->show($id);
 
         if (!$member) {
             throw ValidationException::withMessages([
-                'id' => [__('clinic_management_member.messages.not_found')]
+                'id' => [__('ClinicManagementMember/messages.not_found')]
             ]);
         }
 
@@ -93,10 +104,10 @@ class ClinicManagementMemberResolver
                 'photo'     => ['sometimes', 'nullable'],
             ],
             [
-                'name.required' => __('clinic_management_member.validation.name_required'),
-                'name.min'      => __('clinic_management_member.validation.name_min'),
-                'name.max'      => __('clinic_management_member.validation.name_max'),
-                'position.max'  => __('clinic_management_member.validation.position_max'),
+                'name.required' => __('ClinicManagementMember/validation.name_required'),
+                'name.min'      => __('ClinicManagementMember/validation.name_min'),
+                'name.max'      => __('ClinicManagementMember/validation.name_max'),
+                'position.max'  => __('ClinicManagementMember/validation.position_max'),
             ]
         );
 
@@ -129,11 +140,12 @@ class ClinicManagementMemberResolver
 
     public function destroy($_, array $args)
     {
-        $member = $this->service->show($args['id']);
+        $id = isset($args['id']) ? (int) $args['id'] : 0;
+        $member = $this->service->show($id);
 
         if (!$member) {
             throw ValidationException::withMessages([
-                'id' => [__('clinic_management_member.messages.not_found')]
+                'id' => [__('ClinicManagementMember/messages.not_found')]
             ]);
         }
 

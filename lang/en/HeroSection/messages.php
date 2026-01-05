@@ -1,4 +1,4 @@
 <?php
 return [
-    'not_found' => 'الوحدة غير موجودة.',
+    'not_found' => 'Hero section not found.',
 ];

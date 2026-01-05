@@ -24,7 +24,7 @@ class CompanyPaymentPlanResolver
 
         if (!$plan) {
             throw ValidationException::withMessages([
-                'id' => [__('company_payment_plan.messages.not_found')]
+                'id' => [__('CompanyPaymentPlan/messages.not_found')]
             ]);
         }
 
@@ -36,8 +36,8 @@ class CompanyPaymentPlanResolver
         $validator = Validator::make($args, [
             'insurance_company_id' => ['required', 'exists:insurance_companies,id'],
         ], [
-            'insurance_company_id.required' => __('company_payment_plan.validation.insurance_company_required'),
-            'insurance_company_id.exists'   => __('company_payment_plan.validation.insurance_company_exists'),
+            'insurance_company_id.required' => __('CompanyPaymentPlan/validation.insurance_company_required'),
+            'insurance_company_id.exists'   => __('CompanyPaymentPlan/validation.insurance_company_exists'),
         ]);
 
         if ($validator->fails()) {
@@ -45,7 +45,7 @@ class CompanyPaymentPlanResolver
         }
 
         $data = $validator->validated();
-        $data['tenant_id'] = tenant('id');
+        // tenant_id is automatic via trait
 
         return $this->service->store($data);
     }
@@ -56,7 +56,7 @@ class CompanyPaymentPlanResolver
 
         if (!$plan) {
             throw ValidationException::withMessages([
-                'id' => [__('company_payment_plan.messages.not_found')]
+                'id' => [__('CompanyPaymentPlan/messages.not_found')]
             ]);
         }
 
@@ -77,7 +77,7 @@ class CompanyPaymentPlanResolver
 
         if (!$plan) {
             throw ValidationException::withMessages([
-                'id' => [__('company_payment_plan.messages.not_found')]
+                'id' => [__('CompanyPaymentPlan/messages.not_found')]
             ]);
         }
 

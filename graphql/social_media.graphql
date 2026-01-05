@@ -26,6 +26,8 @@ extend type Mutation {
         @field(
             resolver: "App\\GraphQL\\Resolvers\\SocialMediaResolver@createOrUpdate"
         )
+        @guard(with: ["sanctum"])
     deleteSocialMedia: Boolean
         @field(resolver: "App\\GraphQL\\Resolvers\\SocialMediaResolver@destroy")
+        @guard(with: ["sanctum"])
 }

@@ -41,6 +41,7 @@ $vars = [
     'input' => [
         'name' => 'Test User',
         'email' => $email,
+        'phone' => '0123456789',
         'password' => $password,
         'password_confirmation' => $password
     ]
@@ -66,22 +67,22 @@ $mutation = '
     }
 ';
 // Test Arabic Localization using header
-$res = graphql($mutation, ['input' => ['identifier' => 'invalid@example.com']], ['language-encoding: ar']);
+$res = graphql($mutation, ['input' => ['email' => 'invalid@example.com']], ['language-encoding: ar']);
 echo "Response (Arabic Expected): " . ($res['errors'][0]['message'] ?? 'Success?') . "\n";
 
 
 // 3. Forgot Password (Valid User)
 echo "\n3. Forgot Password (Valid User)...\n";
-$res = graphql($mutation, ['input' => ['identifier' => $email]]);
+$res = graphql($mutation, ['input' => ['email' => $email]]);
 print_r($res);
 
 
 // 4. Get Code from DB (Cheat)
 echo "\n4. Fetching OTP from DB using Artisan Tinker...\n";
-$cmd = "php artisan tinker --execute=\"echo \App\Models\VerificationCode::where('identifier', '$email')->value('code');\"";
+$cmd = "php artisan tinker --execute=\"echo \App\Models\VerificationCode::where('email', '$email')->value('code');\"";
 // Note: --execute might not be available in all versions, if not, we use pipe.
 // Let's use pipe which is standard.
-$cmd = "echo \App\Models\VerificationCode::where('identifier', '$email')->value('code'); | php artisan tinker";
+$cmd = "echo \App\Models\VerificationCode::where('email', '$email')->value('code'); | php artisan tinker";
 
 // We need to strip the tinker banner and other output.
 // Tinker usually outputs the result of the expression.
@@ -113,7 +114,7 @@ $mutation = '
         }
     }
 ';
-$res = graphql($mutation, ['input' => ['identifier' => $email, 'code' => $code]]);
+$res = graphql($mutation, ['input' => ['email' => $email, 'code' => $code]]);
 print_r($res);
 $resetToken = $res['data']['verifyOtp']['token'] ?? null;
 

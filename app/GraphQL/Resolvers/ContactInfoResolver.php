@@ -3,6 +3,7 @@
 namespace App\GraphQL\Resolvers;
 
 use GraphQL\Error\UserError;
+use App\Modules\ContactInfo\Models\ContactInfo;
 use App\Modules\ContactInfo\Services\ContactInfoService;
 use Illuminate\Support\Facades\Validator;
 
@@ -12,11 +13,8 @@ class ContactInfoResolver
 
     public function show($_, array $args)
     {
-        $user = auth()->guard('sanctum')->user();
-        if (!$user || !$user->clinic_id) {
-             throw new UserError(__('ContactInfo.messages.no_clinic'));
-        }
-        return $this->service->getByClinicId($user->clinic_id);
+        // Publicly accessible, automatically scoped by tenant trait
+        return ContactInfo::first();
     }
 
     public function createOrUpdate($_, array $args)
@@ -40,7 +38,7 @@ class ContactInfoResolver
         }
 
         $data = $validator->validated();
-        $data['tenant_id'] = tenant('id');
+        // tenant_id is automatic via trait
 
         return $this->service->createOrUpdate($user->clinic_id, $data);
     }

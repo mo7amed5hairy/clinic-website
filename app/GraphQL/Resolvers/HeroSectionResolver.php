@@ -3,6 +3,7 @@
 namespace App\GraphQL\Resolvers;
 
 use GraphQL\Error\UserError;
+use App\Modules\HeroSection\Models\HeroSection;
 use App\Modules\HeroSection\Services\HeroSectionService;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
@@ -16,11 +17,8 @@ class HeroSectionResolver
     // جلب هيرو سيكشن العيادة
     public function show($_, array $args)
     {
-        $user = auth()->guard('sanctum')->user();
-        if (!$user || !$user->clinic_id) {
-             throw new UserError(__('HeroSection.messages.no_clinic'));
-        }
-        return $this->service->getByClinicId($user->clinic_id);
+        // Publicly accessible, automatically scoped by tenant trait
+        return HeroSection::first();
     }
 
     // إنشاء أو تحديث هيرو سيكشن
@@ -28,7 +26,7 @@ class HeroSectionResolver
     {
         $user = auth()->guard('sanctum')->user();
         if (!$user || !$user->clinic_id) {
-             throw new UserError(__('HeroSection.messages.no_clinic'));
+             throw new UserError(__('HeroSection/messages.no_clinic'));
         }
 
         $validator = Validator::make($args, [
@@ -43,7 +41,7 @@ class HeroSectionResolver
         }
 
         $data = $validator->validated();
-        $data['tenant_id'] = tenant('id');
+        // tenant_id is automatic via trait
 
         $hero = $this->service->createOrUpdate($user->clinic_id, $data);
 
@@ -62,7 +60,7 @@ class HeroSectionResolver
     {
         $user = auth()->guard('sanctum')->user();
         if (!$user || !$user->clinic_id) {
-             throw new UserError(__('HeroSection.messages.no_clinic'));
+             throw new UserError(__('HeroSection/messages.no_clinic'));
         }
 
         $hero = $this->service->getByClinicId($user->clinic_id);

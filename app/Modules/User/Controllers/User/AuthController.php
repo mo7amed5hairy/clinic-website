@@ -22,7 +22,7 @@ class AuthController extends Controller
 
         return response()->json([
             'status'  => true,
-            'message' => __('auth.register_success'),
+            'message' => __('Auth/messages.register_success'),
             'data'    => [
                 'user'  => new UserResource($result['user']),
                 'token' => $result['token'],
@@ -36,7 +36,7 @@ class AuthController extends Controller
 
         return response()->json([
             'status'  => true,
-            'message' => __('auth.login_success'),
+            'message' => __('Auth/messages.login_success'),
             'data'    => [
                 'user'  => new UserResource($result['user']),
                 'token' => $result['token'],
@@ -50,7 +50,7 @@ class AuthController extends Controller
 
         return response()->json([
             'status'  => true,
-            'message' => __('auth.logout_success'),
+            'message' => __('Auth/messages.logout_success'),
         ]);
     }
 

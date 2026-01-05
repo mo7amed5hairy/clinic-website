@@ -1,5 +1,5 @@
 <?php
 return [
-    'name_required' => 'اسم الوحدة مطلوب.',
-    'name_max'      => 'اسم الوحدة لا يمكن أن يزيد عن 255 حرف.',
+    'name_required' => 'Hero section name is required.',
+    'name_max'      => 'Hero section name may not be greater than 255 characters.',
 ];

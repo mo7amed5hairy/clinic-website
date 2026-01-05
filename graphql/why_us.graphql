@@ -13,6 +13,8 @@ extend type Mutation {
         @field(
             resolver: "App\\GraphQL\\Resolvers\\WhyUsResolver@createOrUpdate"
         )
+        @guard(with: ["sanctum"])
     deleteWhyUs: Boolean
         @field(resolver: "App\\GraphQL\\Resolvers\\WhyUsResolver@destroy")
+        @guard(with: ["sanctum"])
 }

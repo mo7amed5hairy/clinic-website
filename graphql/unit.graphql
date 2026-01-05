@@ -15,10 +15,13 @@ extend type Query {
 extend type Mutation {
     createUnit(name: String!, description: String, image: Upload): Unit
         @field(resolver: "App\\GraphQL\\Resolvers\\UnitResolver@create")
+        @guard(with: ["sanctum"])
 
     updateUnit(id: ID!, name: String, description: String, image: Upload): Unit
         @field(resolver: "App\\GraphQL\\Resolvers\\UnitResolver@update")
+        @guard(with: ["sanctum"])
 
     deleteUnit(id: ID!): Boolean
         @field(resolver: "App\\GraphQL\\Resolvers\\UnitResolver@destroy")
+        @guard(with: ["sanctum"])
 }

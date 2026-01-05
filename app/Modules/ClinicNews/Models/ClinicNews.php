@@ -21,5 +21,7 @@ class ClinicNews extends Model
         'image',
     ];
 
-    protected $casts = [];
+    protected $casts = [
+        'content' => 'array',
+    ];
 }

@@ -3,6 +3,7 @@
 namespace App\GraphQL\Resolvers;
 
 use GraphQL\Error\UserError;
+use App\Modules\AboutUs\Models\AboutUs;
 use App\Modules\AboutUs\Services\AboutUsService;
 use Illuminate\Support\Facades\Validator;
 
@@ -12,20 +13,15 @@ class AboutUsResolver
 
     public function show($_, array $args)
     {
-        $user = auth()->guard('sanctum')->user();
-        if (!$user || !$user->clinic_id) {
-             throw new UserError(__('AboutUs/messages.no_clinic'));
-        }
-        return $this->service->getByClinicId($user->clinic_id);
+        // Publicly accessible, automatically scoped by tenant trait
+        return AboutUs::first();
     }
 
     public function createOrUpdate($_, array $args)
     {
         $user = auth()->guard('sanctum')->user();
-        if (!$user || !$user->clinic_id) {
-             throw new UserError(__('AboutUs/messages.no_clinic'));
-        }
-
+        // Mutation is protected by @guard in schema, so $user definitely exists.
+        
         $validator = Validator::make($args, [
             'title'       => ['required', 'string', 'max:255'],
             'description' => ['required', 'string'],
@@ -35,20 +31,15 @@ class AboutUsResolver
              throw new UserError(collect($validator->errors()->all())->join("\n"));
         }
 
-        $data = [
-            'tenant_id'   => tenant('id'),
-            'title'       => $args['title'],
-            'description' => $args['description'],
-        ];
-
-        return $this->service->createOrUpdate($user->clinic_id, $data);
+        // tenant_id is handled automatically by BelongsToTenant trait
+        return $this->service->createOrUpdate($user->clinic_id, $validator->validated());
     }
 
     public function destroy($_, array $args)
     {
         $user = auth()->guard('sanctum')->user();
         if (!$user || !$user->clinic_id) {
-             throw new UserError(__('AboutUs.messages.no_clinic'));
+             throw new UserError(__('AboutUs/messages.no_clinic'));
         }
 
         $aboutUs = $this->service->getByClinicId($user->clinic_id);

@@ -30,7 +30,8 @@ input LocalizedStringInput {
 #import contact_message.graphql
 #import unit.graphql
 #import hero_sections.graphql
-#import mediacenter.graphql
+#import media_center_image.graphql
+#import media_center_video.graphql
 #import appointment.graphql
 #import why_us.graphql
 #import about_us.graphql

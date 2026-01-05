@@ -19,15 +19,22 @@ class DepartmentResolver
     }
 
     public function show($_, array $args) {
-        $department = $this->service->show($args['id']);
+        // الحصول على tenant_id من المستخدم المسجل
+        $userTenantId = auth()->user()->tenant_id ?? null;
+        
+        if ($userTenantId === null) {
+            throw ValidationException::withMessages([
+                'tenant_id' => [__('Department/messages.unauthorized')]
+            ]);
+        }
+
+        // جلب القسم بناءً على tenant_id
+        $department = Department::where('tenant_id', $userTenantId)->first();
 
         if (!$department) {
-            $validator = Validator::make([], []);
-            $validator->errors()->add(
-                'id',
-                __('department.messages.not_found')
-            );
-            throw new ValidationException($validator);
+            throw ValidationException::withMessages([
+                'tenant_id' => [__('Department/messages.not_found')]
+            ]);
         }
 
         return $department;
@@ -41,10 +48,10 @@ class DepartmentResolver
                 'name'      => ['required', 'string', 'max:255'],
             ],
             [
-                'doctor_id.required' => __('department.validation.doctor_id_required'),
-                'doctor_id.exists'   => __('department.validation.doctor_id_exists'),
-                'name.required'      => __('department.validation.name_required'),
-                'name.max'           => __('department.validation.name_max'),
+                'doctor_id.required' => __('Department/validation.doctor_id_required'),
+                'doctor_id.exists'   => __('Department/validation.doctor_id_exists'),
+                'name.required'      => __('Department/validation.name_required'),
+                'name.max'           => __('Department/validation.name_max'),
             ]
         );
 
@@ -53,7 +60,7 @@ class DepartmentResolver
         }
 
         $data = $validator->validated();
-        $data['tenant_id'] = tenant('id');
+        // tenant_id is automatic via trait
 
         return $this->service->store($data);
     }
@@ -65,7 +72,7 @@ class DepartmentResolver
             $validator = Validator::make([], []);
             $validator->errors()->add(
                 'id',
-                __('department.messages.not_found')
+                __('Department/messages.not_found')
             );
             throw new ValidationException($validator);
         }
@@ -77,10 +84,10 @@ class DepartmentResolver
                 'name'      => ['sometimes', 'required', 'string', 'max:255'],
             ],
             [
-                'doctor_id.required' => __('department.validation.doctor_id_required'),
-                'doctor_id.exists'   => __('department.validation.doctor_id_exists'),
-                'name.required'      => __('department.validation.name_required'),
-                'name.max'           => __('department.validation.name_max'),
+                'doctor_id.required' => __('Department/validation.doctor_id_required'),
+                'doctor_id.exists'   => __('Department/validation.doctor_id_exists'),
+                'name.required'      => __('Department/validation.name_required'),
+                'name.max'           => __('Department/validation.name_max'),
             ]
         );
 
@@ -97,7 +104,7 @@ class DepartmentResolver
 
         if (!$department) {
             $validator = Validator::make(['id' => $args['id']], ['id' => ['required']], [
-                'id.required' => __('department.messages.not_found'),
+                'id.required' => __('Department/messages.not_found'),
             ]);
             throw new ValidationException($validator);
         }

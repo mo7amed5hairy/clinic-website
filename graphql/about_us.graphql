@@ -8,7 +8,6 @@ type AboutUs {
 extend type Query {
     aboutUs: AboutUs
         @field(resolver: "App\\GraphQL\\Resolvers\\AboutUsResolver@show")
-        @guard(with: ["sanctum"])
 }
 
 extend type Mutation {

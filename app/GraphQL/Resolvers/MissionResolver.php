@@ -3,6 +3,7 @@
 namespace App\GraphQL\Resolvers;
 
 use GraphQL\Error\UserError;
+use App\Modules\Mission\Models\Mission;
 use App\Modules\Mission\Services\MissionService;
 use Illuminate\Support\Facades\Validator;
 
@@ -12,11 +13,8 @@ class MissionResolver
 
     public function show($_, array $args)
     {
-        $user = auth()->guard('sanctum')->user();
-        if (!$user || !$user->clinic_id) {
-             throw new UserError(__('Mission.messages.no_clinic'));
-        }
-        return $this->service->getByClinicId($user->clinic_id);
+        // Publicly accessible, automatically scoped by tenant trait
+        return Mission::first();
     }
 
     public function createOrUpdate($_, array $args)
@@ -36,9 +34,9 @@ class MissionResolver
         }
 
         $data = [
-            'tenant_id' => tenant('id'),
             'mission'   => $args['mission'],
         ];
+        // tenant_id is automatic via trait
 
         $mission = $this->service->createOrUpdate($user->clinic_id, $data);
 

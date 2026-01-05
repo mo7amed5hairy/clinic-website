@@ -38,7 +38,7 @@ class InstallmentMethodResolver
         $method = $this->service->show($args['id']);
         
         if (!$method) {
-            throw new UserError('Not Found');
+            throw new UserError(__('InstallmentMethod/messages.messages.not_found'));
         }
 
         $this->service->destroy($method);

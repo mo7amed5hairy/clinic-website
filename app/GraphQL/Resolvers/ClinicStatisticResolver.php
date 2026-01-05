@@ -3,6 +3,7 @@
 namespace App\GraphQL\Resolvers;
 
 use GraphQL\Error\UserError;
+use App\Modules\ClinicStatistic\Models\ClinicStatistic;
 use App\Modules\ClinicStatistic\Services\ClinicStatisticService;
 use Illuminate\Support\Facades\Validator;
 
@@ -10,14 +11,11 @@ class ClinicStatisticResolver
 {
     public function __construct(protected ClinicStatisticService $service) {}
 
-    // عرض الإحصائيات
+    // عرضالإحصائيات
     public function show($_, array $args)
     {
-        $user = auth()->guard('sanctum')->user();
-        if (!$user || !$user->clinic_id) {
-            throw new UserError(__('ClinicStatistic.messages.no_clinic'));
-        }
-        return $this->service->getByClinicId($user->clinic_id);
+        // Publicly accessible, automatically scoped by tenant trait
+        return ClinicStatistic::first();
     }
 
     // إنشاء أو تحديث الإحصائيات
@@ -25,7 +23,7 @@ class ClinicStatisticResolver
     {
         $user = auth()->guard('sanctum')->user();
         if (!$user || !$user->clinic_id) {
-            throw new UserError(__('ClinicStatistic.messages.no_clinic'));
+            throw new UserError(__('ClinicStatistic/messages.no_clinic'));
         }
 
         // ✅ Validation متوافق مع الحقول اللي انت بتبعتها
@@ -41,9 +39,9 @@ class ClinicStatisticResolver
         }
 
         $data = [
-            'tenant_id' => tenant('id'),
             'items' => $args['items'],
         ];
+        // tenant_id is automatic via trait
 
         return $this->service->createOrUpdate($user->clinic_id, $data);
     }
@@ -53,7 +51,7 @@ class ClinicStatisticResolver
     {
         $user = auth()->guard('sanctum')->user();
         if (!$user || !$user->clinic_id) {
-            throw new UserError(__('ClinicStatistic.messages.no_clinic'));
+            throw new UserError(__('ClinicStatistic/messages.no_clinic'));
         }
 
         $stat = $this->service->getByClinicId($user->clinic_id);

@@ -42,7 +42,7 @@ class AuthResolver
 
         return [
             'status' => true,
-            'message' => __('auth.register_success'),
+            'message' => __('Auth/messages.register_success'),
             'user' => new UserResource($result['user']),
             'token' => $result['token'],
         ];
@@ -66,7 +66,7 @@ class AuthResolver
 
         return [
             'status' => true,
-            'message' => __('auth.login_success'),
+            'message' => __('Auth/messages.login_success'),
             'user' => new UserResource($result['user']),
             'token' => $result['token'],
         ];
@@ -79,7 +79,7 @@ class AuthResolver
         if (!$user) {
             return [
                 'status' => false,
-                'message' => __('auth.not_logged_in'),
+                'message' => __('Auth/messages.not_logged_in'),
             ];
         }
 
@@ -87,7 +87,7 @@ class AuthResolver
 
         return [
             'status' => true,
-            'message' => __('auth.logout_success'),
+            'message' => __('Auth/messages.logout_success'),
         ];
     }
 
@@ -109,7 +109,7 @@ class AuthResolver
 
         if (!$email) {
             throw ValidationException::withMessages([
-                'email' => __('auth.email_required'),
+                'email' => __('Auth/messages.email_required'),
             ]);
         }
 
@@ -117,7 +117,7 @@ class AuthResolver
 
         return [
             'status' => true,
-            'message' => __('auth.otp_sent'),
+            'message' => __('Auth/messages.otp_sent'),
         ];
     }
 
@@ -129,8 +129,8 @@ class AuthResolver
 
         if (!$email || !$code) {
             throw ValidationException::withMessages([
-                'email' => __('auth.email_required'),
-                'code'  => __('auth.code_required'),
+                'email' => __('Auth/messages.email_required'),
+                'code'  => __('Auth/messages.code_required'),
             ]);
         }
 
@@ -177,7 +177,7 @@ class AuthResolver
 
         if (!$email) {
             throw ValidationException::withMessages([
-                'email' => __('auth.email_required'),
+                'email' => __('Auth/messages.email_required'),
             ]);
         }
 
@@ -185,7 +185,7 @@ class AuthResolver
 
         return [
             'status' => true,
-            'message' => __('auth.otp_sent'),
+            'message' => __('Auth/messages.otp_sent'),
         ];
     }
 }

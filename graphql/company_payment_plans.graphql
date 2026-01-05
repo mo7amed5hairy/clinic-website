@@ -20,6 +20,7 @@ extend type Mutation {
         @field(
             resolver: "App\\GraphQL\\Resolvers\\CompanyPaymentPlanResolver@create"
         )
+        @guard(with: ["sanctum"])
 
     updateCompanyPaymentPlan(
         id: ID!
@@ -28,9 +29,11 @@ extend type Mutation {
         @field(
             resolver: "App\\GraphQL\\Resolvers\\CompanyPaymentPlanResolver@update"
         )
+        @guard(with: ["sanctum"])
 
     deleteCompanyPaymentPlan(id: ID!): Boolean
         @field(
             resolver: "App\\GraphQL\\Resolvers\\CompanyPaymentPlanResolver@destroy"
         )
+        @guard(with: ["sanctum"])
 }

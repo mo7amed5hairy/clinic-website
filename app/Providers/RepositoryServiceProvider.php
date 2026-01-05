@@ -29,6 +29,10 @@ use App\Modules\HeroSection\Contracts\HeroSectionRepositoryInterface;
 use App\Modules\HeroSection\Repositories\HeroSectionRepository;
 use App\Modules\InsuranceCompany\Contracts\InsuranceCompanyRepositoryInterface;
 use App\Modules\InsuranceCompany\Repositories\InsuranceCompanyRepository;
+use App\Modules\MediaCenterImage\Contracts\MediaCenterImageRepositoryInterface;
+use App\Modules\MediaCenterImage\Repositories\MediaCenterImageRepository;
+use App\Modules\MediaCenterVideo\Contracts\MediaCenterVideoRepositoryInterface;
+use App\Modules\MediaCenterVideo\Repositories\MediaCenterVideoRepository;
 use App\Modules\MediaCenter\Contracts\MediaCenterRepositoryInterface;
 use App\Modules\MediaCenter\Repositories\MediaCenterRepository;
 use App\Modules\Unit\Contracts\UnitRepositoryInterface;
@@ -122,6 +126,14 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(
             MediaCenterRepositoryInterface::class,
             MediaCenterRepository::class
+        );
+        $this->app->bind(
+            MediaCenterImageRepositoryInterface::class,
+            MediaCenterImageRepository::class
+        );
+        $this->app->bind(
+            MediaCenterVideoRepositoryInterface::class,
+            MediaCenterVideoRepository::class
         );
         $this->app->bind(
             AppointmentRepositoryInterface::class,

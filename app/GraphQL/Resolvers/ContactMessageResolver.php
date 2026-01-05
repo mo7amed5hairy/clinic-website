@@ -18,11 +18,21 @@ class ContactMessageResolver
 
     public function show($_, array $args)
     {
-        $message = $this->service->show($args['id']);
+        // الحصول على tenant_id من المستخدم المسجل
+        $userTenantId = auth()->user()->tenant_id ?? null;
+        
+        if ($userTenantId === null) {
+            throw ValidationException::withMessages([
+                'tenant_id' => [__('ContactMessage/messages.unauthorized')]
+            ]);
+        }
+
+        // جلب الرسالة بناءً على tenant_id
+        $message = \App\Modules\ContactMessage\Models\ContactMessage::where('tenant_id', $userTenantId)->first();
 
         if (!$message) {
             throw ValidationException::withMessages([
-                'id' => [__('contact_message.messages.not_found')]
+                'tenant_id' => [__('ContactMessage/messages.not_found')]
             ]);
         }
 
@@ -55,7 +65,7 @@ class ContactMessageResolver
 
         if (!$message) {
             throw ValidationException::withMessages([
-                'id' => [__('contact_message.messages.not_found')]
+                'id' => [__('ContactMessage/messages.not_found')]
             ]);
         }
 
@@ -80,7 +90,7 @@ class ContactMessageResolver
 
         if (!$message) {
             throw ValidationException::withMessages([
-                'id' => [__('contact_message.messages.not_found')]
+                'id' => [__('ContactMessage/messages.not_found')]
             ]);
         }
 

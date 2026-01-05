@@ -3,6 +3,7 @@
 namespace App\GraphQL\Resolvers;
 
 use GraphQL\Error\UserError;
+use App\Modules\ClinicNews\Models\ClinicNews;
 use App\Modules\ClinicNews\Services\ClinicNewsService;
 use Illuminate\Support\Facades\Validator;
 
@@ -12,23 +13,18 @@ class ClinicNewsResolver
 
     public function show($_, array $args)
     {
-        $user = auth()->guard('sanctum')->user();
-        if (!$user || !$user->clinic_id) {
-             throw new UserError(__('ClinicNews.messages.no_clinic'));
-        }
-        return $this->service->getByClinicId($user->clinic_id);
+        // Publicly accessible, automatically scoped by tenant trait
+        return ClinicNews::all();
     }
 
     public function createOrUpdate($_, array $args)
     {
         $user = auth()->guard('sanctum')->user();
-        if (!$user || !$user->clinic_id) {
-             throw new UserError(__('ClinicNews.messages.no_clinic'));
-        }
-
+        // Mutation is protected by @guard in schema
+        
         $validator = Validator::make($args, [
             'title'   => ['required', 'string', 'max:255'],
-            'content' => ['required', 'string'],
+            'content' => ['nullable', 'json'],
             'image'   => ['nullable'],
         ]);
 
@@ -37,7 +33,7 @@ class ClinicNewsResolver
         }
 
         $data = $validator->validated();
-        $data['tenant_id'] = tenant('id');
+        // tenant_id is automatic
         
         if (isset($args['id'])) {
             $data['id'] = $args['id'];
@@ -59,10 +55,10 @@ class ClinicNewsResolver
     {
         $user = auth()->guard('sanctum')->user();
         if (!$user || !$user->clinic_id) {
-             throw new UserError(__('ClinicNews.messages.no_clinic'));
+             throw new UserError(__('ClinicNews/messages.no_clinic'));
         }
 
-        $news = $this->service->show($args['id']);
+        $news = $this->service->show((int) $args['id']);
         
         if (!$news || $news->clinic_id != $user->clinic_id) {
             throw new UserError('Not Found');

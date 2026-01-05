@@ -3,6 +3,7 @@
 namespace App\GraphQL\Resolvers;
 
 use GraphQL\Error\UserError;
+use App\Modules\ClinicArticle\Models\ClinicArticle;
 use App\Modules\ClinicArticle\Services\ClinicArticleService;
 use Illuminate\Support\Facades\Validator;
 
@@ -12,18 +13,15 @@ class ClinicArticleResolver
 
     public function show($_, array $args)
     {
-        $user = auth()->guard('sanctum')->user();
-        if (!$user || !$user->clinic_id) {
-             throw new UserError(__('ClinicArticle.messages.no_clinic'));
-        }
-        return $this->service->getByClinicId($user->clinic_id);
+        // Publicly accessible, automatically scoped by tenant trait
+        return ClinicArticle::all();
     }
 
     public function createOrUpdate($_, array $args)
     {
         $user = auth()->guard('sanctum')->user();
         if (!$user || !$user->clinic_id) {
-             throw new UserError(__('ClinicArticle.messages.no_clinic'));
+             throw new UserError(__('ClinicArticle/messages.no_clinic'));
         }
 
         $validator = Validator::make($args, [
@@ -37,7 +35,7 @@ class ClinicArticleResolver
         }
 
         $data = $validator->validated();
-        $data['tenant_id'] = tenant('id');
+        // tenant_id is automatic
         
         if (isset($args['id'])) {
             $data['id'] = $args['id'];
@@ -59,10 +57,10 @@ class ClinicArticleResolver
     {
         $user = auth()->guard('sanctum')->user();
         if (!$user || !$user->clinic_id) {
-             throw new UserError(__('ClinicArticle.messages.no_clinic'));
+             throw new UserError(__('ClinicArticle/messages.no_clinic'));
         }
 
-        $article = $this->service->show($args['id']);
+        $article = $this->service->show((int) $args['id']);
         
         if (!$article || $article->clinic_id != $user->clinic_id) {
             throw new UserError('Not Found');

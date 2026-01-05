@@ -22,15 +22,25 @@ class InsuranceCompanyResolver
     }
 
     /**
-     * جلب شركة تأمين محددة
+     * جلب شركة تأمين محددة بناءً على tenant_id من التوكن
      */
     public function show($_, array $args)
     {
-        $company = $this->service->show($args['id']);
+        // الحصول على tenant_id من المستخدم المسجل
+        $userTenantId = auth()->user()->tenant_id ?? null;
+        
+        if ($userTenantId === null) {
+            throw ValidationException::withMessages([
+                'tenant_id' => [__('InsuranceCompany/messages.unauthorized')],
+            ]);
+        }
+
+        // جلب شركة التأمين بناءً على tenant_id
+        $company = \App\Modules\InsuranceCompany\Models\InsuranceCompany::where('tenant_id', $userTenantId)->first();
 
         if (!$company) {
             throw ValidationException::withMessages([
-                'id' => [__('insurance_company.messages.not_found')],
+                'tenant_id' => [__('InsuranceCompany/messages.not_found')],
             ]);
         }
 
@@ -50,8 +60,8 @@ class InsuranceCompanyResolver
                 'image'     => ['nullable'],
             ],
             [
-                'name.required' => __('insurance_company.validation.name_required'),
-                'link.url'      => __('insurance_company.validation.link_url'),
+                'name.required' => __('InsuranceCompany/validation.name_required'),
+                'link.url'      => __('InsuranceCompany/validation.link_url'),
             ]
         );
 
@@ -64,9 +74,7 @@ class InsuranceCompanyResolver
         $data = $validator->validated();
 
         $company = $this->service->store(
-            array_merge($data, [
-                'tenant_id' => tenant('id'),
-            ])
+            $data
         );
 
         if (!empty($args['image'])) {
@@ -88,7 +96,7 @@ class InsuranceCompanyResolver
 
         if (!$company) {
             throw ValidationException::withMessages([
-                'id' => [__('insurance_company.messages.not_found')],
+                'id' => [__('InsuranceCompany/messages.not_found')],
             ]);
         }
 
@@ -100,8 +108,8 @@ class InsuranceCompanyResolver
                 'image'     => ['sometimes', 'nullable'],
             ],
             [
-                'name.required' => __('insurance_company.validation.name_required'),
-                'link.url'      => __('insurance_company.validation.link_url'),
+                'name.required' => __('InsuranceCompany/validation.name_required'),
+                'link.url'      => __('InsuranceCompany/validation.link_url'),
             ]
         );
 
@@ -143,7 +151,7 @@ class InsuranceCompanyResolver
 
         if (!$company) {
             throw ValidationException::withMessages([
-                'id' => [__('insurance_company.messages.not_found')],
+                'id' => [__('InsuranceCompany/messages.not_found')],
             ]);
         }
 

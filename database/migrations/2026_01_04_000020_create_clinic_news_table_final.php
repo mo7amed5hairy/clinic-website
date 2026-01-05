@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreignId('clinic_id')->constrained('clinics')->cascadeOnDelete();
             
             $table->string('title');
-            $table->text('content'); // "Content" separately
+            $table->json('content');
             $table->string('image')->nullable();
             
             $table->timestamps();

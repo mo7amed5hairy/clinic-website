@@ -20,11 +20,8 @@ class DoctorResolver
      */
     public function show($_, array $args)
     {
-        $user = auth()->guard('sanctum')->user();
-        if (!$user || !$user->clinic_id) {
-             throw new UserError(__('doctor.messages.no_clinic'));
-        }
-        return $this->service->getByClinicId($user->clinic_id);
+        // Publicly accessible, automatically scoped by tenant trait
+        return Doctor::with('departments')->get();
     }
 
 
@@ -34,10 +31,8 @@ class DoctorResolver
     public function createOrUpdate($_, array $args)
     {
         $user = auth()->guard('sanctum')->user();
-        if (!$user || !$user->clinic_id) {
-             throw new UserError(__('doctor.messages.no_clinic'));
-        }
-
+        // Mutation is protected by @guard in schema
+        
         $validator = Validator::make($args, [
             'name'           => ['required', 'string', 'min:2'],
             'specialization' => ['required', 'string'],
@@ -53,7 +48,7 @@ class DoctorResolver
         }
 
         $data = $validator->validated();
-        $data['tenant_id'] = tenant('id');
+        // tenant_id is automatic via tray
         
         // Pass ID if exists in args (for update)
         if (isset($args['id'])) {
@@ -82,13 +77,13 @@ class DoctorResolver
     {
         $user = auth()->guard('sanctum')->user();
         if (!$user || !$user->clinic_id) {
-             throw new UserError(__('doctor.messages.no_clinic'));
+             throw new UserError(__('Doctor/messages.no_clinic'));
         }
 
         $doctor = $this->service->show($args['id']); 
 
         if (!$doctor || $doctor->clinic_id != $user->clinic_id) {
-            throw new UserError(__('doctor.messages.not_found'));
+            throw new UserError(__('Doctor/messages.not_found'));
         }
 
         $this->service->destroy($doctor);

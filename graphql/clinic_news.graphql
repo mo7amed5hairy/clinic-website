@@ -2,7 +2,7 @@ type ClinicNews {
     id: ID!
     clinic_id: ID!
     title: String!
-    content: String
+    content: JSON
     image: String
 }
 
@@ -15,13 +15,15 @@ extend type Mutation {
     createOrUpdateClinicNews(
         id: ID
         title: String!
-        content: String!
+        content: JSON
         image: Upload
     ): ClinicNews
         @field(
             resolver: "App\\GraphQL\\Resolvers\\ClinicNewsResolver@createOrUpdate"
         )
+        @guard(with: ["sanctum"])
 
     deleteClinicNews(id: ID!): Boolean
         @field(resolver: "App\\GraphQL\\Resolvers\\ClinicNewsResolver@destroy")
+        @guard(with: ["sanctum"])
 }

@@ -9,13 +9,8 @@ type User {
 
 input RegisterInput {
     name: String!
-<<<<<<< HEAD
     email: String!
     phone: String!
-=======
-    email: String! @rules(apply: ["email"])
-    phone: String
->>>>>>> soulnbody/mo7amed5hairy
     password: String!
     password_confirmation: String!
 }
@@ -75,7 +70,6 @@ extend type Mutation {
     login(input: LoginInput!): AuthPayload
         @field(resolver: "App\\GraphQL\\Resolvers\\AuthResolver@login")
     logout: LogoutPayload
-<<<<<<< HEAD
         @field(resolver: "App\\GraphQL\\Resolvers\\AuthResolver@logout")
 
     forgotPassword(input: ForgotPasswordInput!): VerificationPayload
@@ -86,19 +80,6 @@ extend type Mutation {
         @field(resolver: "App\\GraphQL\\Resolvers\\AuthResolver@resetPassword")
     resendOtp(input: ResendOtpInput!): VerificationPayload
         @field(resolver: "App\\GraphQL\\Resolvers\\AuthResolver@resendOtp")
-=======
-        @field(resolver: "App\\Modules\\User\\GraphQL\\AuthResolver@logout")
-
-    forgotPassword(email: String! @rules(apply: ["email"])): AuthPayload
-        @field(
-            resolver: "App\\Modules\\User\\GraphQL\\AuthResolver@forgotPassword"
-        )
-
-    resetPassword(input: ResetPasswordInput!): AuthPayload
-        @field(
-            resolver: "App\\Modules\\User\\GraphQL\\AuthResolver@resetPassword"
-        )
->>>>>>> soulnbody/mo7amed5hairy
 }
 
 extend type Query {

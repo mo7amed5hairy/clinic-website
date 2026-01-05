@@ -8,18 +8,23 @@ type Department {
 extend type Query {
     departments: [Department!]!
         @field(resolver: "App\\GraphQL\\Resolvers\\DepartmentResolver@list")
+        @guard(with: ["sanctum"])
 
-    department(id: ID!): Department
+    department: Department
         @field(resolver: "App\\GraphQL\\Resolvers\\DepartmentResolver@show")
+        @guard(with: ["sanctum"])
 }
 
 extend type Mutation {
     createDepartment(doctor_id: ID!, name: String!): Department
         @field(resolver: "App\\GraphQL\\Resolvers\\DepartmentResolver@create")
+        @guard(with: ["sanctum"])
 
     updateDepartment(id: ID!, doctor_id: ID, name: String): Department
         @field(resolver: "App\\GraphQL\\Resolvers\\DepartmentResolver@update")
+        @guard(with: ["sanctum"])
 
     deleteDepartment(id: ID!): Boolean
         @field(resolver: "App\\GraphQL\\Resolvers\\DepartmentResolver@destroy")
+        @guard(with: ["sanctum"])
 }

@@ -22,9 +22,9 @@ class UpdateSpecificationRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'name.required' => __('Specification.validation.name_required'),
-            'name.min'      => __('Specification.validation.name_min'),
-            'name.max'      => __('Specification.validation.name_max'),
+            'name.required' => __('Specification/validation.name_required'),
+            'name.min'      => __('Specification/validation.name_min'),
+            'name.max'      => __('Specification/validation.name_max'),
         ];
     }
 }

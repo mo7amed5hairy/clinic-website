@@ -1,0 +1,31 @@
+type MediaCenterImage {
+    id: ID!
+    clinic_id: ID!
+    title: String
+    image: String
+}
+
+extend type Query {
+    mediaCenterImages: [MediaCenterImage!]!
+        @field(
+            resolver: "App\\GraphQL\\Resolvers\\MediaCenterImageResolver@show"
+        )
+}
+
+extend type Mutation {
+    createOrUpdateMediaCenterImage(
+        id: ID
+        title: String
+        image: Upload
+    ): MediaCenterImage
+        @field(
+            resolver: "App\\GraphQL\\Resolvers\\MediaCenterImageResolver@createOrUpdate"
+        )
+        @guard(with: ["sanctum"])
+
+    deleteMediaCenterImage(id: ID!): Boolean
+        @field(
+            resolver: "App\\GraphQL\\Resolvers\\MediaCenterImageResolver@destroy"
+        )
+        @guard(with: ["sanctum"])
+}

@@ -18,7 +18,7 @@ class UnitResolver
         $unit = $this->service->show($args['id']);
         if (!$unit) {
             throw ValidationException::withMessages([
-                'id' => [__('unit.messages.not_found')]
+                'id' => [__('Unit/messages.not_found')]
             ]);
         }
         return $unit;
@@ -37,7 +37,7 @@ class UnitResolver
         }
 
         $data = $validator->validated();
-        $data['tenant_id'] = tenant('id');
+        // tenant_id is automatic via trait
 
         $unit = $this->service->store($data);
 
@@ -56,7 +56,7 @@ class UnitResolver
         $unit = $this->service->show($args['id']);
         if (!$unit) {
             throw ValidationException::withMessages([
-                'id' => [__('unit.messages.not_found')]
+                'id' => [__('Unit/messages.not_found')]
             ]);
         }
 
@@ -92,7 +92,7 @@ class UnitResolver
         $unit = $this->service->show($args['id']);
         if (!$unit) {
             throw ValidationException::withMessages([
-                'id' => [__('unit.messages.not_found')]
+                'id' => [__('Unit/messages.not_found')]
             ]);
         }
 

@@ -10,9 +10,11 @@ type ContactMessage {
 extend type Query {
     contactMessages: [ContactMessage!]!
         @field(resolver: "App\\GraphQL\\Resolvers\\ContactMessageResolver@list")
+        @guard(with: ["sanctum"])
 
-    contactMessage(id: ID!): ContactMessage
+    contactMessage: ContactMessage
         @field(resolver: "App\\GraphQL\\Resolvers\\ContactMessageResolver@show")
+        @guard(with: ["sanctum"])
 }
 
 extend type Mutation {
@@ -23,7 +25,9 @@ extend type Mutation {
         subject: String
         message: String!
     ): ContactMessage
-        @field(resolver: "App\\GraphQL\\Resolvers\\ContactMessageResolver@create")
+        @field(
+            resolver: "App\\GraphQL\\Resolvers\\ContactMessageResolver@create"
+        )
 
     updateContactMessage(
         id: ID!
@@ -33,12 +37,14 @@ extend type Mutation {
         subject: String
         message: String
     ): ContactMessage
-        @field(resolver: "App\\GraphQL\\Resolvers\\ContactMessageResolver@update")
+        @field(
+            resolver: "App\\GraphQL\\Resolvers\\ContactMessageResolver@update"
+        )
+        @guard(with: ["sanctum"])
 
-    deleteContactMessage(
-        id: ID!
-    ): Boolean
-        @field(resolver: "App\\GraphQL\\Resolvers\\ContactMessageResolver@destroy")
+    deleteContactMessage(id: ID!): Boolean
+        @field(
+            resolver: "App\\GraphQL\\Resolvers\\ContactMessageResolver@destroy"
+        )
+        @guard(with: ["sanctum"])
 }
-
-

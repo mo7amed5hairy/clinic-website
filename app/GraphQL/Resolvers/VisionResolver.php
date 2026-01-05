@@ -3,6 +3,7 @@
 namespace App\GraphQL\Resolvers;
 
 use GraphQL\Error\UserError;
+use App\Modules\Vision\Models\Vision;
 use App\Modules\Vision\Services\VisionService;
 use Illuminate\Support\Facades\Validator;
 
@@ -12,18 +13,15 @@ class VisionResolver
 
     public function show($_, array $args)
     {
-        $user = auth()->guard('sanctum')->user();
-        if (!$user || !$user->clinic_id) {
-             throw new UserError(__('Vision.messages.no_clinic'));
-        }
-        return $this->service->getByClinicId($user->clinic_id);
+        // Publicly accessible, automatically scoped by tenant trait
+        return Vision::first();
     }
 
     public function createOrUpdate($_, array $args)
     {
         $user = auth()->guard('sanctum')->user();
         if (!$user || !$user->clinic_id) {
-             throw new UserError(__('Vision.messages.no_clinic'));
+             throw new UserError(__('Vision/messages.no_clinic'));
         }
 
         $validator = Validator::make($args, [
@@ -35,9 +33,9 @@ class VisionResolver
         }
 
         $data = [
-            'tenant_id' => tenant('id'),
             'vision'    => $args['vision'],
         ];
+        // tenant_id is automatic via trait
 
         return $this->service->createOrUpdate($user->clinic_id, $data);
     }
@@ -46,7 +44,7 @@ class VisionResolver
     {
         $user = auth()->guard('sanctum')->user();
         if (!$user || !$user->clinic_id) {
-             throw new UserError(__('Vision.messages.no_clinic'));
+             throw new UserError(__('Vision/messages.no_clinic'));
         }
 
         $vision = $this->service->getByClinicId($user->clinic_id);

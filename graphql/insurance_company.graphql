@@ -12,11 +12,12 @@ extend type Query {
             resolver: "App\\GraphQL\\Resolvers\\InsuranceCompanyResolver@list"
         )
 
-    # جلب شركة تأمين محددة
-    insuranceCompany(id: ID!): InsuranceCompany
+    # جلب شركة تأمين محددة بناءً على tenant_id من التوكن
+    insuranceCompany: InsuranceCompany
         @field(
             resolver: "App\\GraphQL\\Resolvers\\InsuranceCompanyResolver@show"
         )
+        @guard(with: ["sanctum"])
 }
 
 extend type Mutation {
@@ -29,8 +30,8 @@ extend type Mutation {
         @field(
             resolver: "App\\GraphQL\\Resolvers\\InsuranceCompanyResolver@create"
         )
+        @guard(with: ["sanctum"])
 
-    # تحديث شركة تأمين
     updateInsuranceCompany(
         id: ID!
         name: String
@@ -40,10 +41,12 @@ extend type Mutation {
         @field(
             resolver: "App\\GraphQL\\Resolvers\\InsuranceCompanyResolver@update"
         )
+        @guard(with: ["sanctum"])
 
     # حذف شركة تأمين
     deleteInsuranceCompany(id: ID!): Boolean
         @field(
             resolver: "App\\GraphQL\\Resolvers\\InsuranceCompanyResolver@destroy"
         )
+        @guard(with: ["sanctum"])
 }

@@ -5,13 +5,16 @@ namespace App\Modules\Specification\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+use App\Traits\BelongsToTenant;
+
 class Specification extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, BelongsToTenant;
 
     protected $table = 'specifications';
 
     protected $fillable = [
+        'tenant_id',
         'name',
         'description',
     ];

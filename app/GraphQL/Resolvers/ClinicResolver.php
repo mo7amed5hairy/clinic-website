@@ -21,7 +21,7 @@ class ClinicResolver
         $user = auth()->guard('sanctum')->user();
         
         if (! $user || ! $user->clinic_id) {
-             throw new UserError(__('Clinic.messages.not_found'));
+             throw new UserError(__('Clinic/messages.not_found'));
         }
 
         return $this->service->show($user->clinic_id);
@@ -38,13 +38,13 @@ class ClinicResolver
         $user = auth()->guard('sanctum')->user();
         
         if (! $user || ! $user->clinic_id) {
-             throw new UserError(__('Clinic.messages.not_found'));
+             throw new UserError(__('Clinic/messages.not_found'));
         }
 
         $clinic = $this->service->show($user->clinic_id);
 
         if (! $clinic) {
-             throw new UserError(__('Clinic.messages.not_found'));
+             throw new UserError(__('Clinic/messages.not_found'));
         }
 
         $validator = Validator::make(
@@ -55,10 +55,10 @@ class ClinicResolver
                 'logo'      => ['sometimes', 'nullable'],
             ],
             [
-                'name.required' => __('Clinic.validation.name_required'),
-                'name.min'      => __('Clinic.validation.name_min'),
-                'name.max'      => __('Clinic.validation.name_max'),
-                'color.max'     => __('Clinic.validation.color_max'),
+                'name.required' => __('Clinic/validation.name_required'),
+                'name.min'      => __('Clinic/validation.name_min'),
+                'name.max'      => __('Clinic/validation.name_max'),
+                'color.max'     => __('Clinic/validation.color_max'),
             ]
         );
 
@@ -108,13 +108,13 @@ class ClinicResolver
     {
         $user = auth()->guard('sanctum')->user();
         if (! $user || ! $user->clinic_id) {
-             throw new UserError(__('Clinic.messages.not_found'));
+             throw new UserError(__('Clinic/messages.not_found'));
         }
 
         $clinic = $this->service->show($user->clinic_id);
 
         if (! $clinic) {
-             throw new UserError(__('Clinic.messages.not_found'));
+             throw new UserError(__('Clinic/messages.not_found'));
         }
 
         $this->service->destroy($clinic);

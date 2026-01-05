@@ -14,8 +14,8 @@ extend type Query {
         )
         @guard(with: ["sanctum"])
 
-    # جلب عضو محدد
-    clinicManagementMember(id: ID!): ClinicManagementMember
+    # جلب عضو محدد بناءً على tenant_id من التوكن
+    clinicManagementMember: ClinicManagementMember
         @field(
             resolver: "App\\GraphQL\\Resolvers\\ClinicManagementMemberResolver@show"
         )

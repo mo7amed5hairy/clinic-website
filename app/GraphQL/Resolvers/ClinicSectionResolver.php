@@ -28,7 +28,7 @@ class ClinicSectionResolver
         $section = $this->service->show($data['id']);
 
         if (!$section) {
-            throw new UserError(__('modules.clinic_section.messages.not_found'));
+            throw new UserError(__('ClinicSection/messages.not_found'));
         }
 
         return $section;

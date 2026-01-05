@@ -20,9 +20,9 @@ class ClinicManagementMemberService
      * يرجّع Member أو null
      * بدون Exceptions
      */
-    public function show(int $id): ?ClinicManagementMember
+    public function show(mixed $id): ?ClinicManagementMember
     {
-        return $this->repository->find($id);
+        return $this->repository->find((int) $id);
     }
 
     public function store(array $data): ClinicManagementMember

@@ -26,6 +26,8 @@ extend type Mutation {
         @field(
             resolver: "App\\GraphQL\\Resolvers\\ContactInfoResolver@createOrUpdate"
         )
+        @guard(with: ["sanctum"])
     deleteContactInfo: Boolean
         @field(resolver: "App\\GraphQL\\Resolvers\\ContactInfoResolver@destroy")
+        @guard(with: ["sanctum"])
 }

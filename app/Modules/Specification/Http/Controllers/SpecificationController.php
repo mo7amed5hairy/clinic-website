@@ -71,6 +71,6 @@ class SpecificationController extends Controller
     {
         $this->service->destroy($specification);
 
-        return response()->json(['message' => __('Specification.deleted')]);
+        return response()->json(['message' => __('Specification/messages.deleted')]);
     }
 }

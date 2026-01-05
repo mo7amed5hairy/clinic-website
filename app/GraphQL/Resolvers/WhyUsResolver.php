@@ -3,6 +3,7 @@
 namespace App\GraphQL\Resolvers;
 
 use GraphQL\Error\UserError;
+use App\Modules\WhyUs\Models\WhyUs;
 use App\Modules\WhyUs\Services\WhyUsService;
 use Illuminate\Support\Facades\Validator;
 
@@ -12,11 +13,8 @@ class WhyUsResolver
 
     public function show($_, array $args)
     {
-        $user = auth()->guard('sanctum')->user();
-        if (!$user || !$user->clinic_id) {
-             throw new UserError(__('WhyUs.messages.no_clinic'));
-        }
-        return $this->service->getByClinicId($user->clinic_id);
+        // Publicly accessible, automatically scoped by tenant trait
+        return WhyUs::first();
     }
 
     public function createOrUpdate($_, array $args)
@@ -44,9 +42,9 @@ class WhyUsResolver
         }
 
         $data = [
-            'tenant_id' => tenant('id'),
             'items' => $args['items'],
         ];
+        // tenant_id is automatic via trait
 
         return $this->service->createOrUpdate($user->clinic_id, $data);
     }
@@ -55,7 +53,7 @@ class WhyUsResolver
     {
         $user = auth()->guard('sanctum')->user();
         if (!$user || !$user->clinic_id) {
-             throw new UserError(__('WhyUs.messages.no_clinic'));
+             throw new UserError(__('WhyUs/messages.no_clinic'));
         }
 
         $whyUs = $this->service->getByClinicId($user->clinic_id);

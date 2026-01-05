@@ -3,6 +3,7 @@
 namespace App\GraphQL\Resolvers;
 
 use GraphQL\Error\UserError;
+use App\Modules\ClinicSchedule\Models\ClinicSchedule;
 use App\Modules\ClinicSchedule\Services\ClinicScheduleService;
 use Illuminate\Support\Facades\Validator;
 
@@ -12,18 +13,15 @@ class ClinicScheduleResolver
 
     public function show($_, array $args)
     {
-        $user = auth()->guard('sanctum')->user();
-        if (!$user || !$user->clinic_id) {
-             throw new UserError(__('ClinicSchedule.messages.no_clinic'));
-        }
-        return $this->service->getByClinicId($user->clinic_id);
+        // Publicly accessible, automatically scoped by tenant trait
+        return ClinicSchedule::all();
     }
 
     public function createOrUpdate($_, array $args)
     {
         $user = auth()->guard('sanctum')->user();
         if (!$user || !$user->clinic_id) {
-             throw new UserError(__('ClinicSchedule.messages.no_clinic'));
+             throw new UserError(__('ClinicSchedule/messages.no_clinic'));
         }
 
         $validator = Validator::make($args, [
@@ -38,7 +36,7 @@ class ClinicScheduleResolver
         }
 
         $data = $validator->validated();
-        $data['tenant_id'] = tenant('id');
+        // tenant_id is automatic via trait
         
         if (isset($args['id'])) {
             $data['id'] = $args['id'];
@@ -51,7 +49,7 @@ class ClinicScheduleResolver
     {
         $user = auth()->guard('sanctum')->user();
         if (!$user || !$user->clinic_id) {
-             throw new UserError(__('ClinicSchedule.messages.no_clinic'));
+             throw new UserError(__('ClinicSchedule/messages.no_clinic'));
         }
 
         $schedule = $this->service->show($args['id']);

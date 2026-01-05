@@ -22,7 +22,9 @@ extend type Mutation {
         @field(
             resolver: "App\\GraphQL\\Resolvers\\HeroSectionResolver@createOrUpdate"
         )
+        @guard(with: ["sanctum"])
 
     deleteHeroSection: Boolean
         @field(resolver: "App\\GraphQL\\Resolvers\\HeroSectionResolver@destroy")
+        @guard(with: ["sanctum"])
 }

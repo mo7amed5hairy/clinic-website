@@ -22,9 +22,11 @@ extend type Mutation {
         @field(
             resolver: "App\\GraphQL\\Resolvers\\InstallmentMethodResolver@createOrUpdate"
         )
+        @guard(with: ["sanctum"])
 
     deleteInstallmentMethod(id: ID!): Boolean
         @field(
             resolver: "App\\GraphQL\\Resolvers\\InstallmentMethodResolver@destroy"
         )
+        @guard(with: ["sanctum"])
 }

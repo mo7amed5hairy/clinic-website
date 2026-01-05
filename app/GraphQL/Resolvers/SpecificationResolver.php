@@ -33,7 +33,7 @@ class SpecificationResolver
             $validator = Validator::make([], []);
             $validator->errors()->add(
                 'id',
-                __('Specification.messages.not_found')
+                __('Specification/messages.not_found')
             );
             throw new ValidationException($validator);
         }
@@ -53,9 +53,9 @@ class SpecificationResolver
                 'description' => ['nullable', 'string'],
             ],
             [
-                'name.required' => __('Specification.validation.name_required'),
-                'name.min'      => __('Specification.validation.name_min'),
-                'name.max'      => __('Specification.validation.name_max'),
+                'name.required' => __('Specification/validation.name_required'),
+                'name.min'      => __('Specification/validation.name_min'),
+                'name.max'      => __('Specification/validation.name_max'),
             ]
         );
 
@@ -84,7 +84,7 @@ class SpecificationResolver
             $validator = Validator::make([], []);
             $validator->errors()->add(
                 'id',
-                __('Specification.messages.not_found')
+                __('Specification/messages.not_found')
             );
             throw new ValidationException($validator);
         }
@@ -96,9 +96,9 @@ class SpecificationResolver
                 'description' => ['nullable', 'string'],
             ],
             [
-                'name.required' => __('Specification.validation.name_required'),
-                'name.min'      => __('Specification.validation.name_min'),
-                'name.max'      => __('Specification.validation.name_max'),
+                'name.required' => __('Specification/validation.name_required'),
+                'name.min'      => __('Specification/validation.name_min'),
+                'name.max'      => __('Specification/validation.name_max'),
             ]
         );
 
@@ -139,7 +139,7 @@ class SpecificationResolver
                 ['id' => $args['id']],
                 ['id' => ['required']],
                 [
-                    'id.required' => __('Specification.messages.not_found'),
+                'id.required' => __('Specification/messages.not_found'),
                 ]
             );
             throw new ValidationException($validator);

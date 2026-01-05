@@ -6,16 +6,12 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use App\Modules\User\Repositories\User\Contracts\UserRepositoryInterface;
-<<<<<<< HEAD
 use App\Modules\Clinic\Contracts\ClinicRepositoryInterface;
 use App\Modules\Clinic\Models\Clinic;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Laravel\Sanctum\PersonalAccessToken;
 use App\Models\VerificationCode;
-=======
-use App\Modules\Clinic\Models\Clinic;
->>>>>>> soulnbody/mo7amed5hairy
 
 class AuthService
 {
@@ -43,7 +39,6 @@ class AuthService
                 'name'      => $data['name'] . ' Clinic',
             ]);
 
-<<<<<<< HEAD
             // 3️⃣ Create user
             $user = $this->userRepository->create([
                 'tenant_id'     => tenant('id'),
@@ -53,23 +48,6 @@ class AuthService
                 'phone'         => $data['phone'],
                 'password'      => Hash::make($data['password']),
             ]);
-=======
-        // 2️⃣ Create Clinic
-        $clinic = Clinic::create([
-            'tenant_id' => tenant('id'),
-            'name'      => $data['name'] . "'s Clinic",
-        ]);
-
-        // 3️⃣ Create user
-        $user = $this->userRepository->create([
-            'tenant_id'     => tenant('id'),
-            'name'          => $data['name'],
-            'email'         => $data['email'],
-            'phone'         => $data['phone'] ?? null,
-            'password'      => Hash::make($data['password']),
-            'clinic_id'     => $clinic->id,
-        ]);
->>>>>>> soulnbody/mo7amed5hairy
 
             // 4️⃣ Create Sanctum token
             $token = $user->createToken('auth_token')->plainTextToken;

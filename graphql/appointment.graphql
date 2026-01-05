@@ -32,7 +32,9 @@ extend type Mutation {
         status: AppointmentStatus
     ): Appointment
         @field(resolver: "App\\GraphQL\\Resolvers\\AppointmentResolver@create")
+        @guard(with: ["sanctum"])
 
     deleteAppointment(id: ID!): Boolean
         @field(resolver: "App\\GraphQL\\Resolvers\\AppointmentResolver@destroy")
+        @guard(with: ["sanctum"])
 }

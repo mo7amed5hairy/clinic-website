@@ -1,0 +1,31 @@
+type MediaCenterVideo {
+    id: ID!
+    clinic_id: ID!
+    title: String
+    video: String
+}
+
+extend type Query {
+    mediaCenterVideos: [MediaCenterVideo!]!
+        @field(
+            resolver: "App\\GraphQL\\Resolvers\\MediaCenterVideoResolver@show"
+        )
+}
+
+extend type Mutation {
+    createOrUpdateMediaCenterVideo(
+        id: ID
+        title: String
+        video: Upload
+    ): MediaCenterVideo
+        @field(
+            resolver: "App\\GraphQL\\Resolvers\\MediaCenterVideoResolver@createOrUpdate"
+        )
+        @guard(with: ["sanctum"])
+
+    deleteMediaCenterVideo(id: ID!): Boolean
+        @field(
+            resolver: "App\\GraphQL\\Resolvers\\MediaCenterVideoResolver@destroy"
+        )
+        @guard(with: ["sanctum"])
+}

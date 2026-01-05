@@ -28,10 +28,12 @@ extend type Mutation {
         @field(
             resolver: "App\\GraphQL\\Resolvers\\ClinicStatisticResolver@createOrUpdate"
         )
+        @guard(with: ["sanctum"])
 
     # حذف كل إحصائيات العيادة
     deleteClinicStatistics: Boolean
         @field(
             resolver: "App\\GraphQL\\Resolvers\\ClinicStatisticResolver@destroy"
         )
+        @guard(with: ["sanctum"])
 }
