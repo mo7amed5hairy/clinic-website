@@ -33,8 +33,6 @@ use App\Modules\MediaCenterImage\Contracts\MediaCenterImageRepositoryInterface;
 use App\Modules\MediaCenterImage\Repositories\MediaCenterImageRepository;
 use App\Modules\MediaCenterVideo\Contracts\MediaCenterVideoRepositoryInterface;
 use App\Modules\MediaCenterVideo\Repositories\MediaCenterVideoRepository;
-use App\Modules\MediaCenter\Contracts\MediaCenterRepositoryInterface;
-use App\Modules\MediaCenter\Repositories\MediaCenterRepository;
 use App\Modules\Unit\Contracts\UnitRepositoryInterface;
 use App\Modules\Unit\Repositories\UnitRepository;
 use App\Modules\Appointment\Contracts\AppointmentRepositoryInterface;
@@ -123,10 +121,7 @@ class RepositoryServiceProvider extends ServiceProvider
             HeroSectionRepositoryInterface::class,
             HeroSectionRepository::class
         );
-        $this->app->bind(
-            MediaCenterRepositoryInterface::class,
-            MediaCenterRepository::class
-        );
+
         $this->app->bind(
             MediaCenterImageRepositoryInterface::class,
             MediaCenterImageRepository::class
