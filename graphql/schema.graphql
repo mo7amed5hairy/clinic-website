@@ -41,3 +41,4 @@ input LocalizedStringInput {
 #import contact_info.graphql
 #import clinic_articles.graphql
 #import installment_methods.graphql
+#import settings.graphql

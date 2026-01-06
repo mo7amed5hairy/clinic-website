@@ -1,0 +1,43 @@
+type Setting {
+    id: ID!
+    clinic_id: ID!
+    doctors_enabled: Boolean!
+    clinic_news_enabled: Boolean!
+    units_enabled: Boolean!
+    why_us_enabled: Boolean!
+    media_center_videos_enabled: Boolean!
+    clinic_statistics_enabled: Boolean!
+    insurance_companies_enabled: Boolean!
+    installment_methods_enabled: Boolean!
+    contact_info_enabled: Boolean!
+    created_at: DateTime
+    updated_at: DateTime
+}
+
+input UpdateSettingsInput {
+    doctors_enabled: Boolean
+    clinic_news_enabled: Boolean
+    units_enabled: Boolean
+    why_us_enabled: Boolean
+    media_center_videos_enabled: Boolean
+    clinic_statistics_enabled: Boolean
+    insurance_companies_enabled: Boolean
+    installment_methods_enabled: Boolean
+    contact_info_enabled: Boolean
+}
+
+extend type Query {
+    settings: Setting!
+        @field(resolver: "App\\GraphQL\\Resolvers\\SettingResolver@show")
+        @guard(with: ["sanctum"])
+}
+
+extend type Mutation {
+    updateSettings(input: UpdateSettingsInput!): Setting
+        @field(resolver: "App\\GraphQL\\Resolvers\\SettingResolver@update")
+        @guard(with: ["sanctum"])
+
+    toggleModule(module: String!, enabled: Boolean!): Setting
+        @field(resolver: "App\\GraphQL\\Resolvers\\SettingResolver@toggleModule")
+        @guard(with: ["sanctum"])
+}
